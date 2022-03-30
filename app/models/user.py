@@ -18,6 +18,7 @@ class User(db.Model, UserMixin, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
+    role = db.Column(db.String(64))
     created_at = db.Column(db.DateTime, default=datetime.now)
     accounts = db.relationship("Account", backref="user", lazy=True)
 
