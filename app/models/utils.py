@@ -2,11 +2,11 @@ from app import db
 
 
 class ModelMixin(object):
-
-    def save(self):
+    def save(self, auto_commit=True):
         # Save this model to the database.
         db.session.add(self)
-        db.session.commit()
+        if auto_commit:
+            db.session.commit()
         return self
 
 

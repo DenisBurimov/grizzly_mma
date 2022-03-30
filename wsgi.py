@@ -14,9 +14,13 @@ def get_context():
 
 
 @app.cli.command()
-def create_db():
+@click.option("--test-data/--no-test-data", default=False)
+def create_db(test_data: bool = False):
     """Create the configured database."""
+    from app.controllers import init_db
+
     db.create_all()
+    init_db(test_data)
 
 
 @app.cli.command()
