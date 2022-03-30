@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
-        "virtualenvs"
+        "virtualenvs",
+        "werkzeug",
+        "wtforms"
     ]
 }
