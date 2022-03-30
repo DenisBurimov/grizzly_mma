@@ -14,9 +14,8 @@ class User(db.Model, UserMixin, ModelMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(60), unique=True, nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
     activated = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -29,15 +28,15 @@ class User(db.Model, UserMixin, ModelMixin):
         self.password_hash = generate_password_hash(password)
 
     @classmethod
-    def authenticate(cls, user_id, password):
+    def authenticate(cls, username, password):
         user = cls.query.filter(
-            db.or_(func.lower(cls.username) == func.lower(user_id), func.lower(cls.email) == func.lower(user_id))
+            func.lower(cls.username) == func.lower(username)
         ).first()
         if user is not None and check_password_hash(user.password, password):
             return user
 
     def __repr__(self):
-        return f"<User: {self.username}>"
+        return f"<{self.id}: {self.username}>"
 
 
 class AnonymousUser(AnonymousUserMixin):

@@ -21,26 +21,10 @@ def client():
 
 
 def test_auth_pages(client):
-    response = client.get("/register")
-    assert response.status_code == 200
     response = client.get("/login")
     assert response.status_code == 200
     response = client.get("/logout")
     assert response.status_code == 302
-
-
-def test_register(client):
-    response = client.post(
-        "/register",
-        data=dict(
-            username="sam",
-            email="sam@test.com",
-            password="password",
-            password_confirmation="password",
-        ),
-        follow_redirects=True,
-    )
-    assert b"Registration successful. You are logged in." in response.data
 
 
 def test_login_and_logout(client):

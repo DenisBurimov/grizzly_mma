@@ -11,7 +11,7 @@ auth_blueprint = Blueprint("auth", __name__)
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        user = User.authenticate(form.user_id.data, form.password.data)
+        user = User.authenticate(form.username.data, form.password.data)
         if user is not None:
             login_user(user)
             flash("Login successful.", "success")
