@@ -13,7 +13,7 @@ from app.models.utils import ModelMixin
 
 class User(db.Model, UserMixin, ModelMixin):
 
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
@@ -21,6 +21,7 @@ class User(db.Model, UserMixin, ModelMixin):
     role = db.Column(db.String(64))
     created_at = db.Column(db.DateTime, default=datetime.now)
     accounts = db.relationship("Account", backref="user", lazy=True)
+    billings = db.relationship("Billing", backref="user", lazy=True)
 
     @hybrid_property
     def password(self):
@@ -44,7 +45,7 @@ class User(db.Model, UserMixin, ModelMixin):
 
 class Account(db.Model):
     account_id = db.Column(db.Integer, primary_key=True)
-    reseller = db.Column(db.String(64), db.ForeignKey("user.username"))
+    reseller = db.Column(db.Integer, db.ForeignKey("user.id"))
     login = db.Column(db.String(64), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
     
@@ -53,7 +54,8 @@ class Account(db.Model):
     
     
 class Billing(db.Model):
-    reseller = db.Column(db.String(64), db.ForeignKey("user.username"))
+    reseller_id = db.Column(db.Integer, primary_key=True)
+    reseller = db.Column(db.Integer, db.ForeignKey("user.id"))
     credits = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
     
@@ -62,6 +64,7 @@ class Billing(db.Model):
     
 
 class History(db.Model):
+    operation_id = db.Column(db.Integer, primary_key=True)
     instance = db.Column(db.String(64), nullable=False)
     created_by = db.Column(db.String(64), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
