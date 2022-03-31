@@ -22,6 +22,7 @@ def create_app(environment="development"):
     )
     from app.models import (
         User,
+        AnonymousUser,
     )
 
     # Instantiate app.
@@ -52,6 +53,7 @@ def create_app(environment="development"):
 
     login_manager.login_view = "auth.login"
     login_manager.login_message_category = "info"
+    login_manager.anonymous_user = AnonymousUser
 
     # Error handlers.
     @app.errorhandler(HTTPException)

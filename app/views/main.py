@@ -1,7 +1,5 @@
 from flask import render_template, Blueprint
-from app.models import User
-from app.models.account import Account
-from app.models.billing import Billing
+from app.models import User, Account, Billing
 
 main_blueprint = Blueprint("main", __name__)
 
@@ -12,4 +10,6 @@ def index():
     users = User.query.all()
     accounts = Account.query.all()
     billings = Billing.query.all()
-    return render_template("index.html", users=users, accounts=accounts, billings=billings)
+    return render_template(
+        "index.html", users=users, accounts=accounts, billings=billings
+    )

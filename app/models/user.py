@@ -2,7 +2,7 @@ from datetime import datetime
 import enum
 from sqlalchemy import Enum
 
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from sqlalchemy import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
@@ -54,3 +54,7 @@ class User(db.Model, UserMixin, ModelMixin):
 
     def __repr__(self):
         return f"<{self.id}: {self.username} ({self.role})>"
+
+
+class AnonymousUser(AnonymousUserMixin):
+    pass
