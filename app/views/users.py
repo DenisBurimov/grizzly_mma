@@ -1,5 +1,5 @@
 import imp
-from flask import render_template, Blueprint, redirect, url_for
+from flask import render_template, Blueprint, redirect, request, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.models.user import User
@@ -41,3 +41,23 @@ def user_add():
 
         return redirect(url_for("users.users_page"))
     return render_template("user/add.html", form=form)
+
+
+@users_blueprint.route("/user_update/<int:user_id>", methods=["GET", "POST"])
+def user_update(user_id: int):
+    form = UserForm()
+    user: User = User.query.get(user_id)
+
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.password = form.password.data
+        user.role = form.role.data
+        user.save()
+
+        return redirect(url_for("users.users_page"))
+
+    elif request.method == 'GET':
+        form.username.data = user.username
+        form.role.data = user.role
+
+    return render_template("user/update.html", form=form)

@@ -24,3 +24,14 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.user_update {
+  text-decoration: none;
+}
+
+.delete_button {
+  padding: 0 5px;
+  color: red;
+  text-decoration: none;
+  border: 1px solid red;
+}
