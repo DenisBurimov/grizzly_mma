@@ -1,7 +1,8 @@
 from datetime import datetime
-from email.policy import default
+import enum
+from sqlalchemy import Enum
 
-from flask_login import UserMixin, AnonymousUserMixin
+from flask_login import UserMixin
 from sqlalchemy import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
@@ -18,7 +19,17 @@ class User(db.Model, UserMixin, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
-    role = db.Column(db.String(64))  # TODO: Enum
+    
+    class Role(enum.Enum):
+        """Utility class to support
+        admin - creates users, including admins
+        reseller - creates accounts and billings
+        """
+
+        admin = 1
+        reseller = 2
+    
+    role = db.Column(Enum(Role), default=Role.reseller)
     created_at = db.Column(db.DateTime, default=datetime.now)
     deleted = db.Column(db.Boolean, default=False)
     
@@ -42,4 +53,4 @@ class User(db.Model, UserMixin, ModelMixin):
             return user
 
     def __repr__(self):
-        return f"<{self.id}: {self.username}>"
+        return f"<{self.id}: {self.username} ({self.role})>"

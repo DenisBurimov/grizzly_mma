@@ -18,6 +18,7 @@ def init_db(add_test_data: bool = False):
     User(
         username=app.config["ADMIN_USER"],
         password=app.config["ADMIN_PASS"],
+        role="admin",
     ).save(False)
     if add_test_data:
         log(log.INFO, "Generate test data")

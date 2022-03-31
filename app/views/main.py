@@ -8,6 +8,7 @@ main_blueprint = Blueprint("main", __name__)
 
 @main_blueprint.route("/")
 def index():
+    # users = User.query.filter_by(role="admin").first()
     users = User.query.all()
     accounts = Account.query.all()
     billings = Billing.query.all()
