@@ -1,4 +1,3 @@
-import imp
 from flask import render_template, Blueprint, redirect, request, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import desc
