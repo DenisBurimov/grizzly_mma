@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_migrate import Migrate
 from werkzeug.exceptions import HTTPException
 from app.logger import log
 
@@ -17,6 +18,7 @@ def create_app(environment="development"):
     from app.views import (
         main_blueprint,
         auth_blueprint,
+        accounts_blueprint,
     )
     from app.models import (
         User,
@@ -25,6 +27,9 @@ def create_app(environment="development"):
 
     # Instantiate app.
     app = Flask(__name__)
+
+    # Migrations setup
+    Migrate(app, db)
 
     # Set app config.
     env = os.environ.get("FLASK_ENV", environment)
@@ -39,6 +44,7 @@ def create_app(environment="development"):
     # Register blueprints.
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
+    app.register_blueprint(accounts_blueprint)
 
     # Set up flask login.
     @login_manager.user_loader
