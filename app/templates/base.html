@@ -48,7 +48,9 @@
   {% include 'header.html' %}
   <div class="container-fluid">
     <div class="row">
-      {% include 'nav.html' %}
+      {% if current_user.is_authenticated %}
+        {% include 'nav.html' %}
+      {% endif %}
 
       <!-- Flash Messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
