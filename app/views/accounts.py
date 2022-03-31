@@ -1,5 +1,4 @@
 from flask import render_template, Blueprint
-from app.models import User
 from app.models.account import Account
 
 accounts_blueprint = Blueprint("accounts", __name__)

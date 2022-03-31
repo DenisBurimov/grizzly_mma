@@ -12,7 +12,6 @@ login_manager = LoginManager()
 db = SQLAlchemy()
 
 
-
 def create_app(environment="development"):
 
     from config import config
@@ -27,9 +26,9 @@ def create_app(environment="development"):
 
     # Instantiate app.
     app = Flask(__name__)
-    
+
     # Migrations setup
-    migrate = Migrate(app, db)
+    Migrate(app, db)
 
     # Set app config.
     env = os.environ.get("FLASK_ENV", environment)
