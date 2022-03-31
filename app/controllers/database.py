@@ -2,6 +2,8 @@ from flask import current_app as app
 from app.models import User
 from app import db
 from app.logger import log
+from app.models.account import Account
+from app.models.billing import Billing
 
 TEST_USERS_NUMBER = 20
 
@@ -21,5 +23,8 @@ def init_db(add_test_data: bool = False):
         log(log.INFO, "Generate test data")
         for i in range(TEST_USERS_NUMBER):
             User(username=f"user_{i}", password="pass").save(False)
+            Account(user_id=i, login=f"user_{i}_account_01", password="pass").save(False)
+            Account(user_id=i, login=f"user_{i}_account_02", password="pass").save(False)
+            Billing(user_id=i, credits=1000).save(False)
 
     db.session.commit()
