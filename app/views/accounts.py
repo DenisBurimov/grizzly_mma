@@ -1,7 +1,8 @@
-from flask import render_template, redirect, url_for, Blueprint
+from flask import render_template, redirect, request, url_for, Blueprint
 from flask_login import current_user, login_required
 from app.models import Account, User
 from app.forms import AccountForm
+from app.controllers import gen_login, gen_password
 
 accounts_blueprint = Blueprint("accounts", __name__)
 
@@ -27,4 +28,9 @@ def account_add():
         ).save()
 
         return redirect(url_for("accounts.accounts_page"))
+
+    elif request.method == "GET":
+        form.login.data = gen_login()
+        form.password.data = gen_password()
+
     return render_template("account/add_account.html", form=form)

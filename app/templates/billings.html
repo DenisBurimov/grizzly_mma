@@ -6,25 +6,25 @@
 
   <div class="d-flex justify-content-between pt-3">
     <h3 class="mt-1">Accounts</h3>
-    <a class="btn btn-dark mt-1" href="{{ url_for('accounts.account_add') }}">New Account</a>
+    <a class="btn btn-dark mt-1" href="{{ url_for('billings.billing_add') }}">New Billing</a>
   </div>
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
         <tr>
           <th scope="col">id</th>
-          <th scope="col">Login</th>
+          <th scope="col">Credits</th>
           <th scope="col">Created By</th>
           <th scope="col">Created At</th>
         </tr>
       </thead>
       <tbody>
-        {% for account in accounts %}
+        {% for billing in billings %}
           <tr>
-            <td>{{account.id}}</td>
-            <td>{{account.login}}</td>
-            <td>{{account.user.username}}</td>
-            <td>{{ account.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
+            <td>{{billing.id}}</td>
+            <td>{{billing.credits}}</td>
+            <td>{{billing.reseller.username}}</td>
+            <td>{{ billing.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
           </tr>
         {% endfor %}
       </tbody>

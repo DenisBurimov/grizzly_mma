@@ -55,7 +55,7 @@ def user_update(user_id: int):
 
         return redirect(url_for("users.users_page"))
 
-    elif request.method == 'GET':
+    elif request.method == "GET":
         form.username.data = user.username
         form.role.data = user.role
 
