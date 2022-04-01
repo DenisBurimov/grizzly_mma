@@ -1,14 +1,30 @@
-from flask import render_template, Blueprint
-from flask_login import current_user
+from flask import render_template, redirect, url_for, Blueprint
+from flask_login import current_user, login_required
 from app.models import Account, User
+from app.forms import AccountForm
 
 accounts_blueprint = Blueprint("accounts", __name__)
 
 
 @accounts_blueprint.route("/accounts")
+@login_required
 def accounts_page():
-    if current_user != User.Role.admin:
-        accounts = Account.query.filter_by(user_id=current_user.id)
-    else:
-        accounts = Account.query.all()
-    return render_template("accounts.html", accounts=accounts)
+    query = Account.query
+    if current_user.role != User.Role.admin:
+        query = query.filter(Account.user_id == current_user.id)
+    return render_template("accounts.html", accounts=query.all())
+
+
+@accounts_blueprint.route("/account_add", methods=["GET", "POST"])
+def account_add():
+    form = AccountForm()
+
+    if form.validate_on_submit():
+        Account(
+            user_id=current_user.id,
+            login=form.login.data,
+            password=form.password.data,
+        ).save()
+
+        return redirect(url_for("accounts.accounts_page"))
+    return render_template("account/add_account.html", form=form)

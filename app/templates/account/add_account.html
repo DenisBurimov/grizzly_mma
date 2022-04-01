@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="form-user">
+  <form action="{{ url_for('users.user_add') }}" method="post">
+    <h1 class="h3 mb-3 fw-normal">New Account</h1>
+
+    <div class="form-floating">
+      {{form.username(type="username", class='form-control')}}
+      {{form.username.label}}
+
+    </div>
+    <div class="form-floating">
+      {{form.password(type="password", class='form-control')}}
+      {{form.password.label}}
+    </div>
+    <div class="form-floating">
+        {{form.password_confirm(type="password", class='form-control')}}
+        {{form.password_confirm.label}}
+    </div>
+    <div class="form-floating">
+        {{form.role(type="role", class='form-control')}}
+        {{form.role.label}}
+    </div>
+
+    {{form.submit(class='w-100 btn btn-lg btn-primary')}}
+  </form>
+</main>
+{% endblock %}

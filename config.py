@@ -16,6 +16,14 @@ class BaseConfig(object):
     ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
     ADMIN_PASS = os.environ.get("ADMIN_PASS", "admin")
 
+    ALPHABET_FULL = os.environ.get(
+        "ALPHABET_FULL", "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
+    )
+
+    ALPHABET_UP_DIGITS = os.environ.get(
+        "ALPHABET_UP_DIGITS", "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
+    )
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
