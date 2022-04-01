@@ -1,15 +1,13 @@
-from flask import render_template, Blueprint
-from app.models import User, Account, Billing
+from flask import Blueprint, redirect, url_for
+from flask_login import current_user, login_required
+from app.models import User
 
 main_blueprint = Blueprint("main", __name__)
 
 
 @main_blueprint.route("/")
+@login_required
 def index():
-    # users = User.query.filter_by(role="admin").first()
-    users = User.query.all()
-    accounts = Account.query.all()
-    billings = Billing.query.all()
-    return render_template(
-        "index.html", users=users, accounts=accounts, billings=billings
-    )
+    if current_user.role == User.Role.admin:
+        return redirect(url_for("users.users_page"))
+    return redirect(url_for("accounts.accounts_page"))

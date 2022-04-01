@@ -2,3 +2,5 @@
 from .login import auth_blueprint
 from .main import main_blueprint
 from .accounts import accounts_blueprint
+from .users import users_blueprint
+from .billings import billings_blueprint

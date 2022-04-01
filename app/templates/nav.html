@@ -2,11 +2,18 @@
     <div class="position-sticky pt-3">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('accounts.accounts_page') }}">
+          <p class="nav-link">
+            {{current_user.username}} - {{current_user.role.name}}
+          </p>
+        </li>
+        {% if current_user.role.name == "admin" %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('users.users_page') }}">
             <span data-feather="users"></span>
             Users
           </a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('accounts.accounts_page') }}">
             <span data-feather="layers"></span>
@@ -14,11 +21,11 @@
           </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="credit-card"></span>
-              Billings
-            </a>
-          </li>
+          <a class="nav-link" href="{{ url_for('billings.billings_page') }}">
+            <span data-feather="credit-card"></span>
+            Billings
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
