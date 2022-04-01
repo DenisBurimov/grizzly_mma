@@ -28,6 +28,7 @@ def user_delete(user_id: int):
 
 
 @users_blueprint.route("/user_add", methods=["GET", "POST"])
+@login_required
 def user_add():
     form = UserForm()
 
@@ -43,6 +44,7 @@ def user_add():
 
 
 @users_blueprint.route("/user_update/<int:user_id>", methods=["GET", "POST"])
+@login_required
 def user_update(user_id: int):
     form = UserForm()
     user: User = User.query.get(user_id)

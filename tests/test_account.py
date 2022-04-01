@@ -2,7 +2,7 @@ import pytest
 
 from app import db, create_app
 from app.controllers import init_db
-from .utils import login, logout
+from .utils import login
 
 
 @pytest.fixture

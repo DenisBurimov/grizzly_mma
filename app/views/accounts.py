@@ -17,6 +17,7 @@ def accounts_page():
 
 
 @accounts_blueprint.route("/account_add", methods=["GET", "POST"])
+@login_required
 def account_add():
     form = AccountForm()
 
