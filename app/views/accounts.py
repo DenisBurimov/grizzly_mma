@@ -30,7 +30,7 @@ def account_add():
 
         return redirect(url_for("accounts.accounts_page"))
 
-    elif request.method == "GET":
+    if request.method == "GET":
         form.login.data = gen_login()
         form.password.data = gen_password()
 
