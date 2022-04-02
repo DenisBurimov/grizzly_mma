@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="form-user">
+  <form action="{{ url_for('accounts.account_info', account_id=account.id) }}" method="post">
+    <h1 class="h3 mb-3 fw-normal">Account Info</h1>
+    <p>{{account.id}}</p>
+    <p>{{account.user.username}}</p>
+    <p>{{account.login}}</p>
+    <p>{{account.password}}</p>
+    <p>{{account.created_at.strftime('%Y-%m-%d, %H:%M')}}</p>
+
+  </form>
+</main>
+{% endblock %}

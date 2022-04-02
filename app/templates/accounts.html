@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block links %}
+    <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
   <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
@@ -22,7 +26,7 @@
         {% for account in accounts %}
           <tr>
             <td>{{account.id}}</td>
-            <td>{{account.login}}</td>
+            <td><a class="user_update" href="{{ url_for('accounts.account_info', account_id=account.id) }}">{{account.login}}</a></td>
             <td>{{account.user.username}}</td>
             <td>{{ account.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
           </tr>
