@@ -2,19 +2,26 @@ version: "3.9"
 services:
   app:
     build: .
-    container_name: flask
-    command: flask run
+    command: poetry run flask run -h 0.0.0.0
     restart: always
     environment:
       - FLASK_APP=wsgi:app
       - FLASK_ENV=production
       - FLASK_DEBUG=0
     ports:
-      - 127.0.0.1:5000:5000
+      - 127.0.0.1:${APP_LOCAL_PORT}:5000
 
-  nginx:
-    build: ./nginx
-    container_name: nginx
+  db:
+    image: postgres:14
     restart: always
+    volumes:
+      - ./:/app
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "80:80"
+      - 127.0.0.1:${DB_LOCAL_PORT}:5432
+
+volumes:
+  db_data:
