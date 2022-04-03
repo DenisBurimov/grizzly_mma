@@ -10,12 +10,16 @@
     <h1 class="h3 mb-3 fw-normal">Account Info</h1>
     <p class="text-muted">Created by <b>{{account.user.username}}</b> at {{account.created_at.strftime('%Y-%m-%d, %H:%M')}}</p>
 
-    <label class="w-100">Login<input class="form-control w-100" type="text" value="{{account.login}}"></label>
-    <button class="btn btn-lg btn-primary mt-1 mb-3 w-100">Copy Login</button>
+    <label class="w-100">Login<input id="login_input" class="form-control w-100" type="text" value="{{account.login}}"></label>
+    <div id="copy_login" class="btn btn-lg btn-primary mt-1 mb-3 w-100">Copy Login</div>
 
-    <label class="w-100">Password<input class="form-control w-100" type="text" value="{{account.password}}"></label>
-    <button class="btn btn-lg btn-primary mt-1 mb-3 w-100">Copy Password</button>
+    <label class="w-100">Password<input id="password_input" class="form-control w-100" type="text" value="{{account.password}}"></label>
+    <div id="copy_password" class="btn btn-lg btn-primary mt-1 mb-3 w-100">Copy Password</div>
 
   </form>
 </main>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/account_buttons.js') }}" type="text/javascript"></script>
 {% endblock %}
