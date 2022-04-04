@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required
 
 from app.models import User
 from app.forms import LoginForm
+from app.logger import log
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -16,7 +17,8 @@ def login():
             login_user(user)
             flash("Login successful.", "success")
             return redirect(url_for("main.index"))
-        flash("Wrong user ID or password.", "danger")
+        flash("Wrong username or password.", "danger")
+        log(log.ERROR, "Wrong username or password")
     return render_template("auth/login.html", form=form)
 
 
