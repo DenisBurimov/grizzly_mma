@@ -7,6 +7,9 @@
 {% block content %}
 <main class="form-login">
   <form action="{{ url_for('auth.login') }}" method="post">
+
+    {{ form.hidden_tag() }}
+
     <h1 class="h3 mb-3 fw-normal">Login</h1>
 
     <div class="form-floating">

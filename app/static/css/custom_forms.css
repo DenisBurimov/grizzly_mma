@@ -8,6 +8,8 @@ body {
   width: 550px;
 }
 
+#login_input, #password_input {height: 45px;}
+
 .hit-input {
   border: 1px solid lightgrey;
 }
