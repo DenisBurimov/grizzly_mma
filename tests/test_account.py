@@ -4,6 +4,8 @@ from app import db, create_app
 from app.controllers import init_db
 from .utils import login
 
+from app.models import Account
+
 
 @pytest.fixture
 def client():
@@ -28,6 +30,31 @@ def test_accounts_pages(client):
     login(client, "user_2")
     response = client.get("/accounts")
     assert response.status_code == 200
+
+
+def test_add_account(client):
+    TEST_LOGIN = "TEST_LOGIN"
+    TEST_PASSWORD = "TEST_PASS"
+
+    res = client.post(
+        "/account_add", data=dict(login=TEST_LOGIN, password=TEST_PASSWORD)
+    )
+    assert res.status_code == 302
+
+    login(client, "user_2")
+    res = client.post(
+        "/account_add",
+        data=dict(login=TEST_LOGIN, password=TEST_PASSWORD),
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+
+    account: Account = Account.query.all()[-1]
+
+    assert account.login == TEST_LOGIN
+    assert account.password == TEST_PASSWORD
+
+    assert f"{TEST_LOGIN}" in res.data.decode()
 
 
 # def test_login_and_logout(client):
