@@ -35,3 +35,11 @@ def account_add():
         form.password.data = gen_password()
 
     return render_template("account/add_account.html", form=form)
+
+
+@accounts_blueprint.route("/account_info/<int:account_id>")
+@login_required
+def account_info(account_id: int):
+    account: Account = Account.query.get(account_id)
+
+    return render_template("account/info_account.html", account=account)

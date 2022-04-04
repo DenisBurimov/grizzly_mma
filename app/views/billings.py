@@ -17,8 +17,6 @@ def billings_page():
 
 @billings_blueprint.route("/billing_add", methods=["GET", "POST"])
 def billing_add():
-    form = [
-        "Here Will Be A Form Here Will Be A Form Here Will Be A Form Here Will Be A Form"
-    ]
+    form = "Here Will Be A Form"
 
     return render_template("billing/add_billing.html", form=form)

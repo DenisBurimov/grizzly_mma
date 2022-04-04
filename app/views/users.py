@@ -11,7 +11,7 @@ users_blueprint = Blueprint("users", __name__)
 @login_required
 def users_page():
     if current_user.role != User.Role.admin:
-        return redirect(url_for("accounts.accounts_page"))
+        return redirect(url_for("users.users_page"))
     users = User.query.order_by(desc(User.id)).all()
 
     return render_template("users.html", users=users)

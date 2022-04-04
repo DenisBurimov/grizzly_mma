@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Add Billing</h2>
-  <p>{{form}}</p>
+  <main class="form-user">
+    <form action="{{ url_for('users.user_add') }}" method="post">
+      <h1 class="h3 mb-3">Add Billing</h1>
+
+      <div class="form-floating">
+        {{form}}
+
+      </div>
+
+    </form>
+  </main>
 {% endblock %}
