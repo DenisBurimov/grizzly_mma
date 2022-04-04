@@ -8,22 +8,20 @@
 <main class="d-flex justify-content-center">
   <form class="form-add account_info d-flex flex-column justify-content-between" action="{{ url_for('accounts.account_info', account_id=account.id) }}" method="post">
 
-    {{ form.hidden_tag() }}
-
     <h1 class="h3 my-3">Account Info</h1>
     <p class="text-muted mb-5">Created by <b>{{account.user.username}}</b> at {{account.created_at.strftime('%Y-%m-%d, %H:%M')}}</p>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
-      <label class="fs-5 mt-2 w-25">Login: </label>
-      <input id="login_input" class="form-control w-75" type="text" value="{{account.login}}">
+      <label class="fs-6 mt-2 w-25">Login: </label>
+      <input id="login_input" class="form-control w-50" type="text" value="{{account.login}}">
+      <div id="copy_login" class="btn btn-lg btn-primary ms-3 mb-5 copy_button"><span data-feather="copy"></span></div>
     </div>
-    <div id="copy_login" class="btn btn-lg btn-primary mt-1 mb-5 w-100">Copy Login</div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
-      <label class="fs-5 mt-2 w-25">Password: </label>
-      <input id="password_input" class="form-control w-75" type="text" value="{{account.password}}">
+      <label class="fs-6 mt-2 w-25">Password: </label>
+      <input id="password_input" class="form-control w-50" type="text" value="{{account.password}}">
+      <div id="copy_password" class="btn btn-lg btn-primary ms-3 mb-5 copy_button"><span data-feather="copy"></span></div>
     </div>
-    <div id="copy_password" class="btn btn-lg btn-primary mt-1 mb-5 w-100">Copy Login</div>
 
   </form>
 </main>
