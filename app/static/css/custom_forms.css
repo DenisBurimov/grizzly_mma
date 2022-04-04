@@ -1,0 +1,13 @@
+body {
+  background: rgb(251, 251, 251);
+}
+
+#sidebarMenu {display: none! important;}
+
+.form-add {
+  width: 550px;
+}
+
+.hit-input {
+  border: 1px solid lightgrey;
+}
