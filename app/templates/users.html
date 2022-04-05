@@ -2,11 +2,14 @@
 
 {% block links %}
   <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet" media="screen">
+  <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
 
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
   <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
+
+  {{query}}
 
   <div class="d-flex justify-content-between pt-3">
     <h3 class="mt-1">Users</h3>
@@ -37,4 +40,8 @@
     </table>
   </div>
 </main>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/search.js') }}" type="text/javascript"></script>
 {% endblock %}
