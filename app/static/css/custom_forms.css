@@ -1,0 +1,26 @@
+body {
+  background: rgb(251, 251, 251);
+}
+
+#sidebarMenu {display: none! important;}
+
+.form-add {
+  width: 550px;
+}
+
+.account_info {
+  width: 350px;
+}
+
+#login_input, #password_input {height: 45px;}
+
+.hit-input {
+  border: 1px solid lightgrey;
+}
+
+.copy_button {
+  border-radius: 5px !important;
+  margin-bottom: 5px  !important;
+  padding-top: 3px  !important;
+  padding-bottom: 10px  !important;
+}

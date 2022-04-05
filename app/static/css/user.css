@@ -40,3 +40,14 @@
   text-decoration: none;
   border: 1px solid red;
 }
+
+.delete_button:hover {
+  background: rgb(251, 38, 38);
+  color: white;
+  transition: 0.5s;
+}
+
+.add_button:hover {
+  background: black;
+  border: 1px solid black;
+}

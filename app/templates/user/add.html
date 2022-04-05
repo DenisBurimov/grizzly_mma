@@ -1,34 +1,39 @@
 {% extends 'base.html' %}
 
 {% block links %}
-    <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<main class="form-user">
-  <form action="{{ url_for('users.user_add') }}" method="post">
+<main class="d-flex justify-content-center">
+  <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('users.user_add') }}" method="post">
+
     {{ form.hidden_tag() }}
-    <h1 class="h3 mb-3 fw-normal">New User</h1>
 
-    <div class="form-floating">
-      {{form.username(type="username", class='form-control')}}
-      {{form.username.label}}
+    <h1 class="h3 my-3">New User</h1>
 
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">{{form.username.label}}: </p>
+      {{form.username(type="username", class='hit-input w-75')}}
     </div>
-    <div class="form-floating">
-      {{form.password(type="password", class='form-control')}}
-      {{form.password.label}}
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="fme-3 pt-3">{{form.password.label}}: </p>
+      {{form.password(type="password", class='hit-input w-75')}}
     </div>
-    <div class="form-floating">
-        {{form.password_confirm(type="password", class='form-control')}}
-        {{form.password_confirm.label}}
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">{{form.password_confirm.label}}: </p>
+      {{form.password_confirm(type="password", class='hit-input w-75')}}
     </div>
-    <div class="form-floating">
-        {{form.role(type="role", class='form-control')}}
-        {{form.role.label}}
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">{{form.role.label}}: </p>
+      {{form.role(type="role", class='hit-input w-75')}}
     </div>
 
     {{form.submit(class='w-100 btn btn-lg btn-primary')}}
   </form>
+
 </main>
 {% endblock %}
