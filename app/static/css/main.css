@@ -130,3 +130,7 @@ body {
 .invisible {
   display: none!important;
 }
+
+.page_button {
+  border-radius: 5px!important;
+}
