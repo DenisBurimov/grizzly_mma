@@ -64,10 +64,9 @@ def user_update(user_id: int):
     return render_template("user/update.html", form=form)
 
 
-@users_blueprint.route("/search/<query>")
+@users_blueprint.route("/user_search/<query>")
 @login_required
 def search(query):
-    # if query.isalnum():
     users = User.query.filter(User.username.like(f"%{query}%"))
 
     return render_template(

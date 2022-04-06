@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, url_for, Blueprint
 from flask_login import current_user, login_required
-from app.models import User, Account, Billing
+from app.models import User, Account
 from app.forms import AccountForm
 from app.controllers import gen_login, gen_password
 
@@ -48,19 +48,10 @@ def account_info(account_id: int):
 @accounts_blueprint.route("/account_search/<query>")
 @login_required
 def search(query):
-    # if query.isalnum():
-    users = User.query.filter(User.username.like(f"%{query}%"))
-    # accounts = Account.query.all()
     accounts = Account.query.filter(Account.login.like(f"%{query}%"))
-    accounts += Account.query.filter(
-        Account.user.username == User.username.like(f"%{query}%")
-    )
-    billings = Billing.query.all()
-    # billings = Billing.query.filter(Billing.reseller.like(f"%{query}%"))
+    # accounts = Account.query.filter(Account.user_id == current_user.id)
 
     return render_template(
         "accounts.html",
-        users=users,
         accounts=accounts,
-        billings=billings,
     )

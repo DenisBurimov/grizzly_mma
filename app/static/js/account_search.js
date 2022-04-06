@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if (isAlphaNumeric(search_field.value)) {
             event.preventDefault();
             search_button.click();
-            window.location = "/search/" + search_field.value;
+            window.location = "/account_search/" + search_field.value;
           } else {
             alert("Would be great if you type letters and numbers ;)");
           };
