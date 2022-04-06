@@ -103,3 +103,30 @@ body {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
 }
+
+.hit_flash {
+  color: white;
+  font-weight: 500;
+}
+
+.hit_flash button {
+  height: 20px;
+  width: 20px;
+  background: transparent;
+  color: white;
+  font-weight: 500;
+  border: 2px solid white;
+  border-radius: 3px!important;
+}
+
+.hit_flash button:hover {
+  background-color: lightgray;
+}
+
+.hit_flash button:active {
+  background-color: white;
+}
+
+.invisible {
+  display: none!important;
+}

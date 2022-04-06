@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, url_for, Blueprint
 from flask_login import current_user, login_required
-from app.models import Account, User
+from app.models import User, Account
 from app.forms import AccountForm
 from app.controllers import gen_login, gen_password
 
@@ -43,3 +43,15 @@ def account_info(account_id: int):
     account: Account = Account.query.get(account_id)
 
     return render_template("account/info_account.html", account=account)
+
+
+@accounts_blueprint.route("/account_search/<query>")
+@login_required
+def search(query):
+    accounts = Account.query.filter(Account.login.like(f"%{query}%"))
+    # accounts = Account.query.filter(Account.user_id == current_user.id)
+
+    return render_template(
+        "accounts.html",
+        accounts=accounts,
+    )

@@ -2,6 +2,7 @@
 
 {% block links %}
     <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
 
 {% block content %}
@@ -29,4 +30,5 @@
 
 {% block scripts %}
   <script src="{{ url_for('static', filename='js/account_buttons.js') }}" type="text/javascript"></script>
+  <script src="{{ url_for('static', filename='js/search.js') }}" type="text/javascript"></script>
 {% endblock %}

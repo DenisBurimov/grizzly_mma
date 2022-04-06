@@ -1,0 +1,10 @@
+#search_field {
+    width: 93%!important;
+}
+
+#search_button {
+    width: 7%!important;
+    background: #383b40!important;
+    border: 0;
+    color: gray;
+  }
