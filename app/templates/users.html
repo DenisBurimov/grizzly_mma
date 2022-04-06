@@ -38,6 +38,19 @@
       </tbody>
     </table>
     <div class="pagination d-flex justify-content-center">
+      {% if query %}
+        {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+            {% if page_num %}
+                {% if users.page == page_num %}
+                    <a class="page_button btn btn-dark mb-4 mx-1" href="{{ url_for('users.user_search', query=query, page=page_num) }}">{{ page_num }}</a>
+                {% else %}
+                    <a class="page_button btn btn-outline-dark mb-4 mx-1" href="{{ url_for('users.user_search', query=query, page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                <a class="page_button btn btn-outline-dark mb-4 mx-1" href="#">...</a>
+            {% endif %}
+        {% endfor %}
+      {% else %}
         {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
             {% if page_num %}
                 {% if users.page == page_num %}
@@ -49,6 +62,7 @@
                 <a class="page_button btn btn-outline-dark mb-4 mx-1" href="#">...</a>
             {% endif %}
         {% endfor %}
+      {% endif %}
     </div>
   </div>
 </main>

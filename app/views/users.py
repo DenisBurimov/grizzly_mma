@@ -67,10 +67,13 @@ def user_update(user_id: int):
 
 @users_blueprint.route("/user_search/<query>")
 @login_required
-def search(query):
-    users = User.query.filter(User.username.like(f"%{query}%"))
+def user_search(query):
+    page = request.args.get("page", 1, type=int)
+    users = User.query.order_by(desc(User.id)).filter(User.username.like(f"%{query}%")).paginate(page=page, per_page=20)
+    # query = "/user_search/" + query
 
     return render_template(
         "users.html",
         users=users,
+        query=query,
     )
