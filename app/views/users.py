@@ -69,6 +69,7 @@ def user_update(user_id: int):
 @login_required
 def user_search(query):
     page = request.args.get("page", 1, type=int)
+    # TODO: per_pade to config.py
     users = User.query.order_by(desc(User.id)).filter(User.username.like(f"%{query}%")).paginate(page=page, per_page=20)
 
     return render_template(
