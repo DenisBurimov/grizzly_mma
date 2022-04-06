@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container tfa-container">
+  <div class="tfa-card">
+    <div class="tfa-card-header">
+      <h4 class="tfa-header-title">OTP Verification</h4>
+    </div>
+    <div class="tfa-card-body">
+      <div class="tfa-row tfa-mx-auto">
+        <p>
+          Open your Google Authenticator and enter the 6-digit OTP code below:
+        </p>
+      </div>
+      <form class="form" role="form" method="post">
+        {{ form.csrf_token }}
+        <div class="tfa-form-verify">
+          {{form.token(class='tfa-form-control tfa-input')}}
+        </div>
+        <div class="tfa-row">
+          <div class="tfa-btn-container edit__submit-btn">
+            {{form.submit(class='edit__submit')}}
+          </div>
+        </div>
+        <p class="tfa-text tfa-mx-auto">
+          <small>
+            Don't have access to the OTP application? Contact administrator and
+            request new OTP.<br />
+            <a class="tfa-link" href="{{url_for('login.login')}}"
+              >Go back to login page</a
+            >
+          </small>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

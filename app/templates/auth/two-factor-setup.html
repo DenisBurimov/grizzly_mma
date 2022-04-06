@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container tfa-container">
+    <div class="tfa-card">
+        <div class="tfa-row">
+            <div class="tfa-mx-auto tfa-text-container">
+                <p class="tfa-mx-auto tfa-text-center">Please scan QR-code with Google Authenticator app</p>
+                <div class="tfa-mx-auto tfa-mb-rem tfa-img-container">
+                    <a href="{{ user.get_totp_uri() }}"><img id="qrcode" src="{{ url_for('auth.qrcode') }}"></a>
+                </div>
+                <div class="tfa-mx-auto tfa-text-center tfa-mb-rem-3">
+                    <h5>OR</h5>
+                    <p>If you are using your mobile device to log in, you can click on the QR-code to automatically add it to Google Authenticator.</p>
+                </div>
+                <div>
+                    <form method="POST">
+                        <div class="form-group tfa-mb-rem-3">
+                            {{form.token(class='tfa-form-control tfa-input tfa-mx-auto')}}
+                            {{ form.csrf_token }}
+                        </div>
+                        <div class="tfa-row">
+                            <div class="tfa-btn-container edit__submit-btn">
+                              {{form.submit(class='edit__submit')}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
