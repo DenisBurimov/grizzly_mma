@@ -53,7 +53,11 @@ def account_info(account_id: int):
 @login_required
 def account_search(query):
     page = request.args.get("page", 1, type=int)
-    accounts = Account.query.order_by(desc(Account.id)).filter(Account.login.like(f"%{query}%")).paginate(page=page, per_page=20)
+    accounts = (
+        Account.query.order_by(desc(Account.id))
+        .filter(Account.login.like(f"%{query}%"))
+        .paginate(page=page, per_page=20)
+    )
     # accounts = Account.query.filter(Account.user_id == current_user.id)
 
     return render_template(
