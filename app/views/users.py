@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, redirect, request, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import desc
-from app.models.user import User
+from app.models import User
 from app.forms import UserForm
 
 users_blueprint = Blueprint("users", __name__)
@@ -62,3 +62,14 @@ def user_update(user_id: int):
         form.role.data = user.role
 
     return render_template("user/update.html", form=form)
+
+
+@users_blueprint.route("/user_search/<query>")
+@login_required
+def search(query):
+    users = User.query.filter(User.username.like(f"%{query}%"))
+
+    return render_template(
+        "users.html",
+        users=users,
+    )
