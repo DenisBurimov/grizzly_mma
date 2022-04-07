@@ -47,6 +47,14 @@ def test_account_search(client):
     assert b"27" in response.data
 
 
+def test_account_pagination(client):
+    login(client, "admin", "admin")
+    response = client.get("/account_search/8?page=2")
+    assert b"8" in response.data
+    response = client.get("/account_search/user_?page=7")
+    assert b"user" in response.data
+
+
 def test_add_account(client):
     TEST_LOGIN = "TEST_LOGIN"
     TEST_PASSWORD = "TEST_PASS"
