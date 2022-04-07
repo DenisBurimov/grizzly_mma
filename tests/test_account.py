@@ -1,4 +1,3 @@
-from http.client import responses
 import pytest
 
 from app import db, create_app
