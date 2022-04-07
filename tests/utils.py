@@ -13,7 +13,7 @@ def register(username, password=TEST_PASS):
     return user.id
 
 
-def login(client, user_name, password="password"):
+def login(client, user_name, password="pass"):
     secret = b"MFRGGZDFMZTWQ2LK"
     with timecop.freeze(time.time()):
         user = User.query.filter(User.username == user_name).first()
@@ -29,7 +29,7 @@ def login(client, user_name, password="password"):
         assert hotp == totp
         res = client.post(
             "/login",
-            data=dict(user_name=user_name, password=password),
+            data=dict(username=user_name, password=password),
             follow_redirects=True,
         )
         assert res.status_code == 200
