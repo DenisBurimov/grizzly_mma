@@ -11,7 +11,6 @@ from flask import (
 )
 from flask_login import login_user
 
-from app import db
 from app.models import User
 from app.forms import TwoFactorForm
 from app.logger import log
