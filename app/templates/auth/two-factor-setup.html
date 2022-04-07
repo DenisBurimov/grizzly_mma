@@ -5,33 +5,27 @@
 {% endblock %}
 
 {% block content %}
-<div class="container tfa-container">
-    <div class="tfa-card">
-        <div class="tfa-row">
-            <div class="tfa-mx-auto tfa-text-container">
-                <p class="tfa-mx-auto tfa-text-center">Please scan QR-code with Google Authenticator app</p>
-                <div class="tfa-mx-auto tfa-mb-rem tfa-img-container">
-                    <a href="{{ user.get_totp_uri() }}"><img id="qrcode" src="{{ url_for('auth.qrcode') }}"></a>
-                </div>
-                <div class="tfa-mx-auto tfa-text-center tfa-mb-rem-3">
-                    <h5>OR</h5>
-                    <p>If you are using your mobile device to log in, you can click on the QR-code to automatically add it to Google Authenticator.</p>
-                </div>
-                <div>
-                    <form method="POST">
-                        <div class="form-group tfa-mb-rem-3">
-                            {{form.token(class='tfa-form-control tfa-input tfa-mx-auto')}}
-                            {{ form.csrf_token }}
-                        </div>
-                        <div class="tfa-row">
-                            <div class="tfa-btn-container edit__submit-btn">
-                              {{form.submit(class='edit__submit')}}
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <main class="d-flex justify-content-center">
+        <div class="w-50">
+            <p class="h5 my-5" style="text-align: center;">Please scan QR-code with Google Authenticator app</p>
+            <div style="text-align: center;">
+                <a href="{{ user.get_totp_uri() }}"><img id="qrcode" src="{{ url_for('auth.qrcode') }}"></a>
+            </div>
+            <div class="d-flex flex-column justify-content-center">
+                <h5 class="my-3" style="text-align: center;">OR</h5>
+            </div>
+            <div>
+                <p style="text-align: center;">If you are using your mobile device to log in, you can click on the QR-code to automatically add it to Google Authenticator.</p>
+                <form class="d-flex justify-content-center" method="POST">
+
+                    {{ form.hidden_tag() }}
+
+                    <div class="hit-fieldset d-flex justify-content-between pb-2 w-75">
+                        {{form.token(class='hit-input w-75 px-2')}}
+                        {{form.submit(class='w-25 btn btn-primary')}}
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-</div>
+    </main>
 {% endblock %}

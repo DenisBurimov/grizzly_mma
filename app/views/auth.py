@@ -125,7 +125,7 @@ def otp_set_up_verification():
         del session["id"]
         # update otp status in users DB
         user.otp_active = True
-        db.session.commit()
+        user.save()
         flash(
             "Two-Factor Authentication is set up successfully. You can now log in.",
             "success",
