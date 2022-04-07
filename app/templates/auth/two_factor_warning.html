@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <main class="d-flex justify-content-center">
+        <div class="w-50">
+            <p class="h2 my-5" style="text-align: center;">2-Step Verification Setup</p>
+            <p>To set up two-factor authentication, Google Authenticator applicaion is required. You can download it using following links:</p>
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <a href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' width="200" height="75" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+                <a href='https://apps.apple.com/us/app/google-authenticator/id388497605'><img alt='Get it on App Store' height="51" src="{{ url_for('static', filename='img/apple_logo.svg') }}"/></a>
+            </div>
+            <div>
+                <h5>Follow this instructions to complete the set up</h5>
+                <ol>
+                    <li>Open Google Authenticator application on your mobile device</li>
+                    <li>Press “ + “ button at the top-right corner of the screen</li>
+                    <li>Select “Scan barcode” option from the pop-up menu</li>
+                    <li>Scan QR-code which will appear on the next page with your mobile device</li>
+                    <li>Verify your username under the 6-digit OTP code generated in Google Authenticator application</li>
+                </ol>
+            </div>
+            <div>
+                <p><strong>SECURITY ALERT :</strong>The following page contains sensitive information. Make sure you are not sharing your screen to anybody while setting up two-factor authentication.</p>
+            </div>
+            <div class="edit__group btn-container">
+                <div class="d-flex justify-content-center">
+                  <a
+                    type="button"
+                    href="{{ url_for('auth.two_factor_setup') }}"
+                    class="text-decoration-none fw-500"
+                    style="font-weight: 700;"
+                    >Show me QR code</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

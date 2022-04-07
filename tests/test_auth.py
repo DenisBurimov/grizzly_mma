@@ -1,7 +1,8 @@
 import pytest
 
 from app import db, create_app
-from tests.utils import register, login, logout
+from app.controllers import init_db
+from tests.utils import login, logout
 
 
 @pytest.fixture
@@ -14,6 +15,7 @@ def client():
         app_ctx.push()
         db.drop_all()
         db.create_all()
+        init_db()
         yield client
         db.session.remove()
         db.drop_all()
@@ -31,15 +33,11 @@ def test_login_and_logout(client):
     # Access to logout view before login should fail.
     response = logout(client)
     assert b"Please log in to access this page." in response.data
-    register("sam")
-    response = login(client, "sam")
-    assert b"You are successfuly logged in!" in response.data
+    response = login(client, "admin", "admin")
+    assert b"Users" in response.data
     # Should successfully logout the currently logged in user.
-    # response = logout(client)
-    # assert b"You were logged out." in response.data
-    # Incorrect login credentials should fail.
-    response = login(client, "sam", "wrongpassword")
-    assert b"Wrong username or password." in response.data
+    response = logout(client)
+    assert b"Please log in to access this page." in response.data
     # Correct credentials should login
-    response = login(client, "sam")
+    response = login(client, "admin", "admin")
     assert b"You are successfuly logged in!" in response.data

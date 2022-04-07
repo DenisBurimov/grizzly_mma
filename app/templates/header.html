@@ -14,11 +14,11 @@
       <div class="navbar-nav">
         {% if current_user.is_authenticated %}
         <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="{{ url_for('auth.logout') }}">Sign out</a>
+            <a class="nav-link px-3" href="{{ url_for('login.logout') }}">Sign out</a>
         </div>
         {% else %}
         <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="{{ url_for('auth.login') }}">Login</a>
+            <a class="nav-link px-3" href="{{ url_for('login.login') }}">Login</a>
         </div>
         {% endif %}
     </div>

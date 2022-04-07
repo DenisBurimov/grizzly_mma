@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -26,6 +27,8 @@ class BaseConfig(object):
         "ALPHABET_UP_DIGITS", "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
     )
 
+    AUTH_OTP_ENABLED = json.loads(os.environ.get("AUTH_OTP_ENABLED", "true"))
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
@@ -40,6 +43,8 @@ class DevelopmentConfig(BaseConfig):
         "DEVEL_DATABASE_URL",
         "sqlite:///" + os.path.join(BASE_DIR, "database-devel.sqlite3"),
     )
+
+    # AUTH_OTP_ENABLED = False
 
 
 class TestingConfig(BaseConfig):

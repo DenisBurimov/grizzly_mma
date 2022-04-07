@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="d-flex justify-content-center">
+  <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('auth.otp_verify') }}" method="post">
+
+    {{ form.hidden_tag() }}
+
+    <h1 class="h3 mb-3 mt-3">OTP Verification</h1>
+    <p>Open your Google Authenticator and enter the 6-digit OTP code below:</p>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      {{form.token(class='hit-input w-75 px-2')}}
+      {{form.submit(class='w-25 btn btn-lg btn-primary')}}
+    </div>
+
+    <p>
+      <small class="text-muted">
+        Don't have access to the OTP application? Contact administrator and request new OTP.<br/>
+        <a class="text-decoration-none fw-700" href="{{url_for('login.login')}}">Go back to login page</a>
+      </small>
+    </p>
+  </form>
+</main>
+
+{% endblock %}

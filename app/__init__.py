@@ -18,6 +18,7 @@ def create_app(environment="development"):
     from app.views import (
         main_blueprint,
         auth_blueprint,
+        login_blueprint,
         accounts_blueprint,
         users_blueprint,
         billings_blueprint,
@@ -44,6 +45,7 @@ def create_app(environment="development"):
     login_manager.init_app(app)
 
     # Register blueprints.
+    app.register_blueprint(login_blueprint)
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(accounts_blueprint)
@@ -55,7 +57,7 @@ def create_app(environment="development"):
     def get_user(id):
         return User.query.get(int(id))
 
-    login_manager.login_view = "auth.login"
+    login_manager.login_view = "login.login"
     login_manager.login_message_category = "info"
     login_manager.anonymous_user = AnonymousUser
 
