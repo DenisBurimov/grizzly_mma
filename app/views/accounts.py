@@ -11,13 +11,13 @@ accounts_blueprint = Blueprint("accounts", __name__)
 @accounts_blueprint.route("/accounts")
 @login_required
 def accounts_page():
-    query = Account.query
+    page_data = Account.query
     if current_user.role != User.Role.admin:
-        query = query.filter(Account.user_id == current_user.id)
+        page_data = page_data.filter(Account.user_id == current_user.id)
     page = request.args.get("page", 1, type=int)
-    query = query.order_by(desc(Account.id)).paginate(page=page, per_page=20)
+    page_data = page_data.order_by(desc(Account.id)).paginate(page=page, per_page=20)
 
-    return render_template("accounts.html", accounts=query)
+    return render_template("accounts.html", accounts=page_data)
 
 
 @accounts_blueprint.route("/account_add", methods=["GET", "POST"])
