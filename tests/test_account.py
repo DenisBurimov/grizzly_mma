@@ -53,6 +53,8 @@ def test_account_pagination(client):
     assert b"8" in response.data
     response = client.get("/account_search/user_?page=7")
     assert b"user" in response.data
+    response = client.get("/accounts?page=2")
+    assert b"Accounts" in response.data
 
 
 def test_add_account(client):
