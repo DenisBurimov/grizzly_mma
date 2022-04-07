@@ -12,7 +12,8 @@ users_blueprint = Blueprint("users", __name__)
 def users_page():
     if current_user.role != User.Role.admin:
         return redirect(url_for("users.users_page"))
-    users = User.query.order_by(desc(User.id)).all()
+    page = request.args.get("page", 1, type=int)
+    users = User.query.order_by(desc(User.id)).paginate(page=page, per_page=20)
 
     return render_template("users.html", users=users)
 
@@ -66,10 +67,13 @@ def user_update(user_id: int):
 
 @users_blueprint.route("/user_search/<query>")
 @login_required
-def search(query):
-    users = User.query.filter(User.username.like(f"%{query}%"))
+def user_search(query):
+    page = request.args.get("page", 1, type=int)
+    # TODO: per_pade to config.py
+    users = User.query.order_by(desc(User.id)).filter(User.username.like(f"%{query}%")).paginate(page=page, per_page=20)
 
     return render_template(
         "users.html",
         users=users,
+        query=query,
     )
