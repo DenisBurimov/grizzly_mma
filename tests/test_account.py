@@ -32,6 +32,30 @@ def test_accounts_pages(client):
     assert response.status_code == 200
 
 
+def test_account_info(client):
+    login(client, "user_2")
+    response = client.get("/account_info/3")
+    assert response.status_code == 200
+    response = client.get("/account_info/3")
+    assert b"Account Info" in response.data
+
+
+def test_account_search(client):
+    login(client, "admin", "admin")
+    response = client.get("/account_search/27")
+    assert b"27" in response.data
+
+
+def test_account_pagination(client):
+    login(client, "admin", "admin")
+    response = client.get("/account_search/8?page=2")
+    assert b"8" in response.data
+    response = client.get("/account_search/user_?page=7")
+    assert b"user" in response.data
+    response = client.get("/accounts?page=2")
+    assert b"Accounts" in response.data
+
+
 def test_add_account(client):
     TEST_LOGIN = "TEST_LOGIN"
     TEST_PASSWORD = "TEST_PASS"
@@ -55,21 +79,3 @@ def test_add_account(client):
     assert account.password == TEST_PASSWORD
 
     assert f"{TEST_LOGIN}" in res.data.decode()
-
-
-# def test_login_and_logout(client):
-#     # Access to logout view before login should fail.
-#     response = logout(client)
-#     assert b"Please log in to access this page." in response.data
-#     register("sam")
-#     response = login(client, "sam")
-#     assert b"Login successful." in response.data
-#     # Should successfully logout the currently logged in user.
-#     response = logout(client)
-#     assert b"You were logged out." in response.data
-#     # Incorrect login credentials should fail.
-#     response = login(client, "sam", "wrongpassword")
-#     assert b"Wrong user ID or password." in response.data
-#     # Correct credentials should login
-#     response = login(client, "sam")
-#     assert b"Login successful." in response.data

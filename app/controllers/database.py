@@ -4,7 +4,7 @@ from app import db
 from app.logger import log
 from .account import gen_login, gen_password
 
-TEST_USERS_NUMBER = 2
+TEST_USERS_NUMBER = 120
 TEST_ACCOUNTS_PER_USER = 2
 TEST_BILLINGS_PER_USER = 2
 TEST_PASS = "pass"
