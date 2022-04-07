@@ -6,7 +6,7 @@
 
 {% block content %}
 <main class="d-flex justify-content-center">
-  <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('accounts.account_add') }}" method="post">
+  <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('auth.otp_verify') }}" method="post">
 
     {{ form.hidden_tag() }}
 
