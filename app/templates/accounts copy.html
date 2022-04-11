@@ -39,7 +39,7 @@
   <div>
     {% if testing_query %}
     <p>testing_query</p>
-    {% for item in testing_query %}
+    {% for item in testing_query.items %}
       <p>{{item}}, {{item.user.username}}</p>
     {% endfor %}
     {% endif %}

@@ -72,11 +72,10 @@ def account_search(query):
     testing_query = (
         db.session.query(
             Account,
-        )
-        .join(User)
-        .filter(Account.login.like(f"%{query}%"))
+        ).join(User)
+        # .filter(Account.login.like(f"%{query}%"))
         .filter(User.username.like(f"%{query}%"))
-        .paginate(page=page, per_page=10)
+        # .paginate(page=page, per_page=10)
     )
 
     return render_template(
