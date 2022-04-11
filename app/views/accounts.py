@@ -62,21 +62,13 @@ def account_info(account_id: int):
 @login_required
 def account_search(query):
     page = request.args.get("page", 1, type=int)
-    if not query.isalpha():
-        accounts = (
-            Account.query.order_by(desc(Account.id))
-            .filter(Account.login.like(f"%{query}%"))
-            .paginate(page=page, per_page=PAGE_SIZE)
+    accounts = (
+        db.session.query(
+            Account,
         )
-
-    if accounts.total == 0:
-        accounts = (
-            db.session.query(
-                Account,
-            )
-            .join(User)
-            .filter(User.username.like(f"%{query}%"))
-            .paginate(page=page, per_page=PAGE_SIZE)
-        )
+        .join(User)
+        .filter(User.username.like(f"%{query}%") | Account.login.like(f"%{query}%"))
+        .paginate(page=page, per_page=PAGE_SIZE)
+    )
 
     return render_template("accounts.html", accounts=accounts, query=query)
