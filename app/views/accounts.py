@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, session, url_for, Blueprint
+from flask import render_template, redirect, request, url_for, Blueprint
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 from sqlalchemy.orm import sessionmaker
@@ -12,6 +12,8 @@ accounts_blueprint = Blueprint("accounts", __name__)
 Session = sessionmaker()
 sess = Session()
 
+PAGE_SIZE = 17
+
 
 @accounts_blueprint.route("/accounts")
 @login_required
@@ -20,7 +22,9 @@ def accounts_page():
     if current_user.role != User.Role.admin:
         page_data = page_data.filter(Account.user_id == current_user.id)
     page = request.args.get("page", 1, type=int)
-    page_data = page_data.order_by(desc(Account.id)).paginate(page=page, per_page=20)
+    page_data = page_data.order_by(desc(Account.id)).paginate(
+        page=page, per_page=PAGE_SIZE
+    )
 
     return render_template("accounts.html", accounts=page_data)
 
@@ -58,29 +62,21 @@ def account_info(account_id: int):
 @login_required
 def account_search(query):
     page = request.args.get("page", 1, type=int)
-    accounts = (
-        Account.query.order_by(desc(Account.id))
-        .filter(Account.login.like(f"%{query}%"))
-        .paginate(page=page, per_page=20)
-    )
+    if not query.isalpha():
+        accounts = (
+            Account.query.order_by(desc(Account.id))
+            .filter(Account.login.like(f"%{query}%"))
+            .paginate(page=page, per_page=PAGE_SIZE)
+        )
 
-    # testing_query = db.session.execute(
-    #     f"select login, username from users join accounts on users.id = accounts.user_id where username like '%{query}%'"
-    # )
+    if accounts.total == 0:
+        accounts = (
+            db.session.query(
+                Account,
+            )
+            .join(User)
+            .filter(User.username.like(f"%{query}%"))
+            .paginate(page=page, per_page=PAGE_SIZE)
+        )
 
-    #  where username like '%{query}%'
-    testing_query = (
-        db.session.query(
-            Account,
-        ).join(User)
-        # .filter(Account.login.like(f"%{query}%"))
-        .filter(User.username.like(f"%{query}%"))
-        # .paginate(page=page, per_page=10)
-    )
-
-    return render_template(
-        "accounts.html",
-        accounts=accounts,
-        query=query,
-        testing_query=testing_query,
-    )
+    return render_template("accounts.html", accounts=accounts, query=query)
