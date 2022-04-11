@@ -36,6 +36,13 @@
     </table>
   </div>
 
+  <div>
+    <p>testing_query</p>
+    {% for item in testing_query.items %}
+      <p>{{item}}</p>
+    {% endfor %}
+  </div>
+
   <div class="pagination d-flex justify-content-center">
     {% if query %}
       {% for page_num in accounts.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}

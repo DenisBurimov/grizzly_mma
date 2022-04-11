@@ -1,11 +1,16 @@
-from flask import render_template, redirect, request, url_for, Blueprint
+from flask import render_template, redirect, request, session, url_for, Blueprint
 from flask_login import current_user, login_required
 from sqlalchemy import desc
+from sqlalchemy.orm import sessionmaker
 from app.models import User, Account
 from app.forms import AccountForm
 from app.controllers import gen_login, gen_password
+from app import db
 
 accounts_blueprint = Blueprint("accounts", __name__)
+
+Session = sessionmaker()
+sess = Session()
 
 
 @accounts_blueprint.route("/accounts")
@@ -58,10 +63,25 @@ def account_search(query):
         .filter(Account.login.like(f"%{query}%"))
         .paginate(page=page, per_page=20)
     )
-    # accounts = Account.query.filter(Account.user_id == current_user.id)
+
+    # testing_query = db.session.execute(
+    #     f"select login, username from users join accounts on users.id = accounts.user_id where username like '%{query}%'"
+    # )
+
+    #  where username like '%{query}%'
+    testing_query = (
+        db.session.query(
+            Account,
+        )
+        .join(User)
+        .filter(Account.login.like(f"%{query}%"))
+        .filter(User.username.like(f"%{query}%"))
+        .paginate(page=page, per_page=10)
+    )
 
     return render_template(
         "accounts.html",
         accounts=accounts,
         query=query,
+        testing_query=testing_query,
     )
