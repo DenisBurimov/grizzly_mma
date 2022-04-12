@@ -10,7 +10,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 class BaseConfig(object):
     """Base configuration."""
 
-    APP_NAME = "Hit Portal Local"
+    APP_NAME = "Wiper Portal"
     DEBUG_TB_ENABLED = False
     SECRET_KEY = os.environ.get(
         "SECRET_KEY", "Ensure you set a secret key, this is important!"

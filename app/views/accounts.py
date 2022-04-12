@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, Blueprint
+from flask import current_app, render_template, redirect, request, url_for, Blueprint
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 from app.models import User, Account
@@ -7,8 +7,6 @@ from app.controllers import gen_login, gen_password
 from app import db
 
 accounts_blueprint = Blueprint("accounts", __name__)
-
-PAGE_SIZE = 17
 
 
 @accounts_blueprint.route("/accounts")
@@ -19,7 +17,7 @@ def accounts_page():
         page_data = page_data.filter(Account.user_id == current_user.id)
     page = request.args.get("page", 1, type=int)
     page_data = page_data.order_by(desc(Account.id)).paginate(
-        page=page, per_page=PAGE_SIZE
+        page=page, per_page=current_app.config["PAGE_SIZE"]
     )
 
     return render_template("accounts.html", accounts=page_data)
@@ -64,11 +62,11 @@ def account_search(query):
         )
         .join(User)
         .filter(User.username.like(f"%{query}%") | Account.login.like(f"%{query}%"))
-    )
+    ).paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
 
     if current_user.role != User.Role.admin:
         accounts = accounts.filter(Account.user_id == current_user.id).paginate(
-            page=page, per_page=PAGE_SIZE
+            page=page, per_page=current_app.config["PAGE_SIZE"]
         )
 
     return render_template("accounts.html", accounts=accounts, query=query)

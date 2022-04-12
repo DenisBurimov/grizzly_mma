@@ -1,12 +1,10 @@
-from flask import render_template, Blueprint, redirect, request, url_for
+from flask import current_app, render_template, Blueprint, redirect, request, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.models import User
 from app.forms import UserForm
 
 users_blueprint = Blueprint("users", __name__)
-
-PAGE_SIZE = 17
 
 
 @users_blueprint.route("/users")
@@ -15,7 +13,9 @@ def users_page():
     if current_user.role != User.Role.admin:
         return redirect(url_for("users.users_page"))
     page = request.args.get("page", 1, type=int)
-    users = User.query.order_by(desc(User.id)).paginate(page=page, per_page=PAGE_SIZE)
+    users = User.query.order_by(desc(User.id)).paginate(
+        page=page, per_page=current_app.config["PAGE_SIZE"]
+    )
 
     return render_template("users.html", users=users)
 
@@ -71,11 +71,10 @@ def user_update(user_id: int):
 @login_required
 def user_search(query):
     page = request.args.get("page", 1, type=int)
-    # TODO: per_pade to config.py
     users = (
         User.query.order_by(desc(User.id))
         .filter(User.username.like(f"%{query}%"))
-        .paginate(page=page, per_page=PAGE_SIZE)
+        .paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
     )
 
     return render_template(
