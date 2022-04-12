@@ -1,16 +1,12 @@
 from flask import render_template, redirect, request, url_for, Blueprint
 from flask_login import current_user, login_required
 from sqlalchemy import desc
-from sqlalchemy.orm import sessionmaker
 from app.models import User, Account
 from app.forms import AccountForm
 from app.controllers import gen_login, gen_password
 from app import db
 
 accounts_blueprint = Blueprint("accounts", __name__)
-
-Session = sessionmaker()
-sess = Session()
 
 PAGE_SIZE = 17
 
@@ -68,7 +64,11 @@ def account_search(query):
         )
         .join(User)
         .filter(User.username.like(f"%{query}%") | Account.login.like(f"%{query}%"))
-        .paginate(page=page, per_page=PAGE_SIZE)
     )
+
+    if current_user.role != User.Role.admin:
+        accounts = accounts.filter(Account.user_id == current_user.id).paginate(
+            page=page, per_page=PAGE_SIZE
+        )
 
     return render_template("accounts.html", accounts=accounts, query=query)

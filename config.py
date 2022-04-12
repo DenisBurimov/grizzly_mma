@@ -2,6 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -9,7 +10,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 class BaseConfig(object):
     """Base configuration."""
 
-    APP_NAME = "Hit Portal"
+    APP_NAME = "Hit Portal Local"
     DEBUG_TB_ENABLED = False
     SECRET_KEY = os.environ.get(
         "SECRET_KEY", "Ensure you set a secret key, this is important!"
@@ -28,6 +29,8 @@ class BaseConfig(object):
     )
 
     AUTH_OTP_ENABLED = json.loads(os.environ.get("AUTH_OTP_ENABLED", "true"))
+
+    PAGE_SIZE = int(os.environ.get("PAGE_SIZE", 17))
 
     @staticmethod
     def configure(app):
