@@ -26,6 +26,9 @@ def account_add():
     form = AccountForm()
 
     if form.validate_on_submit():
+        # ldap.add_user(form.login.data)
+        # ldap.change_password(form.login.data, form.password.data)
+        # mdm.sync()
         Account(
             user_id=current_user.id,
             login=form.login.data,
