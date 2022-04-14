@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import desc
 from app.models import User, Account
 from app.forms import AccountForm
-from app.controllers import gen_login, gen_password
+from app.controllers import gen_login, gen_password, LDAP, MDM
 
 accounts_blueprint = Blueprint("accounts", __name__)
 
@@ -24,11 +24,13 @@ def accounts_page():
 @login_required
 def account_add():
     form = AccountForm()
+    ldap_connection = LDAP()
+    mdm_connection = MDM()
 
     if form.validate_on_submit():
-        # ldap.add_user(form.login.data)
-        # ldap.change_password(form.login.data, form.password.data)
-        # mdm.sync()
+        ldap_connection.add_user(form.login.data)
+        ldap_connection.change_password(form.login.data, form.password.data)
+        mdm_connection.sync()
         Account(
             user_id=current_user.id,
             login=form.login.data,
