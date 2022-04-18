@@ -3,7 +3,8 @@
 {% block links %}
     <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
-    {% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}
 
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -22,6 +23,7 @@
           <th scope="col">Login</th>
           <th scope="col">Created By</th>
           <th scope="col">Created At</th>
+          <th scope="col">Enroll</th>
         </tr>
       </thead>
       <tbody>
@@ -31,6 +33,7 @@
             <td><a class="user_update" href="{{ url_for('accounts.account_info', account_id=account.id) }}">{{account.login}}</a></td>
             <td>{{account.user.username}}</td>
             <td>{{ account.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
+            <td><a href="{{ url_for('accounts.account_enroll', account_id=account.id) }}"><img src="static/img/qrcode-icon-16px.jpg" alt="qrcode"></a></td>
           </tr>
         {% endfor %}
       </tbody>

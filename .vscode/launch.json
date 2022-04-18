@@ -18,6 +18,21 @@
             ],
             "jinja": true,
             "justMyCode": true
+        },
+        {
+            "name": "shell",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "wsgi:app",
+                "FLASK_ENV": "development"
+            },
+            "args": [
+                "shell"
+            ],
+            "jinja": true,
+            "justMyCode": true
         }
     ]
 }

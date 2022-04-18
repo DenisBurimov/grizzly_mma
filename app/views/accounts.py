@@ -1,10 +1,19 @@
-from flask import current_app, render_template, redirect, request, url_for, Blueprint
+from flask import (
+    current_app,
+    render_template,
+    redirect,
+    request,
+    url_for,
+    Blueprint,
+    flash,
+)
 from flask_login import current_user, login_required
 from sqlalchemy import desc
+from app.logger import log
 from app.models import User, Account
 from app.forms import AccountForm
-from app.controllers import gen_login, gen_password
 from app import db
+from app.controllers import gen_login, gen_password, LDAP, MDM
 
 accounts_blueprint = Blueprint("accounts", __name__)
 
@@ -27,8 +36,22 @@ def accounts_page():
 @login_required
 def account_add():
     form = AccountForm()
+    ldap_connection = LDAP()
+    mdm_connection = MDM()
 
     if form.validate_on_submit():
+        if not ldap_connection.add_user(form.login.data):
+            flash("Something went wrong. Cannot create AD user", "danger")
+            log(log.ERROR, "Cannot create AD user: [%s]", form.login.data)
+            return render_template("account/add_account.html", form=form)
+
+        if not ldap_connection.change_password(form.login.data, form.password.data):
+            flash("Something went wrong. Cannot set the password", "danger")
+            log(log.ERROR, "Cannot set the password")
+            return render_template("account/add_account.html", form=form)
+
+        mdm_connection.sync()
+
         Account(
             user_id=current_user.id,
             login=form.login.data,

@@ -31,6 +31,18 @@ class BaseConfig(object):
     AUTH_OTP_ENABLED = json.loads(os.environ.get("AUTH_OTP_ENABLED", "true"))
 
     PAGE_SIZE = int(os.environ.get("PAGE_SIZE", 17))
+    LDAP_SERVER = os.environ.get("LDAP_SERVER", None)
+    LDAP_USER = os.environ.get("LDAP_USER", None)
+    LDAP_PASS = os.environ.get("LDAP_PASS", None)
+    AD_NAME = os.environ.get("AD_NAME", "DC=wiper,DC=tel")
+
+    REMOTE_SHELL_SERVER: str = os.environ.get("REMOTE_SHELL_SERVER", None)
+    REMOTE_SHELL_USER: str = os.environ.get("REMOTE_SHELL_USER", None)
+    REMOTE_SHELL_PASS: str = os.environ.get("REMOTE_SHELL_PASS", None)
+    REMOTE_SHELL_PORT: int = int(os.environ.get("REMOTE_SHELL_PORT", 0))
+
+    BASE_MDM_API_URL = os.environ.get("BASE_MDM_API_URL", None)
+    MDM_API_KEY = os.environ.get("MDM_API_KEY", None)
 
     @staticmethod
     def configure(app):
