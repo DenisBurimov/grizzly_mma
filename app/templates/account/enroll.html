@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block links %}
+  <link href="{{ url_for('static', filename='css/enroll.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="d-flex flex-column justify-content-center">
+  <div class="instructions w-50">
+    <p>{{account}}, {{account.user.username}}</p>
+    <h3 class="edit__label"><strong>Instructions for enrollment</strong></h3>
+    <ul class="edit__label list-instr">
+      <li>Please select Country/Language and press "Start"</li>
+      <li>Accept End User Agreement & Privacy Policy and press "Next"</li>
+      <li>Connect to the Wi-Fi network and press "Next"</li>
+      <li>Press "Don't copy" to skip the step "Copy apps & data"</li>
+      <li>
+        In the "Email or Phone" field enter: <strong>afw#memdm</strong> to sign in
+        and press "Next"
+      </li>
+      <li>Press "Install" and install MDM</li>
+      <li>Press "Set up" to set up a device</li>
+      <li>Press "Accept & continue"</li>
+      <li>Press "Next"</li>
+      <li>
+        Untoggle location and device maintenance features and press "Accept"
+      </li>
+      <li>Scan the QR code (allow using camera if needed)</li>
+      <img
+        class="qr-size"
+        src=""
+        alt=""
+      />
+      <li>
+        Enter MDM e-mail, MDM login, MDM password, and Select Domain KRYPTRLI and
+        press "Continue"
+      </li>
+      <li>
+        Select checkbox "I agree with terms & conditions" and press "Continue"
+      </li>
+      <li>Press "Continue"</li>
+      <li>Press "Agree" to accept Knox license</li>
+      <li>Press "Finish" to finish the enrollment</li>
+      <li>Set screen lock security. Select Password</li>
+      <li>Enter password and press "Continue"</li>
+      <li>Repeat password and press "OK"</li>
+      <li>Wait for ???KryptrChat to install (for 1 or 2 minutes)</li>
+      <li>Open ???kryptrVPN app</li>
+      <li>Press "ok" button</li>
+      <li>Go to mobile setting</li>
+      <li>Go to Connections</li>
+      <li>Then More connection settings</li>
+      <li>Then VPN</li>
+      <li>Press gear button at "???Kryptr VPN Client"</li>
+      <li>Turn on "Always-on VPN"</li>
+      <li>Launch ???KryptrChat application</li>
+      <li>Scan the second QR code (below) for the account activation</li>
+      <li>Set Up Password, confirm it, and press Save</li>
+      <li>Enter password and press "Login" to enter Wiper</li>
+    </ul>
+  </div>
+
+  {% for account in instructions %}
+  <div class="edit__container">
+    <div class="edit__container edit__rows">
+      <div class="qrcode-container edit__label">
+        <h3><strong>Account ... Activated</strong></h3>
+      </div>
+    </div>
+    <div class="edit__instruction">
+      <div class="edit__rows">
+        <div class="edit__label">
+          Reseller:
+        </div>
+      </div>
+      <!-- MDM Setup -->
+      <div class="edit__rows">
+        <div class="edit__label">
+          <h3><strong>MDM setup credentials:</strong></h3>
+        </div>
+      </div>
+
+      <div class="edit__rows_i">
+        <div class="edit__label">
+          MDM e-mail:
+        </div>
+      </div>
+      <div class="edit__rows_i">
+        <div class="edit__label">
+          MDM login:
+        </div>
+      </div>
+      <div class="edit__rows_i">
+        <div class="edit__label">
+          MDM password:
+        </div>
+      </div>
+      <div class="edit__rows_i">
+        <div class="edit__label">Domain: KRYPTRLI</div>
+      </div>
+      <hr />
+
+      <!-- Kryptr credentials -->
+      <div class="edit__rows">
+        <div class="edit__label"><strong>Kryptr credentials:</strong></div>
+      </div>
+
+      <div class="edit__rows_i">
+        <div class="edit__label">
+          ECC ID:
+        </div>
+      </div>
+      <hr />
+      <div class="edit__rows">
+        <div class="edit__label"><strong>SIM card number:</strong></div>
+      </div>
+      <div class="edit__rows_i">
+        <div class="edit__label">
+          {{ account['acc'].sim }}
+        </div>
+      </div>
+    </div>
+    <div class="edit__group">
+      <div class="edit__instruction">
+        <div class="edit__container qr-small">
+          <a
+            href="#"
+          >
+            <img class="" src="" />
+          </a>
+        </div>
+
+        <div class="edit__submit-btn reload-button">
+          <div class="edit__submit">
+            Copy to Clipboard
+          </div>
+        </div>
+        <div class="edit__submit-btn reload-button">
+          <a href="#" class="edit__submit" target="blank">
+            Download file
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="edit__label line"></div>
+  </div>
+  {% endfor %}
+</main>
+{% endblock %}

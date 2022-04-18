@@ -1,0 +1,12 @@
+#sidebarMenu {
+    display: none!important;
+  }
+
+#search_field {
+display: none!important;
+}
+
+
+.instructions {
+    margin: 0 25%;
+}

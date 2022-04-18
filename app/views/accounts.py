@@ -28,7 +28,9 @@ def account_add():
     mdm_connection = MDM()
 
     if form.validate_on_submit():
+        # TODO: check return value: log of false + flash + redirect
         ldap_connection.add_user(form.login.data)
+        # TODO: check return value: log of false + flash + redirect
         ldap_connection.change_password(form.login.data, form.password.data)
         mdm_connection.sync()
         Account(
@@ -70,3 +72,11 @@ def account_search(query):
         accounts=accounts,
         query=query,
     )
+
+
+@accounts_blueprint.route("/account_enroll/<int:account_id>")
+@login_required
+def account_enroll(account_id):
+    account = Account.query.get(account_id)
+
+    return render_template("account/enroll.html", account=account)
