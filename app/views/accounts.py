@@ -93,3 +93,11 @@ def account_search(query):
         )
 
     return render_template("accounts.html", accounts=accounts, query=query)
+
+
+@accounts_blueprint.route("/account_enroll/<int:account_id>")
+@login_required
+def account_enroll(account_id):
+    account = Account.query.get(account_id)
+
+    return render_template("account/enroll.html", account=account)
