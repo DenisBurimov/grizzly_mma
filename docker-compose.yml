@@ -5,6 +5,8 @@ services:
     # command: poetry run flask run -h 0.0.0.0
     command: poetry run gunicorn --bind 0.0.0.0:5000 -w 3 wsgi:app
     restart: always
+    volumes:
+      - ${HOME}/.ssh:/root/.ssh
     environment:
       - FLASK_APP=wsgi:app
       - FLASK_ENV=production
