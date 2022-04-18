@@ -1,9 +1,18 @@
-from flask import render_template, redirect, request, url_for, Blueprint, flash
+from flask import (
+    current_app,
+    render_template,
+    redirect,
+    request,
+    url_for,
+    Blueprint,
+    flash,
+)
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 from app.logger import log
 from app.models import User, Account
 from app.forms import AccountForm
+from app import db
 from app.controllers import gen_login, gen_password, LDAP, MDM
 
 accounts_blueprint = Blueprint("accounts", __name__)
@@ -16,7 +25,9 @@ def accounts_page():
     if current_user.role != User.Role.admin:
         page_data = page_data.filter(Account.user_id == current_user.id)
     page = request.args.get("page", 1, type=int)
-    page_data = page_data.order_by(desc(Account.id)).paginate(page=page, per_page=20)
+    page_data = page_data.order_by(desc(Account.id)).paginate(
+        page=page, per_page=current_app.config["PAGE_SIZE"]
+    )
 
     return render_template("accounts.html", accounts=page_data)
 
@@ -69,21 +80,16 @@ def account_info(account_id: int):
 def account_search(query):
     page = request.args.get("page", 1, type=int)
     accounts = (
-        Account.query.order_by(desc(Account.id))
-        .filter(Account.login.like(f"%{query}%"))
-        .paginate(page=page, per_page=20)
-    )
+        db.session.query(
+            Account,
+        )
+        .join(User)
+        .filter(User.username.like(f"%{query}%") | Account.login.like(f"%{query}%"))
+    ).paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
 
-    return render_template(
-        "accounts.html",
-        accounts=accounts,
-        query=query,
-    )
+    if current_user.role != User.Role.admin:
+        accounts = accounts.filter(Account.user_id == current_user.id).paginate(
+            page=page, per_page=current_app.config["PAGE_SIZE"]
+        )
 
-
-@accounts_blueprint.route("/account_enroll/<int:account_id>")
-@login_required
-def account_enroll(account_id):
-    account = Account.query.get(account_id)
-
-    return render_template("account/enroll.html", account=account)
+    return render_template("accounts.html", accounts=accounts, query=query)

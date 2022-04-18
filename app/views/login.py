@@ -26,7 +26,6 @@ def login():
         if user:
             if not current_app.config["AUTH_OTP_ENABLED"]:
                 login_user(user)
-                flash("Login successful.", "success")
                 return redirect(url_for("main.index"))
             session["id"] = user.id
             # check if user has OTP activated

@@ -105,6 +105,7 @@ body {
 }
 
 .hit_flash {
+  margin: 0;
   color: white;
   font-weight: 500;
 }
@@ -133,4 +134,16 @@ body {
 
 .page_button {
   border-radius: 5px!important;
+}
+
+.alert-info {
+  background: #66d9ff!important;
+}
+
+.alert-danger {
+  background: #ea3333!important;
+}
+
+.close {
+  padding: 5px 6px 7px 5px!important;
 }

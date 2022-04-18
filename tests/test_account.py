@@ -42,8 +42,8 @@ def test_account_info(client):
 
 def test_account_search(client):
     login(client, "admin", "admin")
-    response = client.get("/account_search/27")
-    assert b"27" in response.data
+    response = client.get("/account_search/r_2")
+    assert "r_2" in response.data.decode()
 
 
 def test_account_pagination(client):
