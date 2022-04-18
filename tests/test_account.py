@@ -41,13 +41,13 @@ def test_account_info(client):
 
 
 def test_account_search(client):
-    login(client, "admin", "admin")
+    login(client)
     response = client.get("/account_search/r_2")
     assert "r_2" in response.data.decode()
 
 
 def test_account_pagination(client):
-    login(client, "admin", "admin")
+    login(client)
     response = client.get("/account_search/8?page=2")
     assert b"8" in response.data
     response = client.get("/account_search/user_?page=7")
@@ -79,3 +79,11 @@ def test_add_account(client):
     assert account.password == TEST_PASSWORD
 
     assert f"{TEST_LOGIN}" in res.data.decode()
+
+
+def test_account_enroll(client):
+    res = client.get("/account_enroll/1")
+    assert res.status_code == 302
+    login(client)
+    res = client.get("/account_enroll/1")
+    assert res.status_code == 200

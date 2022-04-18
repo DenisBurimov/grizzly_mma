@@ -3,6 +3,7 @@ import timecop
 from flask import url_for
 from onetimepass import get_hotp, get_totp
 from app.models import User
+from config import BaseConfig as conf
 
 from app.controllers.database import TEST_PASS
 
@@ -13,7 +14,7 @@ def register(username, password=TEST_PASS):
     return user.id
 
 
-def login(client, user_name, password="pass"):
+def login(client, user_name=conf.ADMIN_USER, password=conf.ADMIN_PASS):
     secret = b"MFRGGZDFMZTWQ2LK"
     with timecop.freeze(time.time()):
         user = User.query.filter(User.username == user_name).first()

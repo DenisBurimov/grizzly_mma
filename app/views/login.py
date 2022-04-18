@@ -22,7 +22,7 @@ def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
         user: User = User.authenticate(form.username.data, form.password.data)
-        flash("You are successfuly logged in!", "info")
+        flash("You are successfully logged in!", "info")
         if user:
             if not current_app.config["AUTH_OTP_ENABLED"]:
                 login_user(user)
