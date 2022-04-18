@@ -23,7 +23,7 @@ def gen_login() -> str:
                 return login
 
 
-def gen_password(pass_length=6) -> str:
+def gen_password(pass_length=7) -> str:
     """Generation of a password for account
 
     Returns:
