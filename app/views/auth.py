@@ -34,7 +34,7 @@ def otp_verify():
         if user.verify_totp(form.token.data):
             log(log.INFO, f"user {user} logged opt validated")
             login_user(user)
-            flash("You are successfuly logged in!", "info")
+            flash("You are successfully logged in!", "info")
 
             # remove session data for added security
             del session["id"]
