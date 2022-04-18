@@ -36,21 +36,27 @@ def accounts_page():
 @login_required
 def account_add():
     form = AccountForm()
-    ldap_connection = LDAP()
     mdm_connection = MDM()
 
     if form.validate_on_submit():
-        if not ldap_connection.add_user(form.login.data):
-            flash("Something went wrong. Cannot create AD user", "danger")
-            log(log.ERROR, "Cannot create AD user: [%s]", form.login.data)
-            return render_template("account/add_account.html", form=form)
+        # if LDAP server configured
+        if current_app.config["LDAP_SERVER"]:
+            log(log.INFO, "Add AD User")
+            ldap_connection = LDAP()
 
-        if not ldap_connection.change_password(form.login.data, form.password.data):
-            flash("Something went wrong. Cannot set the password", "danger")
-            log(log.ERROR, "Cannot set the password")
-            return render_template("account/add_account.html", form=form)
+            if not ldap_connection.add_user(form.login.data):
+                flash("Something went wrong. Cannot create AD user", "danger")
+                log(log.ERROR, "Cannot create AD user: [%s]", form.login.data)
+                return render_template("account/add_account.html", form=form)
 
-        mdm_connection.sync()
+            if not ldap_connection.change_password(form.login.data, form.password.data):
+                flash("Something went wrong. Cannot set the password", "danger")
+                log(log.ERROR, "Cannot set the password")
+                return render_template("account/add_account.html", form=form)
+
+            mdm_connection.sync()
+        else:
+            log(log.WARNING, "LDAP server not configured!!")
 
         Account(
             user_id=current_user.id,
