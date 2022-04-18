@@ -1,6 +1,7 @@
-from flask import render_template, redirect, request, url_for, Blueprint
+from flask import render_template, redirect, request, url_for, Blueprint, flash
 from flask_login import current_user, login_required
 from sqlalchemy import desc
+from app.logger import log
 from app.models import User, Account
 from app.forms import AccountForm
 from app.controllers import gen_login, gen_password, LDAP, MDM
@@ -28,11 +29,18 @@ def account_add():
     mdm_connection = MDM()
 
     if form.validate_on_submit():
-        # TODO: check return value: log of false + flash + redirect
-        ldap_connection.add_user(form.login.data)
-        # TODO: check return value: log of false + flash + redirect
-        ldap_connection.change_password(form.login.data, form.password.data)
+        if not ldap_connection.add_user(form.login.data):
+            flash("Something went wrong. Cannot create AD user", "danger")
+            log(log.ERROR, "Cannot create AD user: [%s]", form.login.data)
+            return render_template("account/add_account.html", form=form)
+
+        if not ldap_connection.change_password(form.login.data, form.password.data):
+            flash("Something went wrong. Cannot set the password", "danger")
+            log(log.ERROR, "Cannot set the password")
+            return render_template("account/add_account.html", form=form)
+
         mdm_connection.sync()
+
         Account(
             user_id=current_user.id,
             login=form.login.data,
@@ -65,7 +73,6 @@ def account_search(query):
         .filter(Account.login.like(f"%{query}%"))
         .paginate(page=page, per_page=20)
     )
-    # accounts = Account.query.filter(Account.user_id == current_user.id)
 
     return render_template(
         "accounts.html",

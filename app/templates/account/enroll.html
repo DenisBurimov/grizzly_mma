@@ -7,9 +7,8 @@
 {% block content %}
 <main class="d-flex flex-column justify-content-center">
   <div class="instructions w-50">
-    <p>{{account}}, {{account.user.username}}</p>
-    <h3 class="edit__label"><strong>Instructions for enrollment</strong></h3>
-    <ul class="edit__label list-instr">
+    <h3 class="mt-3"><strong>Instructions for enrollment</strong></h3>
+    <ul>
       <li>Please select Country/Language and press "Start"</li>
       <li>Accept End User Agreement & Privacy Policy and press "Next"</li>
       <li>Connect to the Wi-Fi network and press "Next"</li>
@@ -26,11 +25,9 @@
         Untoggle location and device maintenance features and press "Accept"
       </li>
       <li>Scan the QR code (allow using camera if needed)</li>
-      <img
-        class="qr-size"
-        src=""
-        alt=""
-      />
+
+      <img class="qr-size my-3" src="{{ url_for('static', filename='img/credentials.jpg') }}" alt="qr_credentials"/>
+
       <li>
         Enter MDM e-mail, MDM login, MDM password, and Select Domain KRYPTRLI and
         press "Continue"
@@ -44,106 +41,20 @@
       <li>Set screen lock security. Select Password</li>
       <li>Enter password and press "Continue"</li>
       <li>Repeat password and press "OK"</li>
-      <li>Wait for ???KryptrChat to install (for 1 or 2 minutes)</li>
-      <li>Open ???kryptrVPN app</li>
-      <li>Press "ok" button</li>
-      <li>Go to mobile setting</li>
-      <li>Go to Connections</li>
-      <li>Then More connection settings</li>
-      <li>Then VPN</li>
-      <li>Press gear button at "???Kryptr VPN Client"</li>
-      <li>Turn on "Always-on VPN"</li>
-      <li>Launch ???KryptrChat application</li>
-      <li>Scan the second QR code (below) for the account activation</li>
-      <li>Set Up Password, confirm it, and press Save</li>
-      <li>Enter password and press "Login" to enter Wiper</li>
     </ul>
+
+   <div class="credentials">
+    <h3 class="mt-5"><strong>MDM setup credentials:</strong></h3>
+
+    <div class="credentials_inner">
+      <p class="mt-3"><b>Reseller:</b> {{account.user.username}}</p>
+    <p><b>MDM e-mail:</b> {{account.login}}@wiper.tel</p>
+    <p><b>MDM login:</b> {{account.login}}</p>
+    <p class="mb-5"><b>MDM password:</b> {{account.password}}</p>
+    </div>
+   </div>
   </div>
 
-  {% for account in instructions %}
-  <div class="edit__container">
-    <div class="edit__container edit__rows">
-      <div class="qrcode-container edit__label">
-        <h3><strong>Account ... Activated</strong></h3>
-      </div>
-    </div>
-    <div class="edit__instruction">
-      <div class="edit__rows">
-        <div class="edit__label">
-          Reseller:
-        </div>
-      </div>
-      <!-- MDM Setup -->
-      <div class="edit__rows">
-        <div class="edit__label">
-          <h3><strong>MDM setup credentials:</strong></h3>
-        </div>
-      </div>
-
-      <div class="edit__rows_i">
-        <div class="edit__label">
-          MDM e-mail:
-        </div>
-      </div>
-      <div class="edit__rows_i">
-        <div class="edit__label">
-          MDM login:
-        </div>
-      </div>
-      <div class="edit__rows_i">
-        <div class="edit__label">
-          MDM password:
-        </div>
-      </div>
-      <div class="edit__rows_i">
-        <div class="edit__label">Domain: KRYPTRLI</div>
-      </div>
-      <hr />
-
-      <!-- Kryptr credentials -->
-      <div class="edit__rows">
-        <div class="edit__label"><strong>Kryptr credentials:</strong></div>
-      </div>
-
-      <div class="edit__rows_i">
-        <div class="edit__label">
-          ECC ID:
-        </div>
-      </div>
-      <hr />
-      <div class="edit__rows">
-        <div class="edit__label"><strong>SIM card number:</strong></div>
-      </div>
-      <div class="edit__rows_i">
-        <div class="edit__label">
-          {{ account['acc'].sim }}
-        </div>
-      </div>
-    </div>
-    <div class="edit__group">
-      <div class="edit__instruction">
-        <div class="edit__container qr-small">
-          <a
-            href="#"
-          >
-            <img class="" src="" />
-          </a>
-        </div>
-
-        <div class="edit__submit-btn reload-button">
-          <div class="edit__submit">
-            Copy to Clipboard
-          </div>
-        </div>
-        <div class="edit__submit-btn reload-button">
-          <a href="#" class="edit__submit" target="blank">
-            Download file
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="edit__label line"></div>
-  </div>
-  {% endfor %}
+  
 </main>
 {% endblock %}

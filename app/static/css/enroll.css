@@ -6,7 +6,16 @@
 display: none!important;
 }
 
-
 .instructions {
     margin: 0 25%;
+}
+
+.credentials {
+  width: 70%;
+  margin-left: 15%;
+}
+
+.credentials_inner {
+  width: 70%;
+  margin-left: 15%;
 }
