@@ -2,6 +2,8 @@
 import click
 
 from app import create_app, db, models, forms
+from app.controllers.ldap import LDAP
+from app.controllers.mdm import MDM
 
 app = create_app()
 
@@ -10,7 +12,7 @@ app = create_app()
 @app.shell_context_processor
 def get_context():
     """Objects exposed here will be automatically available from the shell."""
-    return dict(app=app, db=db, m=models, forms=forms)
+    return dict(app=app, db=db, m=models, forms=forms, ldap=LDAP(), mdm=MDM())
 
 
 @app.cli.command()

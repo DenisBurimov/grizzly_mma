@@ -9,7 +9,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 class BaseConfig(object):
     """Base configuration."""
 
-    APP_NAME = "Hit Portal"
+    APP_NAME = "Wiper Portal"
     DEBUG_TB_ENABLED = False
     SECRET_KEY = os.environ.get(
         "SECRET_KEY", "Ensure you set a secret key, this is important!"
@@ -28,6 +28,19 @@ class BaseConfig(object):
     )
 
     AUTH_OTP_ENABLED = json.loads(os.environ.get("AUTH_OTP_ENABLED", "true"))
+
+    LDAP_SERVER = os.environ.get("LDAP_SERVER", None)
+    LDAP_USER = os.environ.get("LDAP_USER", None)
+    LDAP_PASS = os.environ.get("LDAP_PASS", None)
+    AD_NAME = os.environ.get("AD_NAME", "DC=wiper,DC=tel")
+
+    REMOTE_SHELL_SERVER: str = os.environ.get("REMOTE_SHELL_SERVER", None)
+    REMOTE_SHELL_USER: str = os.environ.get("REMOTE_SHELL_USER", None)
+    REMOTE_SHELL_PASS: str = os.environ.get("REMOTE_SHELL_PASS", None)
+    REMOTE_SHELL_PORT: int = int(os.environ.get("REMOTE_SHELL_PORT", 0))
+
+    BASE_MDM_API_URL = os.environ.get("BASE_MDM_API_URL", None)
+    MDM_API_KEY = os.environ.get("MDM_API_KEY", None)
 
     @staticmethod
     def configure(app):
