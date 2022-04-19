@@ -32,7 +32,7 @@ def create_app(environment="development"):
     app = Flask(__name__)
 
     # Migrations setup
-    Migrate(app, db)
+    migrate = Migrate()
 
     # Set app config.
     env = os.environ.get("FLASK_ENV", environment)
@@ -42,6 +42,7 @@ def create_app(environment="development"):
 
     # Set up extensions.
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
 
     # Register blueprints.
