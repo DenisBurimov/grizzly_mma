@@ -51,13 +51,14 @@
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       {% for category, message in messages %}
-        <div class="hit_flash d-flex justify-content-center alert alert-{{ category }} alert-dismisible">
+        <div class="hit_flash d-flex justify-content-between alert alert-{{ category }} alert-dismisible">
+          <div></div>
+          <p>{{ message }}</p>
           <div class="flash_inner">
-            <button type="button" class="close d-flex justify-content-center align-items-center me-2" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close d-flex justify-content-center align-items-center me-3" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-        </div>
-          {{ message }}
+          </div>
         </div>
       {% endfor %}
       {% endif %}
