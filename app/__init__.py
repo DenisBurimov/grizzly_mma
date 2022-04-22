@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+
 from flask_migrate import Migrate
 from werkzeug.exceptions import HTTPException
 from app.logger import log
@@ -10,6 +11,7 @@ from app.logger import log
 # instantiate extensions
 login_manager = LoginManager()
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app(environment="development"):
@@ -31,9 +33,6 @@ def create_app(environment="development"):
     # Instantiate app.
     app = Flask(__name__)
 
-    # Migrations setup
-    Migrate(app, db)
-
     # Set app config.
     env = os.environ.get("FLASK_ENV", environment)
     log(log.INFO, "App environment: %s", env)
@@ -42,6 +41,7 @@ def create_app(environment="development"):
 
     # Set up extensions.
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
 
     # Register blueprints.

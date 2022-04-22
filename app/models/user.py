@@ -24,10 +24,6 @@ class User(db.Model, UserMixin, ModelMixin):
 
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True, nullable=False)
-    password_hash = db.Column(db.String(256), nullable=False)
-
     class Role(enum.Enum):
         """Utility class to support
         admin - creates users, including admins
@@ -37,6 +33,9 @@ class User(db.Model, UserMixin, ModelMixin):
         admin = 1
         reseller = 2
 
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(Enum(Role), default=Role.reseller)
     created_at = db.Column(db.DateTime, default=datetime.now)
     deleted = db.Column(db.Boolean, default=False)
