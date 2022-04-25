@@ -16,7 +16,16 @@ def billings_page():
 
 
 @billings_blueprint.route("/billing_add", methods=["GET", "POST"])
+@login_required
 def billing_add():
     form = "Here Will Be A Form"
 
     return render_template("billing/add_billing.html", form=form)
+
+
+@billings_blueprint.route("/billings_details/<int:billing_id>", methods=["GET", "POST"])
+@login_required
+def billings_details(billing_id):
+    billing: Billing = Billing.query.get(billing_id)
+
+    return render_template("billing/billing_details.html", billing=billing)
