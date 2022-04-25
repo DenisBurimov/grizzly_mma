@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block content %}
+  <main class="d-flex justify-content-center">
+    <div class="w-50">
+      <h1>Billing Details Page</h1>
+      <div class="d-flex justify-content-around">
+        <p>Saled by <b>{{billing.reseller.username}}</b></p>
+        <p>Credits amount: <b>{{billing.credits}}</b></p>
+      </div>
+      <img text-align="center" class="qr-size my-3" src="{{ url_for('static', filename='img/credentials.jpg') }}" alt="qr_credentials"/>
+
+    </div>
+  </main>
+{% endblock %}

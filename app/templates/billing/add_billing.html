@@ -1,21 +1,25 @@
 {% extends 'base.html' %}
 
 {% block links %}
-    <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
 
 {% block content %}
-  <main class="form-user">
-    <form action="{{ url_for('users.user_add') }}" method="post">
+  <main class="d-flex justify-content-center">
+    <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('billings.billing_add') }}" method="post">
 
-      form.hidden_tag()
+      {{form.hidden_tag()}}
 
-      <h1 class="h3 mb-3">Add Billing</h1>
+      <h1 class="h3 mb-3">New Billing</h1>
 
-      <div class="form-floating">
-        {{form}}
-
+      <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+        <p class="me-3 pt-3">{{form.credits.label}}: </p>
+        {{form.credits(type="username", class='hit-input w-50 px-2')}}
+        {{form.submit(class='w-25 btn btn-lg btn-primary')}}
       </div>
+
+
 
     </form>
   </main>

@@ -2,3 +2,4 @@
 from .login import LoginForm, TwoFactorForm
 from .user import UserForm
 from .account import AccountForm
+from .billing import BillingForm
