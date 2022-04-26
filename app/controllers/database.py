@@ -32,6 +32,9 @@ def init_db(add_test_data: bool = False):
                     user_id=user.id, login=gen_login(), password=gen_password()
                 ).save()
             for _ in range(TEST_BILLINGS_PER_USER):
-                Billing(user_id=user.id, credits=1000).save(False)
+                Billing(
+                    user_id=user.id,
+                    credits=1000,
+                ).save(False)
 
     db.session.commit()

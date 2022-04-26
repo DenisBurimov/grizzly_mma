@@ -41,18 +41,6 @@ def test_billings_add_page(client):
     assert b"Get credits" in response.data
 
 
-def test_billings_details_page(client):
-    response = client.get("/billings_details/1")
-    assert response.status_code == 302
-    login(client)
-    response = client.get("/billings_details/1")
-    assert response.status_code == 200
-    response = client.get("/billings_details/1")
-    assert b"1000" in response.data
-    response = client.get("/billings_details/3")
-    assert b"user_3" in response.data
-
-
 def test_create_billing(client, monkeypatch):
     import app.controllers
 
