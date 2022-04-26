@@ -44,6 +44,8 @@ class BaseConfig(object):
     BASE_MDM_API_URL = os.environ.get("BASE_MDM_API_URL", None)
     MDM_API_KEY = os.environ.get("MDM_API_KEY", None)
 
+    JAVA_SERVER_KEY = os.environ.get("JAVA_SERVER_KEY", "unknown key value")
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
@@ -61,6 +63,8 @@ class DevelopmentConfig(BaseConfig):
 
     # AUTH_OTP_ENABLED = False
 
+    URL_JAVA_SRV = os.environ.get("DEV_URL_JAVA_SRV", None)
+
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""
@@ -72,6 +76,8 @@ class TestingConfig(BaseConfig):
         "sqlite:///" + os.path.join(BASE_DIR, "database-test.sqlite3"),
     )
 
+    URL_JAVA_SRV = os.environ.get("DEV_URL_JAVA_SRV", None)
+
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
@@ -80,6 +86,8 @@ class ProductionConfig(BaseConfig):
         "DATABASE_URL", "sqlite:///" + os.path.join(BASE_DIR, "database.sqlite3")
     )
     WTF_CSRF_ENABLED = True
+
+    URL_JAVA_SRV = os.environ.get("URL_JAVA_SRV", None)
 
 
 config = dict(

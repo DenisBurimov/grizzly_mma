@@ -2,6 +2,7 @@ import pytest
 
 from app import db, create_app
 from app.controllers import init_db
+from app.models.billing import Billing
 from .utils import login
 
 
@@ -50,3 +51,25 @@ def test_billings_details_page(client):
     assert b"1000" in response.data
     response = client.get("/billings_details/3")
     assert b"user_3" in response.data
+
+
+def test_create_billing(client, monkeypatch):
+    import app.controllers
+
+    TEST_CREDITS = 1001
+    login(client)
+    TEST_QRCODE = b"test"
+
+    def mock_get_paid_qrcode(credits: int) -> bytes:
+        return TEST_QRCODE
+
+    monkeypatch.setattr(app.controllers, "get_paid_qrcode", mock_get_paid_qrcode)
+
+    response = client.post(
+        "/billing_add",
+        data=dict(credits=TEST_CREDITS),
+    )
+    assert response.status_code == 302
+    billing: Billing = Billing.query.filter(Billing.credits == TEST_CREDITS).first()
+    assert billing.credits == TEST_CREDITS
+    assert billing.qrcode == TEST_QRCODE

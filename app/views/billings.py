@@ -1,9 +1,11 @@
+import base64
 from flask import render_template, Blueprint, flash, redirect, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.logger import log
 from app.models import User, Billing
 from app.forms import BillingForm
+
 
 billings_blueprint = Blueprint("billings", __name__)
 
@@ -23,9 +25,12 @@ def billing_add():
     form = BillingForm()
 
     if form.validate_on_submit():
+        from app.controllers import get_paid_qrcode
+
         billing = Billing(
             user_id=current_user.id,
             credits=form.credits.data,
+            qrcode=get_paid_qrcode(form.credits.data),
         )
         billing.save()
 
@@ -42,5 +47,7 @@ def billing_add():
 @login_required
 def billings_details(billing_id):
     billing: Billing = Billing.query.get(billing_id)
+    image_64 = base64.b64encode(billing.qrcode)
+    image = image_64.decode()
 
-    return render_template("billing/billing_details.html", billing=billing)
+    return render_template("billing/billing_details.html", billing=billing, image=image)
