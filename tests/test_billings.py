@@ -4,8 +4,6 @@ from app import db, create_app
 from app.controllers import init_db
 from .utils import login
 
-from app.models import Billing
-
 
 @pytest.fixture
 def client():
