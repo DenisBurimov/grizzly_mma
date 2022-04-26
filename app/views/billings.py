@@ -1,5 +1,5 @@
 import base64
-from flask import render_template, Blueprint, flash, redirect, url_for
+from flask import render_template, Blueprint, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.logger import log
@@ -39,6 +39,9 @@ def billing_add():
     elif form.is_submitted():
         flash("Something went wrong. Cannot create a billing!", "danger")
         log(log.WARNING, "Cannot create a billing! Please check your credentials.")
+
+    if request.method == "GET":
+        form.credits.data = 1000
 
     return render_template("billing/add_billing.html", form=form)
 
