@@ -40,7 +40,11 @@ def billing_add():
         flash("Something went wrong. Cannot create a billing!", "danger")
         log(log.WARNING, "Cannot create a billing! Please check your credentials.")
 
-    if request.method == "GET":
+    if request.method == "GET" and current_user.role == User.Role.admin:
+        form.credits.choices = [(25, 25)]
+        form.credits.data = 25
+    elif request.method == "GET" and current_user.role != User.Role.admin:
+        form.credits.choices.remove(25, 25)
         form.credits.data = 1000
 
     return render_template("billing/add_billing.html", form=form)
