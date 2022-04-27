@@ -8,6 +8,14 @@ body {
   width: 550px;
 }
 
+.form-add input {
+  padding: 0 10px;
+}
+
+.form-add select {
+  padding: 0 10px;
+}
+
 .account_info {
   width: 350px;
 }
