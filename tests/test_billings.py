@@ -1,5 +1,5 @@
 import pytest
-
+from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
 from app.models.billing import Billing
@@ -44,7 +44,7 @@ def test_billings_add_page(client):
 def test_create_billing(client, monkeypatch):
     import app.controllers
 
-    TEST_CREDITS = 1001
+    TEST_CREDITS = 1000
     login(client)
     TEST_QRCODE = b"test"
 
@@ -58,6 +58,6 @@ def test_create_billing(client, monkeypatch):
         data=dict(credits=TEST_CREDITS),
     )
     assert response.status_code == 302
-    billing: Billing = Billing.query.filter(Billing.credits == TEST_CREDITS).first()
+    billing: Billing = Billing.query.order_by(desc(Billing.id)).first()
     assert billing.credits == TEST_CREDITS
     assert billing.qrcode == TEST_QRCODE

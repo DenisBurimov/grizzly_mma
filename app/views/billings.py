@@ -40,6 +40,10 @@ def billing_add():
         flash("Something went wrong. Cannot create a billing!", "danger")
         log(log.WARNING, "Cannot create a billing! Please check your credentials.")
 
+    form.credits.data = 1000
+    if current_user.role != User.Role.admin:
+        form.credits.choices.remove(25, 25)
+
     return render_template("billing/add_billing.html", form=form)
 
 
