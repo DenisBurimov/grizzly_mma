@@ -1,5 +1,5 @@
 import base64
-from flask import render_template, Blueprint, flash, redirect, url_for, request
+from flask import render_template, Blueprint, flash, redirect, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.logger import log
