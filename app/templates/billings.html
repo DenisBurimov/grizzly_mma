@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block links %}
+    <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
   <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
@@ -22,7 +27,7 @@
         {% for billing in billings %}
           <tr>
             <td>{{billing.id}}</td>
-            <td>{{billing.credits}}</td>
+            <td><a class="user_update" href="{{ url_for('billings.billings_details', billing_id=billing.id) }}">{{billing.credits}}</a></td>
             <td>{{billing.reseller.username}}</td>
             <td>{{ billing.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
           </tr>
