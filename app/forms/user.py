@@ -34,6 +34,7 @@ FORBIDDEN_SYMBOLS = [
     "+",
     "'",
     '"',
+    " ",
 ]
 
 

@@ -32,3 +32,15 @@ body {
   padding-top: 3px  !important;
   padding-bottom: 10px  !important;
 }
+
+.user_form_submit {
+  height: 50px!important;
+}
+
+.custom_alert {
+  /* padding: 15px 0!important; */
+  background: rgba(252, 109, 109, 0.542);
+  color: red;
+  font-weight: 500;
+  border: 1px solid red;
+}

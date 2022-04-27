@@ -33,15 +33,17 @@
       {{form.role(type="role", class='hit-input w-75')}}
     </div>
 
-    {{form.submit(class='w-100 btn btn-lg btn-primary')}}
+    <div class="mb-3">
+      {{form.submit(class="user_form_submit w-100 btn btn-lg btn-primary")}}
+    </div>
 
-    <div class="instructions">
+    <div>
       {% for field, errors in form.errors.items() %}
-        <div class="alert alert-error">
+        <div class="custom_alert alert alert-error">
             {{ form[field].label }}: {{ ', '.join(errors) }}
         </div>
       {% endfor %}
-      <p class="mt-5">To set username use uppercase and lowercase letters underscore and hyphen. Please, don't use any other special symbols.</p>
+      <p class="instructions">To set username use uppercase and lowercase letters underscore and hyphen. Please, don't use any other special symbols or whitespaces.</p>
     </div>
   </form>
 
