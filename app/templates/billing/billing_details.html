@@ -2,6 +2,7 @@
 
 {% block links %}
     <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/user.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
 
@@ -15,6 +16,9 @@
       </div>
       <div class="d-flex justify-content-center">
         <img src="data:image/png;base64, {{image}}">
+      </div>
+      <div class="d-flex justify-content-center">
+        <p><a class="user_update" href="{{ url_for('billings.billings_page') }}">Go back</a></p>
       </div>
     </div>
   </main>

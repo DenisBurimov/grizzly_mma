@@ -1,4 +1,5 @@
 import pytest
+import datetime
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
@@ -61,3 +62,15 @@ def test_create_billing(client, monkeypatch):
     billing: Billing = Billing.query.order_by(desc(Billing.id)).first()
     assert billing.credits == TEST_CREDITS
     assert billing.qrcode == TEST_QRCODE
+
+
+def test_billing_search(client):
+    login(client)
+    response = client.get("/billing_search/1000")
+    assert b"1000" in response.data
+
+    today = datetime.datetime.today().strftime("%Y-%m-%d")
+    response = client.get(f"/billing_search/{today}")
+    assert f"{today}" in response.data.decode()
+    response = client.get("/billing_search/r_2")
+    assert b"r_2" in response.data
