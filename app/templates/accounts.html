@@ -11,7 +11,7 @@
   <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
 
   <div class="d-flex justify-content-between pt-3">
-    <h3 class="mt-1">Accounts</h3>
+    <h3 class="page_title mt-1">Accounts</h3>
     <a class="btn btn-primary mt-1 add_button" href="{{ url_for('accounts.account_add') }}">New Account</a>
   </div>
   {{info}}
@@ -80,5 +80,5 @@
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='js/account_search.js') }}" type="text/javascript"></script>
+  <script src="{{ url_for('static', filename='js/search.js') }}" type="text/javascript"></script>
 {% endblock %}
