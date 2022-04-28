@@ -34,6 +34,15 @@
     </div>
 
     {{form.submit(class='w-100 btn btn-lg btn-primary')}}
+
+    <div class="instructions">
+      {% for field, errors in form.errors.items() %}
+        <div class="alert alert-error">
+            {{ form[field].label }}: {{ ', '.join(errors) }}
+        </div>
+      {% endfor %}
+      <p>Instructions</p>
+    </div>
   </form>
 
 </main>

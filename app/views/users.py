@@ -2,7 +2,7 @@ from flask import current_app, render_template, Blueprint, redirect, request, ur
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.models import User
-from app.forms import UserForm
+from app.forms import UserForm, UserUpdateForm
 
 users_blueprint = Blueprint("users", __name__)
 
@@ -49,22 +49,22 @@ def user_add():
 @users_blueprint.route("/user_update/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def user_update(user_id: int):
-    form = UserForm()
+    form = UserUpdateForm()
     user: User = User.query.get(user_id)
 
     if form.validate_on_submit():
         user.username = form.username.data
         user.password = form.password.data
-        user.role = form.role.data
+        user.role = User.Role(form.role.data)
         user.save()
 
         return redirect(url_for("users.users_page"))
 
     elif request.method == "GET":
         form.username.data = user.username
-        form.role.data = user.role
+        form.role.data = user.role.name
 
-    return render_template("user/update.html", form=form)
+    return render_template("user/update.html", form=form, user_id=user_id)
 
 
 @users_blueprint.route("/user_search/<query>")
