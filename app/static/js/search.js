@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const search_button = document.querySelector('#search_button');
     const page_title = document.querySelector('.page_title');
 
-    console.log(page_title.innerHTML);
     let baseSearchUrl;
     if (page_title.innerHTML === "Users") {
       baseSearchUrl = "/user_search/";
