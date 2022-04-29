@@ -11,9 +11,13 @@ const camQrResult = document.getElementById('cam-qr-result');
 const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
 const fileSelector = document.getElementById('file-selector');
 const fileQrResult = document.getElementById('file-qr-result');
+const passed_value = document.getElementById('passed_value');
+const send_value = document.getElementById('send_value');
 
 function setResult(label, result) {
     console.log(result.data);
+    passed_value.value = result.data;
+    send_value.click();
     label.textContent = result.data;
     camQrResultTimestamp.textContent = new Date().toString();
     label.style.color = 'teal';

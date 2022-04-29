@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
 from app.models import User
 
@@ -13,8 +13,10 @@ def index():
     return redirect(url_for("accounts.accounts_page"))
 
 
-@main_blueprint.route("/qrscanner")
+@main_blueprint.route("/qrscanner", methods=["GET", "POST"])
 @login_required
 def qrscanner():
-    form = "QRForm"
-    return render_template("qrscanner.html", form=form)
+    qr_data = None
+    if request.method == "POST":
+        qr_data = request.form["qr_data"]
+    return render_template("qrscanner.html", info=qr_data)

@@ -56,12 +56,19 @@
     <button id="flash-toggle">📸 Flash: <span id="flash-state">off</span></button>
 </div>
 
-<div class="scanner_options">
+<div class="scanner_options invisible">
     <br>
     <b>Detected QR code: </b>
     <span id="cam-qr-result">None</span>
-    <input id="passed_value" type="text">
+    <form action="{{ url_for('main.qrscanner') }}" method="post">
+
+        <textarea id="passed_value" name="qr_data"></textarea>
+        <input id="send_value" type="submit">
+    </form>
 </div>
+
+<p>{{info}}</p>
+
 
 <div class="invisible">
     <b>Last detected at: </b>

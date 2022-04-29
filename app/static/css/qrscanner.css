@@ -17,6 +17,10 @@
     width: 100%;
 }
 
+#passed_value {
+    width: 80%;
+}
+
 .qrscanner_button {
     height: 50px;
     width: 240px;
