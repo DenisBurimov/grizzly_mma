@@ -1,0 +1,43 @@
+.scanner_wrapper {
+    width: 70%;
+    margin-left: 15%;
+}
+
+#qr-video {
+    width: 100%!important;
+}
+
+.invisible {display: none;}
+
+.scanner_options {
+    margin: 25px 0;
+}
+
+#inversion-mode-select {
+    width: 100%;
+}
+
+.qrscanner_button {
+    height: 50px;
+    width: 240px;
+    margin-right: 35px;
+    background: #0080FF;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    border: 0;
+}
+
+#start-button:active {
+    background: black;
+    transition: .5s;
+}
+
+#stop-button {
+    background: black;
+}
+
+#stop-button:active {
+    background: #0080FF;
+    transition: .5s;
+}
