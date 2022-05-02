@@ -15,33 +15,33 @@
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
       <p class="me-3 pt-3">{{form.username.label}}: </p>
-      {{form.username(type="username", class='hit-input w-75')}}
+      {{form.username(type="username", class='hit-input')}}
     </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
       <p class="fme-3 pt-3">{{form.password.label}}: </p>
-      {{form.password(type="password", class='hit-input w-75')}}
+      {{form.password(type="password", class='hit-input')}}
     </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
       <p class="me-3 pt-3">{{form.password_confirm.label}}: </p>
-      {{form.password_confirm(type="password", class='hit-input w-75')}}
+      {{form.password_confirm(type="password", class='hit-input')}}
     </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
       <p class="me-3 pt-3">{{form.role.label}}: </p>
-      {{form.role(type="role", class='hit-input w-75')}}
+      {{form.role(type="role", class='hit-input')}}
     </div>
 
     {{form.submit(class='user_form_submit w-100 btn btn-lg btn-primary')}}
 
     <div class="instructions">
       {% for field, errors in form.errors.items() %}
-        <div class="alert alert-error">
+        <div class="custom_alert alert alert-error">
             {{ form[field].label }}: {{ ', '.join(errors) }}
         </div>
       {% endfor %}
-      <p>Instructions</p>
+      <p class="form_instructions">To set username use uppercase and lowercase letters underscore and hyphen. Please, don't use any other special symbols or whitespaces.</p>
     </div>
   </form>
 

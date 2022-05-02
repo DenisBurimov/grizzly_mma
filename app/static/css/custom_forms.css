@@ -29,6 +29,7 @@ body {
 #login_input, #password_input {height: 45px;}
 
 .hit-input {
+  width: 70%;
   border: 1px solid lightgrey;
 }
 
@@ -43,13 +44,20 @@ body {
   height: 50px!important;
 }
 
+.instructions {
+  margin-top: 10px!important;
+}
+
 .custom_alert {
   /* padding: 15px 0!important; */
   background: rgba(252, 109, 109, 0.542);
   color: red;
   font-weight: 500;
   border: 1px solid red;
+  border-radius: 3px!important;
 }
+
+.navbar-toggler {display: none;}
 
 @media screen and (max-width: 768px) {
   .account_info_container {
@@ -69,5 +77,15 @@ body {
   .account_info_container {
     width: 70%;
     margin-left: 15%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .hit-input {
+    width: 60%!important;
+  }
+
+  .hit-fieldset {
+    display: block;
   }
 }
