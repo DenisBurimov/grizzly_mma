@@ -29,6 +29,7 @@ def test_get_qrcode_data(client: FlaskClient, monkeypatch):
     login(client)
 
     TEST_PUBLIC_KEY = """{'public_key': 'MIICIjANBgkqhkiG9w0BAQEFAAOCAgKCAgEAxbwddmSg0tVAr3t9ZdaPUQ==' """
+    TEST_QRCODE = b"test"
 
     def mock_get_qrcode_public_key(input_string):
         itemText = TEST_PUBLIC_KEY
@@ -37,6 +38,11 @@ def test_get_qrcode_data(client: FlaskClient, monkeypatch):
     monkeypatch.setattr(
         app.controllers, "get_qrcode_public_key", mock_get_qrcode_public_key
     )
+
+    def mock_get_paid_qrcode(credits: int) -> bytes:
+        return TEST_QRCODE
+
+    monkeypatch.setattr(app.controllers, "get_paid_qrcode", mock_get_paid_qrcode)
 
     response = client.post(
         "/account_info/3",

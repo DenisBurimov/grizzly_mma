@@ -13,7 +13,7 @@ from app.logger import log
 from app.models import User, Account, Billing
 from app.forms import AccountForm
 from app import db
-from app.controllers import gen_login, gen_password, LDAP, MDM, get_paid_qrcode
+from app.controllers import gen_login, gen_password, LDAP, MDM
 
 accounts_blueprint = Blueprint("accounts", __name__)
 
@@ -78,7 +78,7 @@ def account_add():
 @accounts_blueprint.route("/account_info/<int:account_id>", methods=["GET", "POST"])
 @login_required
 def account_info(account_id: int):
-    from app.controllers import get_qrcode_public_key
+    from app.controllers import get_qrcode_public_key, get_paid_qrcode
 
     account: Account = Account.query.get(account_id)
     if request.method == "POST":
