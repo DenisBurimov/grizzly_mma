@@ -10,12 +10,14 @@ from flask import (
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 from app.logger import log
-from app.models import User, Account
+from app.models import User, Account, Billing
 from app.forms import AccountForm
 from app import db
-from app.controllers import gen_login, gen_password, LDAP, MDM
+from app.controllers import gen_login, gen_password, LDAP, MDM, get_paid_qrcode
 
 accounts_blueprint = Blueprint("accounts", __name__)
+
+INITIAL_BILLING_CREDITS = 1000
 
 
 @accounts_blueprint.route("/accounts")
@@ -73,10 +75,24 @@ def account_add():
     return render_template("account/add_account.html", form=form)
 
 
-@accounts_blueprint.route("/account_info/<int:account_id>")
+@accounts_blueprint.route("/account_info/<int:account_id>", methods=["GET", "POST"])
 @login_required
 def account_info(account_id: int):
+    from app.controllers import get_qrcode_public_key
+
     account: Account = Account.query.get(account_id)
+    if request.method == "POST":
+        qr_string_data = request.form["qr_data"]
+        public_key = get_qrcode_public_key(qr_string_data)
+        if public_key:
+            account.public_key = public_key
+            account.save()
+            billing = Billing(
+                user_id=current_user.id,
+                credits=INITIAL_BILLING_CREDITS,
+                qrcode=get_paid_qrcode(INITIAL_BILLING_CREDITS),
+            )
+            billing.save()
 
     return render_template("account/info_account.html", account=account)
 

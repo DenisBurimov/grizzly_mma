@@ -17,14 +17,13 @@
     width: 100%;
 }
 
-#passed_value {
+#qr_data {
     width: 80%;
 }
 
 .qrscanner_button {
     height: 50px;
-    width: 240px;
-    margin-right: 35px;
+    width: 175px;
     background: #0080FF;
     color: white;
     font-size: 20px;

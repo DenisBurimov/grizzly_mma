@@ -4,6 +4,12 @@ body {
 
 #sidebarMenu, .search_area {display: none! important;}
 
+.account_info_container {
+  width: 40%;
+  margin-left: 30%;
+  display: grid;
+}
+
 .form-add {
   width: 550px;
 }
@@ -17,7 +23,7 @@ body {
 }
 
 .account_info {
-  width: 350px;
+  width: 100%;
 }
 
 #login_input, #password_input {height: 45px;}
@@ -43,4 +49,25 @@ body {
   color: red;
   font-weight: 500;
   border: 1px solid red;
+}
+
+@media screen and (max-width: 768px) {
+  .account_info_container {
+    width: 50%;
+    margin-left: 25%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .account_info_container {
+    width: 60%;
+    margin-left: 20%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .account_info_container {
+    width: 70%;
+    margin-left: 15%;
+  }
 }
