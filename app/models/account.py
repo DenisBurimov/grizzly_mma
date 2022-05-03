@@ -13,6 +13,7 @@ class Account(db.Model, ModelMixin):
     login = db.Column(db.String(16), unique=True, nullable=False)
     password = db.Column(db.String(16), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
+    public_key = db.Column(db.Text)
     deleted = db.Column(db.Boolean, default=False)
 
     user = relationship("User")
