@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField
-from wtforms.validators import InputRequired
+from wtforms import TextAreaField, SubmitField, SelectField
+from wtforms.validators import InputRequired, DataRequired
 
 
 class BillingForm(FlaskForm):
@@ -11,6 +11,9 @@ class BillingForm(FlaskForm):
         (1500, 1500),
         (2500, 2500),
     ]
+
+    users_public_key = TextAreaField("User's public key", [DataRequired()])
+
     credits = SelectField(
         "Amount", coerce=int, validators=[InputRequired()], choices=PAY_OPTIONS
     )

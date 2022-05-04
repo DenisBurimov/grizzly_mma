@@ -33,6 +33,10 @@ body {
   border: 1px solid lightgrey;
 }
 
+.hit-input-textarea {
+  min-height: 200px;
+}
+
 .copy_button {
   border-radius: 5px !important;
   margin-bottom: 5px  !important;
