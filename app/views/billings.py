@@ -42,7 +42,7 @@ def billing_add():
         billing = Billing(
             user_id=current_user.id,
             credits=form.credits.data,
-            qrcode=get_paid_qrcode(form.credits.data),
+            qrcode=get_paid_qrcode(form.users_public_key.data, form.credits.data),
         )
         billing.save()
 

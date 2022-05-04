@@ -14,9 +14,9 @@ const qr_data = document.getElementById('qr_data');
 const send_value = document.getElementById('send_value');
 
 function setResult(label, result) {
-    console.log(result.data);
-    qr_data.value = result.data;
-    send_value.click();
+    const publicKey = JSON.parse(result.data)
+    console.log(publicKey.itemText);
+    qr_data.value = publicKey.itemText;
     label.textContent = result.data;
     camQrResultTimestamp.textContent = new Date().toString();
     label.style.color = 'teal';

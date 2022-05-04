@@ -44,8 +44,6 @@ class BaseConfig(object):
     BASE_MDM_API_URL = os.environ.get("BASE_MDM_API_URL", None)
     MDM_API_KEY = os.environ.get("MDM_API_KEY", None)
 
-    JAVA_SERVER_KEY = os.environ.get("JAVA_SERVER_KEY", "unknown key value")
-
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
