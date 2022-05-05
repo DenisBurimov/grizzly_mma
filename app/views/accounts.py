@@ -97,6 +97,17 @@ def account_info(account_id: int):
     return render_template("account/info_account.html", account=account)
 
 
+@accounts_blueprint.route("/account_billings/<int:account_id>", methods=["GET", "POST"])
+@login_required
+def account_billings(account_id: int):
+    page = request.args.get("page", 1, type=int)
+    billings = Billing.query.filter(Billing.account_id == account_id)
+    # billings = Billing.query
+    billings = billings.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
+
+    return render_template("billings.html", billings=billings)
+
+
 @accounts_blueprint.route("/account_search/<query>")
 @login_required
 def account_search(query):

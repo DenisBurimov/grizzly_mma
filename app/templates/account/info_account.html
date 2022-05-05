@@ -25,6 +25,10 @@
       <div id="copy_password" class="btn btn-lg btn-primary ms-3 mb-5 copy_button"><span data-feather="copy"></span></div>
     </div>
 
+    <div class="d-flex justify-content-center mt-5">
+      <p><a class="user_update" href="{{ url_for('accounts.account_billings', account_id=account.id) }}">Show billings</a></p>
+    </div>
+
   </form>
 </main>
 {% endblock %}

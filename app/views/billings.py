@@ -12,7 +12,7 @@ from flask import (
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.logger import log
-from app.models import User, Billing
+from app.models import User, Account, Billing
 from app.forms import BillingForm
 from app import db
 
@@ -55,6 +55,11 @@ def billing_add():
     form.credits.data = 1000
     if current_user.role != User.Role.admin:
         form.credits.choices.remove((25, 25))
+
+    form.account.choices = [
+        (account.id, account.login)
+        for account in Account.query.filter(Account.user_id == current_user.id)
+    ]
 
     return render_template("billing/add_billing.html", form=form)
 
