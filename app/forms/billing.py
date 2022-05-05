@@ -12,16 +12,9 @@ class BillingForm(FlaskForm):
         (2500, 2500),
     ]
 
-    RESELLERS_ACCOUNTS = [
-        # (1, 1),
-        # (2, 2),
-    ]
-
     users_public_key = TextAreaField("User's public key", [DataRequired()])
 
-    account = SelectField(
-        "Account", coerce=int, validators=[InputRequired()], choices=RESELLERS_ACCOUNTS
-    )
+    account = SelectField("Account", coerce=int, choices=[])
 
     credits = SelectField(
         "Amount",

@@ -45,6 +45,7 @@ def test_billings_add_page(client):
 def test_create_billing(client, monkeypatch):
     import app.controllers
 
+    TEST_ACCOUNT_ID = 1
     TEST_PUBLIC_KEY = "abrashwabracadabra=="
     TEST_CREDITS = 1000
     login(client)
@@ -57,9 +58,13 @@ def test_create_billing(client, monkeypatch):
 
     response = client.post(
         "/billing_add",
-        data=dict(users_public_key=TEST_PUBLIC_KEY, credits=TEST_CREDITS),
+        data=dict(
+            account_id=TEST_ACCOUNT_ID,
+            users_public_key=TEST_PUBLIC_KEY,
+            credits=TEST_CREDITS,
+        ),
     )
-    assert response.status_code == 302
+    assert response.status_code == 200
     billing: Billing = Billing.query.order_by(desc(Billing.id)).first()
     assert billing.credits == TEST_CREDITS
     assert billing.qrcode == TEST_QRCODE
