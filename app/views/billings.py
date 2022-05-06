@@ -38,7 +38,10 @@ def billing_add():
     form = BillingForm()
     if current_user.role == User.Role.admin:
         form.account.choices = [
-            (account.id, account.login) for account in Account.query.all()
+            (account.id, account.login)
+            for account in Account.query.filter(
+                Account.deleted == False  # noqa E712
+            ).all()
         ]
     else:
         form.account.choices = [

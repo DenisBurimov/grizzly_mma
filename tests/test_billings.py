@@ -1,9 +1,10 @@
+from flask import redirect
 import pytest
 import datetime
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
-from app.models.billing import Billing
+from app.models import Billing, Account, account
 from .utils import login
 
 
@@ -55,14 +56,14 @@ def test_create_billing(client, monkeypatch):
         return TEST_QRCODE
 
     monkeypatch.setattr(app.controllers, "get_paid_qrcode", mock_get_paid_qrcode)
-
     response = client.post(
         "/billing_add",
         data=dict(
-            account_id=TEST_ACCOUNT_ID,
+            account=TEST_ACCOUNT_ID,
             users_public_key=TEST_PUBLIC_KEY,
             credits=TEST_CREDITS,
         ),
+        follow_redirects=True,
     )
     assert response.status_code == 200
     billing: Billing = Billing.query.order_by(desc(Billing.id)).first()
