@@ -1,10 +1,9 @@
-from flask import redirect
 import pytest
 import datetime
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
-from app.models import Billing, Account, account
+from app.models import Billing
 from .utils import login
 
 
