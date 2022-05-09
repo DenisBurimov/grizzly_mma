@@ -15,6 +15,11 @@
       <h1 class="h3 mb-3">New Billing</h1>
 
       <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+        <p class="me-3 pt-3">{{form.account.label}}: </p>
+        {{form.account(class='hit-input w-50 px-2')}}
+      </div>
+
+      <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
         <p class="me-3 pt-3">{{form.users_public_key.label}}: </p>
         {{form.users_public_key(id="qr_data", class='hit-input hit-input-textarea w-50 px-2')}}
       </div>
