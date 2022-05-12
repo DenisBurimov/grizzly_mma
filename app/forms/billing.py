@@ -14,8 +14,13 @@ class BillingForm(FlaskForm):
 
     users_public_key = TextAreaField("User's public key", [DataRequired()])
 
+    account = SelectField("Account", coerce=int, choices=[])
+
     credits = SelectField(
-        "Amount", coerce=int, validators=[InputRequired()], choices=PAY_OPTIONS
+        "Amount",
+        coerce=int,
+        validators=[InputRequired()],
+        choices=PAY_OPTIONS,
     )
 
     submit = SubmitField("Get credits")

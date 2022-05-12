@@ -32,9 +32,11 @@
             <td>{{billing.id}}</td>
             <td>Deposit/Withdraw</td>
             <td>{{billing.reseller.username}}</td>
-            <td><a class="user_update" href="{{ url_for('billings.billings_details', billing_id=billing.id) }}">{{billing.credits}}</a></td>
-            <td>Cost</td>
-            <td>Target</td>
+            {% if billing.account %}
+            <td><a class="user_update" href="{{ url_for('accounts.account_info', account_id=billing.account.id) }}">{{billing.account.login}}</a></td>
+            {% else %}
+            <td>None</td>
+            {% endif %}
             <td>{{ billing.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
           </tr>
         {% endfor %}

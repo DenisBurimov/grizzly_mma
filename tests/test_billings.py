@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
-from app.models.billing import Billing
+from app.models import Billing
 from .utils import login
 
 
@@ -45,6 +45,7 @@ def test_billings_add_page(client):
 def test_create_billing(client, monkeypatch):
     import app.controllers
 
+    TEST_ACCOUNT_ID = 1
     TEST_PUBLIC_KEY = "abrashwabracadabra=="
     TEST_CREDITS = 1000
     login(client)
@@ -54,12 +55,16 @@ def test_create_billing(client, monkeypatch):
         return TEST_QRCODE
 
     monkeypatch.setattr(app.controllers, "get_paid_qrcode", mock_get_paid_qrcode)
-
     response = client.post(
         "/billing_add",
-        data=dict(users_public_key=TEST_PUBLIC_KEY, credits=TEST_CREDITS),
+        data=dict(
+            account=TEST_ACCOUNT_ID,
+            users_public_key=TEST_PUBLIC_KEY,
+            credits=TEST_CREDITS,
+        ),
+        follow_redirects=True,
     )
-    assert response.status_code == 302
+    assert response.status_code == 200
     billing: Billing = Billing.query.order_by(desc(Billing.id)).first()
     assert billing.credits == TEST_CREDITS
     assert billing.qrcode == TEST_QRCODE

@@ -15,6 +15,7 @@ from app.logger import log
 from app.models import User, Billing
 from app.forms import BillingForm
 from app import db
+from app.models.account import Account
 
 
 billings_blueprint = Blueprint("billings", __name__)
@@ -35,12 +36,24 @@ def billings_page():
 @login_required
 def billing_add():
     form = BillingForm()
+    if current_user.role == User.Role.admin:
+        form.account.choices = [
+            (account.id, account.login)
+            for account in Account.query.filter(
+                Account.deleted == False  # noqa E712
+            ).all()
+        ]
+    else:
+        form.account.choices = [
+            (account.id, account.login) for account in current_user.accounts
+        ]
 
     if form.validate_on_submit():
         from app.controllers import get_paid_qrcode
 
         billing = Billing(
             user_id=current_user.id,
+            account_id=form.account.data,
             credits=form.credits.data,
             qrcode=get_paid_qrcode(form.users_public_key.data, form.credits.data),
         )

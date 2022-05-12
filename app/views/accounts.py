@@ -78,23 +78,25 @@ def account_add():
 @accounts_blueprint.route("/account_info/<int:account_id>", methods=["GET", "POST"])
 @login_required
 def account_info(account_id: int):
-    from app.controllers import get_qrcode_public_key, get_paid_qrcode
-
     account: Account = Account.query.get(account_id)
-    if request.method == "POST":
-        qr_string_data = request.form["qr_data"]
-        public_key = get_qrcode_public_key(qr_string_data)
-        if public_key:
-            account.public_key = public_key
-            account.save()
-            billing = Billing(
-                user_id=current_user.id,
-                credits=INITIAL_BILLING_CREDITS,
-                qrcode=get_paid_qrcode(INITIAL_BILLING_CREDITS),
-            )
-            billing.save()
 
-    return render_template("account/info_account.html", account=account)
+    # Balance
+    billings = Billing.query.filter(Billing.account_id == account_id)
+    balance = sum((x.credits for x in billings))
+
+    return render_template(
+        "account/info_account.html", account=account, balance=balance
+    )
+
+
+@accounts_blueprint.route("/account_billings/<int:account_id>", methods=["GET", "POST"])
+@login_required
+def account_billings(account_id: int):
+    page = request.args.get("page", 1, type=int)
+    billings = Billing.query.filter(Billing.account_id == account_id)
+    billings = billings.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
+
+    return render_template("billings.html", billings=billings)
 
 
 @accounts_blueprint.route("/account_search/<query>")
