@@ -12,27 +12,36 @@
 
     {{ form.hidden_tag() }}
 
-    <h1 class="h3 my-3">User Update</h1>
-    <p></p>
+    <h1 class="h3 my-3">User Details</h1>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
-      <p class="me-3 pt-3">{{form.username.label}}: </p>
-      {{form.username(type="username", class='hit-input')}}
+        <p class="me-3 pt-3">User: </p>
+        {{form.username(class='hit-input')}}
+      </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">Credits: </p>
+      {{form.credits(class='hit-input')}}
     </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
-      <p class="fme-3 pt-3">{{form.password.label}}: </p>
-      {{form.password(type="password", class='hit-input')}}
+      <p class="fme-3 pt-3">500 messages cost: </p>
+      {{form.package_500_cost(class='hit-input')}}
     </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
-      <p class="me-3 pt-3">{{form.password_confirm.label}}: </p>
-      {{form.password_confirm(type="password", class='hit-input')}}
+      <p class="me-3 pt-3">1000 messages cost: </p>
+      {{form.package_1000_cost(class='hit-input')}}
     </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
-      <p class="me-3 pt-3">{{form.role.label}}: </p>
-      {{form.role(type="role", class='hit-input')}}
+      <p class="me-3 pt-3">1500 messages cost: </p>
+      {{form.package_1500_cost(class='hit-input')}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">2500 messages cost: </p>
+      {{form.package_2500_cost(class='hit-input')}}
     </div>
 
     <div class="mb-3">
@@ -45,10 +54,9 @@
             {{ form[field].label }}: {{ ', '.join(errors) }}
         </div>
       {% endfor %}
-      <p class="form_instructions">To set username use uppercase and lowercase letters underscore and hyphen. Please, don't use any other special symbols or whitespaces.</p>
     </div>
+
   </form>
 
 </main>
 {% endblock %}
-

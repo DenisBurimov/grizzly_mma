@@ -69,17 +69,6 @@ class UserUpdateForm(FlaskForm):
         ],
     )
     role = SelectField("Role", coerce=int, validators=[InputRequired()], choices=ROLES)
-    credits = IntegerField("Credits", [DataRequired()], default=100)
-    package_500_cost = IntegerField("500 messages cost", [DataRequired()], default=100)
-    package_1000_cost = IntegerField(
-        "1000 messages cost", [DataRequired()], default=100
-    )
-    package_1500_cost = IntegerField(
-        "1500 messages cost", [DataRequired()], default=100
-    )
-    package_2500_cost = IntegerField(
-        "2500 messages cost", [DataRequired()], default=100
-    )
     submit = SubmitField("Update")
 
     def validate_username(self, field):
@@ -87,3 +76,13 @@ class UserUpdateForm(FlaskForm):
         for symbol in FORBIDDEN_SYMBOLS:
             if symbol in self.username.data:
                 raise ValidationError("Forbidden symbols in username")
+
+
+class UserFinanceForm(FlaskForm):
+    username = StringField("Username", [DataRequired()])
+    credits = IntegerField("Credits", [DataRequired()], default=100)
+    package_500_cost = IntegerField("500 messages cost", [DataRequired()])
+    package_1000_cost = IntegerField("1000 messages cost", [DataRequired()])
+    package_1500_cost = IntegerField("1500 messages cost", [DataRequired()])
+    package_2500_cost = IntegerField("2500 messages cost", [DataRequired()])
+    submit = SubmitField("Update")

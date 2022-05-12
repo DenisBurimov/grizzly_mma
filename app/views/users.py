@@ -2,7 +2,7 @@ from flask import current_app, render_template, Blueprint, redirect, request, ur
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.models import User
-from app.forms import UserForm, UserUpdateForm
+from app.forms import UserForm, UserUpdateForm, UserFinanceForm
 
 users_blueprint = Blueprint("users", __name__)
 
@@ -64,7 +64,7 @@ def user_update(user_id: int):
         form.username.data = user.username
         form.role.data = user.role.name
 
-    return render_template("user/update.html", form=form, user_id=user_id)
+    return render_template("user/update.html", form=form, user=user)
 
 
 @users_blueprint.route("/user_search/<query>")
@@ -82,3 +82,30 @@ def user_search(query):
         users=users,
         query=query,
     )
+
+
+@users_blueprint.route("/user_finance/<int:user_id>", methods=["GET", "POST"])
+@login_required
+def user_finance(user_id: int):
+    form = UserFinanceForm()
+    user: User = User.query.get(user_id)
+
+    if form.validate_on_submit():
+        user.credits_available = form.credits.data
+        user.package_500_cost = form.package_500_cost.data
+        user.package_1000_cost = form.package_1000_cost.data
+        user.package_1500_cost = form.package_1500_cost.data
+        user.package_2500_cost = form.package_2500_cost.data
+        user.save()
+
+        return redirect(url_for("users.users_page"))
+
+    elif request.method == "GET":
+        form.username.data = user.username
+        form.credits.data = user.credits_available
+        form.package_500_cost.data = user.package_500_cost
+        form.package_1000_cost.data = user.package_1000_cost
+        form.package_1500_cost.data = user.package_1500_cost
+        form.package_2500_cost.data = user.package_2500_cost
+
+    return render_template("user/finance.html", form=form, user=user)
