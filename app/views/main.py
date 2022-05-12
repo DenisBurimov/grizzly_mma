@@ -9,5 +9,5 @@ main_blueprint = Blueprint("main", __name__)
 @login_required
 def index():
     if current_user.role == User.Role.admin:
-        return redirect(url_for("users.users_page"))
-    return redirect(url_for("accounts.accounts_page"))
+        return redirect(url_for("billings.billings_page"))
+    return redirect(url_for("billings.billings_page"))

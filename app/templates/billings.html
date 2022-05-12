@@ -18,8 +18,11 @@
       <thead>
         <tr>
           <th scope="col">id</th>
-          <th scope="col">Credits</th>
-          <th scope="col">Created By</th>
+          <th scope="col">Action</th>
+          <th scope="col">Reseller</th>
+          <th scope="col">Package</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Target</th>
           <th scope="col">Created At</th>
         </tr>
       </thead>
@@ -27,8 +30,11 @@
         {% for billing in billings.items %}
           <tr>
             <td>{{billing.id}}</td>
-            <td><a class="user_update" href="{{ url_for('billings.billings_details', billing_id=billing.id) }}">{{billing.credits}}</a></td>
+            <td>Deposit/Withdraw</td>
             <td>{{billing.reseller.username}}</td>
+            <td><a class="user_update" href="{{ url_for('billings.billings_details', billing_id=billing.id) }}">{{billing.credits}}</a></td>
+            <td>Cost</td>
+            <td>Target</td>
             <td>{{ billing.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
           </tr>
         {% endfor %}
