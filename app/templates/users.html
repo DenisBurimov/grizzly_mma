@@ -31,7 +31,7 @@
                   <td>{{ user.id }}</td>
                   <td><a class="user_update" href="{{ url_for('users.user_update', user_id=user.id) }}">{{ user.username }}</a></td>
                   <td>{{ user.role.name }}</td>
-                  <td>Spent</td>
+                  <td>{{ user.billings | sum(attribute='credits') }}</td>
                   <td><a class="user_update" href="{{ url_for('users.user_finance', user_id=user.id) }}">{{ user.credits_available }}</a></td>
                   <td><a class="delete_button" onclick="return confirm('Are you sure?');" href="{{ url_for('users.user_delete', user_id=user.id) }}">Delete</a></td>
               {% endif %}

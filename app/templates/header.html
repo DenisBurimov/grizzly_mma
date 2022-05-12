@@ -11,13 +11,21 @@
         </div>
       </div>
       </form>
-      <div class="navbar-nav">
+      <div class="mobile_nav_row navbar-nav d-flex flex-row">
+        <div class="mobile_balance_wrapper d-flex flex-row">
+          <p class="mobile_balance">{{user.username}}</p>
+        </div>
+
+        <div class="mobile_balance_wrapper d-flex flex-row">
+          <p class="mobile_balance">Balance: {{user.credits_available}}</p>
+        </div>
+
         {% if current_user.is_authenticated %}
-        <div class="nav-item text-nowrap">
+        <div id="sign_out" class="mobile_sign_out nav-item text-nowrap">
             <a class="nav-link px-3" href="{{ url_for('login.logout') }}">Sign out</a>
         </div>
         {% else %}
-        <div class="nav-item text-nowrap">
+        <div id="sign_out" class="mobile_sign_out nav-item text-nowrap">
             <a class="nav-link px-3" href="{{ url_for('login.login') }}">Login</a>
         </div>
         {% endif %}
