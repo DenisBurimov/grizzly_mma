@@ -18,7 +18,6 @@
       <thead>
         <tr>
           <th scope="col">id</th>
-          <th scope="col">Action</th>
           <th scope="col">Reseller</th>
           <th scope="col">Package</th>
           <th scope="col">Cost</th>
@@ -30,10 +29,9 @@
         {% for billing in billings.items %}
           <tr>
             <td>{{billing.id}}</td>
-            <td>Deposit/Withdraw</td>
             <td><a class="user_update" href="{{ url_for('users.user_finance', user_id=billing.reseller.id) }}">{{billing.reseller.username}}</a></td>
             <td><a class="user_update" href="{{ url_for('billings.billings_details', billing_id=billing.id) }}">{{billing.credits}}</a></td>
-            <td>Cost</td>
+            <td>{{user}}</td>
             {% if billing.account %}
             <td><a class="user_update" href="{{ url_for('accounts.account_info', account_id=billing.account.id) }}">{{billing.account.login}}</a></td>
             {% else %}

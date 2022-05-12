@@ -12,10 +12,9 @@ from flask import (
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.logger import log
-from app.models import User, Billing
+from app.models import User, Account, Billing
 from app.forms import BillingForm
 from app import db
-from app.models.account import Account
 
 
 billings_blueprint = Blueprint("billings", __name__)
@@ -36,6 +35,7 @@ def billings_page():
 @login_required
 def billing_add():
     form = BillingForm()
+    user: User = User.query.filter_by(id=current_user.id).first()
     if current_user.role == User.Role.admin:
         form.account.choices = [
             (account.id, account.login)
@@ -59,7 +59,19 @@ def billing_add():
         )
         billing.save()
 
-        return redirect(url_for("billings.billings_details", billing_id=billing.id))
+        if form.credits.data == 500:
+            user.credits_available -= user.package_500_cost
+        elif form.credits.data == 1000:
+            user.credits_available -= user.package_1000_cost
+        elif form.credits.data == 1500:
+            user.credits_available -= user.package_1500_cost
+        elif form.credits.data == 2500:
+            user.credits_available -= user.package_2500_cost
+        user.save()
+
+        return redirect(
+            url_for("billings.billings_details", billing_id=billing.id, user=user)
+        )
 
     elif form.is_submitted():
         flash("Something went wrong. Cannot create a billing!", "danger")

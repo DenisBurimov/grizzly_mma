@@ -80,7 +80,11 @@ class UserUpdateForm(FlaskForm):
 
 class UserFinanceForm(FlaskForm):
     username = StringField("Username", [DataRequired()])
-    credits = IntegerField("Credits", [DataRequired()], default=100)
+    credits = IntegerField("Credits", [DataRequired()])
+    transaction_type = SelectField(
+        "Deposit/Withdraw", choices=[("Deposit", "Deposit"), ("Withdraw", "Withdraw")]
+    )
+    transaction_amount = IntegerField("Transaction", default=0)
     package_500_cost = IntegerField("500 messages cost", [DataRequired()])
     package_1000_cost = IntegerField("1000 messages cost", [DataRequired()])
     package_1500_cost = IntegerField("1500 messages cost", [DataRequired()])

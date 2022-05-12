@@ -42,6 +42,10 @@ body {
   min-height: 200px;
 }
 
+.read_only_inputfield {
+  background: rgb(241, 241, 241);
+}
+
 .copy_button {
   border-radius: 5px !important;
   margin-bottom: 5px  !important;

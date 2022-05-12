@@ -8,20 +8,30 @@
 {% block content %}
 <main class="d-flex justify-content-center">
 
-  <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('users.user_update', user_id=user.id) }}" method="post">
+  <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('users.user_finance', user_id=user.id) }}" method="post">
 
     {{ form.hidden_tag() }}
 
-    <h1 class="h3 my-3">User Details</h1>
+    <h1 class="h3 my-3">Reseller Details</h1>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
         <p class="me-3 pt-3">User: </p>
-        {{form.username(class='hit-input', readonly="true")}}
+        {{form.username(class='hit-input read_only_inputfield', readonly="true")}}
       </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
-      <p class="me-3 pt-3">Credits: </p>
-      {{form.credits(class='hit-input')}}
+      <p class="me-3 pt-3">Balance: </p>
+      {{form.credits(class='hit-input read_only_inputfield', readonly="true")}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">{{form.transaction_type.label}}: </p>
+      {{form.transaction_type(class='hit-input', readonly="true")}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">{{form.transaction_amount.label}}: </p>
+      {{form.transaction_amount(class='hit-input')}}
     </div>
 
     <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">

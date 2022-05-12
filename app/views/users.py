@@ -1,4 +1,12 @@
-from flask import current_app, render_template, Blueprint, redirect, request, url_for
+from flask import (
+    current_app,
+    render_template,
+    Blueprint,
+    redirect,
+    request,
+    url_for,
+    flash,
+)
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.models import User
@@ -91,14 +99,18 @@ def user_finance(user_id: int):
     user: User = User.query.get(user_id)
 
     if form.validate_on_submit():
-        user.credits_available = form.credits.data
+        if form.transaction_type.data == "Deposit":
+            user.credits_available += form.transaction_amount.data
+        else:
+            user.credits_available -= form.transaction_amount.data
         user.package_500_cost = form.package_500_cost.data
         user.package_1000_cost = form.package_1000_cost.data
         user.package_1500_cost = form.package_1500_cost.data
         user.package_2500_cost = form.package_2500_cost.data
         user.save()
+        flash("Users finance details have been successfully updated", "info")
 
-        return redirect(url_for("users.users_page"))
+        return redirect(url_for("users.user_finance", user_id=user.id))
 
     elif request.method == "GET":
         form.username.data = user.username
