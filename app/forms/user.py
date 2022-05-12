@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import IntegerField, StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, InputRequired, EqualTo, ValidationError
 from app.models import User
 
@@ -69,6 +69,17 @@ class UserUpdateForm(FlaskForm):
         ],
     )
     role = SelectField("Role", coerce=int, validators=[InputRequired()], choices=ROLES)
+    credits = IntegerField("Credits", [DataRequired()], default=100)
+    package_500_cost = IntegerField("500 messages cost", [DataRequired()], default=100)
+    package_1000_cost = IntegerField(
+        "1000 messages cost", [DataRequired()], default=100
+    )
+    package_1500_cost = IntegerField(
+        "1500 messages cost", [DataRequired()], default=100
+    )
+    package_2500_cost = IntegerField(
+        "2500 messages cost", [DataRequired()], default=100
+    )
     submit = SubmitField("Update")
 
     def validate_username(self, field):

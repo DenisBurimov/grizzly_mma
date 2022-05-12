@@ -31,7 +31,7 @@
           <tr>
             <td>{{billing.id}}</td>
             <td>Deposit/Withdraw</td>
-            <td>{{billing.reseller.username}}</td>
+            <td><a class="user_update" href="{{ url_for('users.user_update', user_id=billing.reseller.id) }}">{{billing.reseller.username}}</a></td>
             <td><a class="user_update" href="{{ url_for('billings.billings_details', billing_id=billing.id) }}">{{billing.credits}}</a></td>
             <td>Cost</td>
             {% if billing.account %}
