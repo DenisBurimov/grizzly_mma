@@ -31,7 +31,7 @@ def accounts_page():
         page=page, per_page=current_app.config["PAGE_SIZE"]
     )
 
-    return render_template("accounts.html", accounts=page_data)
+    return render_template("accounts.html", accounts=page_data, user=current_user)
 
 
 @accounts_blueprint.route("/account_add", methods=["GET", "POST"])
@@ -72,7 +72,7 @@ def account_add():
         form.login.data = gen_login()
         form.password.data = gen_password()
 
-    return render_template("account/add_account.html", form=form)
+    return render_template("account/add_account.html", form=form, user=current_user)
 
 
 @accounts_blueprint.route("/account_info/<int:account_id>", methods=["GET", "POST"])
@@ -85,7 +85,7 @@ def account_info(account_id: int):
     balance = sum((x.credits for x in billings))
 
     return render_template(
-        "account/info_account.html", account=account, balance=balance
+        "account/info_account.html", account=account, balance=balance, user=current_user
     )
 
 
@@ -96,7 +96,7 @@ def account_billings(account_id: int):
     billings = Billing.query.filter(Billing.account_id == account_id)
     billings = billings.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
 
-    return render_template("billings.html", billings=billings)
+    return render_template("billings.html", billings=billings, user=current_user)
 
 
 @accounts_blueprint.route("/account_search/<query>")
@@ -116,7 +116,9 @@ def account_search(query):
             page=page, per_page=current_app.config["PAGE_SIZE"]
         )
 
-    return render_template("accounts.html", accounts=accounts, query=query)
+    return render_template(
+        "accounts.html", accounts=accounts, query=query, user=current_user
+    )
 
 
 @accounts_blueprint.route("/account_enroll/<int:account_id>")
@@ -124,4 +126,4 @@ def account_search(query):
 def account_enroll(account_id):
     account = Account.query.get(account_id)
 
-    return render_template("account/enroll.html", account=account)
+    return render_template("account/enroll.html", account=account, user=current_user)

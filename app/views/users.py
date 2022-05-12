@@ -25,7 +25,7 @@ def users_page():
         page=page, per_page=current_app.config["PAGE_SIZE"]
     )
 
-    return render_template("users.html", users=users)
+    return render_template("users.html", users=users, user=current_user)
 
 
 @users_blueprint.route("/user_delete/<int:user_id>", methods=["GET"])

@@ -98,6 +98,10 @@ body {
   color: black;
 }
 
+#balance {
+  padding: 0 1rem;
+}
+
 .form-control-dark {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.1);

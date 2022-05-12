@@ -28,7 +28,7 @@ def billings_page():
         page_data = page_data.filter(Billing.user_id == current_user.id)
     page = request.args.get("page", 1, type=int)
     page_data = page_data.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
-    return render_template("billings.html", billings=page_data)
+    return render_template("billings.html", billings=page_data, user=current_user)
 
 
 @billings_blueprint.route("/billing_add", methods=["GET", "POST"])

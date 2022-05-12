@@ -5,6 +5,7 @@
           <p class="nav-link fw-bold">
             <a class="user_navbar" href="{{ url_for('users.user_update', user_id=current_user.id) }}">{{current_user.username}} - {{current_user.role.name}}</a>
           </p>
+          <p id="balance">Balance: {{user.credits_available}}</p>
         </li>
         {% if current_user.role.name == "admin" %}
         <li class="nav-item">
