@@ -21,6 +21,7 @@
           <th scope="col">Role</th>
           <th scope="col">Spent</th>
           <th scope="col">Balance</th>
+          <th scope="col">Credit</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
@@ -33,6 +34,7 @@
                   <td>{{ user.role.name }}</td>
                   <td>{{ user.billings | sum(attribute='credits') }}</td>
                   <td><a class="user_update" href="{{ url_for('users.user_finance', user_id=user.id) }}">{{ user.credits_available }}</a></td>
+                  <td>{{ "Allowed" if user.credit_alowed else "Forbidden" }}</td>
                   <td><a class="delete_button" onclick="return confirm('Are you sure?');" href="{{ url_for('users.user_delete', user_id=user.id) }}">Delete</a></td>
               {% endif %}
             </tr>

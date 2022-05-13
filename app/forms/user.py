@@ -1,5 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, StringField, PasswordField, SubmitField, SelectField
+from wtforms import (
+    IntegerField,
+    StringField,
+    PasswordField,
+    SubmitField,
+    SelectField,
+    BooleanField,
+)
 from wtforms.validators import DataRequired, InputRequired, EqualTo, ValidationError
 from app.models import User
 
@@ -81,12 +88,13 @@ class UserUpdateForm(FlaskForm):
 class UserFinanceForm(FlaskForm):
     username = StringField("Username", [DataRequired()])
     credits = IntegerField("Credits")
-    transaction_type = SelectField(
-        "Deposit/Withdraw", choices=[("Deposit", "Deposit"), ("Withdraw", "Withdraw")]
-    )
-    transaction_amount = IntegerField("Transaction", default=0)
     package_500_cost = IntegerField("500 messages cost", [DataRequired()])
     package_1000_cost = IntegerField("1000 messages cost", [DataRequired()])
     package_1500_cost = IntegerField("1500 messages cost", [DataRequired()])
     package_2500_cost = IntegerField("2500 messages cost", [DataRequired()])
+    credit_alowed = BooleanField("Negative balance")
+    transaction_type = SelectField(
+        "Deposit/Withdraw", choices=[("Deposit", "Deposit"), ("Withdraw", "Withdraw")]
+    )
+    transaction_amount = IntegerField("Transaction", default=0)
     submit = SubmitField("Update")

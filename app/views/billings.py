@@ -49,6 +49,8 @@ def billing_add():
         ]
 
     if form.validate_on_submit():
+        # If user.credit_allowed or user.credits_available > cost
+
         from app.controllers import get_paid_qrcode
 
         cost: int
@@ -61,19 +63,30 @@ def billing_add():
         elif form.credits.data == 2500:
             cost = user.package_2500_cost
 
-        billing = Billing(
-            user_id=current_user.id,
-            account_id=form.account.data,
-            credits=form.credits.data,
-            cost=cost,
-            qrcode=get_paid_qrcode(form.users_public_key.data, form.credits.data),
-        )
-        billing.save()
+        if user.credits_available >= cost or user.credit_alowed:
+            billing = Billing(
+                user_id=current_user.id,
+                account_id=form.account.data,
+                credits=form.credits.data,
+                cost=cost,
+                qrcode=get_paid_qrcode(form.users_public_key.data, form.credits.data),
+            )
+            billing.save()
 
-        user.credits_available -= cost
-        user.save()
+            user.credits_available -= cost
+            user.save()
+            flash(
+                f"Billing successfully created. Your balance {user.credits_available}",
+                "info",
+            )
 
-        return redirect(url_for("billings.billings_details", billing_id=billing.id))
+            return redirect(url_for("billings.billings_details", billing_id=billing.id))
+        else:
+            flash(
+                "Cannot create billing. Please check your balance or contact your administrator.",
+                "danger",
+            )
+            return redirect(url_for("billings.billings_page"))
 
     elif form.is_submitted():
         flash("Something went wrong. Cannot create a billing!", "danger")

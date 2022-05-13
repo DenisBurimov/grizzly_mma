@@ -99,6 +99,10 @@ def user_finance(user_id: int):
         user.credits_available = 0
         user.save()
 
+    if user.credit_alowed is None:
+        user.credit_alowed = False
+        user.save()
+
     if form.validate_on_submit():
         if form.transaction_type.data == "Deposit":
             user.credits_available += form.transaction_amount.data
@@ -108,6 +112,7 @@ def user_finance(user_id: int):
         user.package_1000_cost = form.package_1000_cost.data
         user.package_1500_cost = form.package_1500_cost.data
         user.package_2500_cost = form.package_2500_cost.data
+        user.credit_alowed = form.credit_alowed.data
         user.save()
         flash("Users finance details have been successfully updated", "info")
 
@@ -120,5 +125,6 @@ def user_finance(user_id: int):
         form.package_1000_cost.data = user.package_1000_cost
         form.package_1500_cost.data = user.package_1500_cost
         form.package_2500_cost.data = user.package_2500_cost
+        form.credit_alowed.data = user.credit_alowed
 
     return render_template("user/finance.html", form=form, user=user)

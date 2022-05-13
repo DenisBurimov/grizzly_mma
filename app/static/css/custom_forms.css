@@ -42,6 +42,14 @@ body {
   min-height: 200px;
 }
 
+#checkbox_credit_allowed {
+  margin: 1px 0 0 0;
+}
+
+#checkbox_comment {
+  padding: 0 0 0 15px;
+}
+
 .read_only_inputfield {
   background: rgb(241, 241, 241);
 }
@@ -62,7 +70,6 @@ body {
 }
 
 .custom_alert {
-  /* padding: 15px 0!important; */
   background: rgba(252, 109, 109, 0.542);
   color: red;
   font-weight: 500;
@@ -71,12 +78,6 @@ body {
 }
 
 .navbar-toggler {display: none;}
-
-/* @media screen and (max-width: 1024px) {
-  .account_summary {
-    display: block;
-  }
-} */
 
 @media screen and (max-width: 768px) {
   .account_info_container {
