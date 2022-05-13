@@ -84,7 +84,7 @@ class UserFinanceForm(FlaskForm):
     transaction_type = SelectField(
         "Deposit/Withdraw", choices=[("Deposit", "Deposit"), ("Withdraw", "Withdraw")]
     )
-    transaction_amount = IntegerField("Transaction", default=100)
+    transaction_amount = IntegerField("Transaction", default=0)
     package_500_cost = IntegerField("500 messages cost", [DataRequired()])
     package_1000_cost = IntegerField("1000 messages cost", [DataRequired()])
     package_1500_cost = IntegerField("1500 messages cost", [DataRequired()])

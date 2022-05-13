@@ -48,7 +48,7 @@ def user_add():
             username=form.username.data,
             password=form.password.data,
             role=User.Role(form.role.data),
-            credits_available=0,
+            # credits_available=0,
         ).save()
 
         return redirect(url_for("users.users_page"))
@@ -96,7 +96,7 @@ def user_finance(user_id: int):
     user: User = User.query.get(user_id)
 
     if user.credits_available is None:
-        user.credits_available = 100
+        user.credits_available = 0
         user.save()
 
     if form.validate_on_submit():
