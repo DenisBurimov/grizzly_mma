@@ -59,6 +59,7 @@ def test_add_user(client):
 
     assert user.username == TEST_USERNAME
     assert user.credits_available == 0
+    assert user.credit_alowed is False
 
 
 # def test_user_delete(client):
