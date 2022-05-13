@@ -67,3 +67,57 @@ def test_add_user(client):
 #     assert response.status_code == 302
 #     user: User = User.query.get(10)
 #     assert user.deleted is True
+
+
+def test_update_user(client):
+    login(client)
+    TEST_USER_ID = 5
+    TEST_USERNAME = "TEST_USERNAME"
+    TEST_PASSWORD = "TEST_PASS"
+    TEST_ROLE = 1
+
+    res = client.post(
+        f"/user_update/{TEST_USER_ID}",
+        data=dict(
+            username=TEST_USERNAME,
+            password=TEST_PASSWORD,
+            password_confirm=TEST_PASSWORD,
+            role=TEST_ROLE,
+        ),
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+
+    user: User = User.query.filter_by(id=TEST_USER_ID).first()
+
+    assert user.username == TEST_USERNAME
+    assert user.role.value == TEST_ROLE
+
+
+def test_user_finance(client):
+    login(client)
+    TEST_USER_ID = 5
+    DEPOSIT = "Deposit"
+    TRANSACTION_AMOUNT = 1000
+    PACKAGE_500_COST = 50
+    PACKAGE_1000_COST = 100
+    PACKAGE_1500_COST = 150
+    PACKAGE_2500_COST = 250
+
+    res = client.post(
+        f"/user_update/{TEST_USER_ID}",
+        data=dict(
+            transaction_type=DEPOSIT,
+            transaction_amount=TRANSACTION_AMOUNT,
+            package_500_cost=PACKAGE_500_COST,
+            package_1000_cost=PACKAGE_1000_COST,
+            package_1500_cost=PACKAGE_1500_COST,
+            package_2500_cost=PACKAGE_2500_COST,
+        ),
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+
+    user: User = User.query.filter_by(id=TEST_USER_ID).first()
+
+    assert user.credits_available == TRANSACTION_AMOUNT
