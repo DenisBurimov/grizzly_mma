@@ -25,7 +25,7 @@ def users_page():
         page=page, per_page=current_app.config["PAGE_SIZE"]
     )
 
-    return render_template("users.html", users=users, user=current_user)
+    return render_template("users.html", users=users)
 
 
 @users_blueprint.route("/user_delete/<int:user_id>", methods=["GET"])
@@ -48,6 +48,7 @@ def user_add():
             username=form.username.data,
             password=form.password.data,
             role=User.Role(form.role.data),
+            credits_available=0,
         ).save()
 
         return redirect(url_for("users.users_page"))
@@ -85,11 +86,7 @@ def user_search(query):
         .paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
     )
 
-    return render_template(
-        "users.html",
-        users=users,
-        query=query,
-    )
+    return render_template("users.html", users=users, query=query)
 
 
 @users_blueprint.route("/user_finance/<int:user_id>", methods=["GET", "POST"])
@@ -97,6 +94,10 @@ def user_search(query):
 def user_finance(user_id: int):
     form = UserFinanceForm()
     user: User = User.query.get(user_id)
+
+    if not user.credits_available:
+        user.credits_available = 0
+        user.save()
 
     if form.validate_on_submit():
         if form.transaction_type.data == "Deposit":

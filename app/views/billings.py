@@ -28,7 +28,7 @@ def billings_page():
         page_data = page_data.filter(Billing.user_id == current_user.id)
     page = request.args.get("page", 1, type=int)
     page_data = page_data.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
-    return render_template("billings.html", billings=page_data, user=current_user)
+    return render_template("billings.html", billings=page_data)
 
 
 @billings_blueprint.route("/billing_add", methods=["GET", "POST"])
@@ -93,7 +93,11 @@ def billings_details(billing_id):
     image_64 = base64.b64encode(billing.qrcode)
     image = image_64.decode()
 
-    return render_template("billing/billing_details.html", billing=billing, image=image)
+    return render_template(
+        "billing/billing_details.html",
+        billing=billing,
+        image=image,
+    )
 
 
 @billings_blueprint.route("/billing_search/<query>")

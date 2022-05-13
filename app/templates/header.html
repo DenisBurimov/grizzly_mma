@@ -13,11 +13,11 @@
       </form>
       <div class="mobile_nav_row navbar-nav d-flex flex-row">
         <div class="mobile_balance_wrapper d-flex flex-row">
-          <p class="mobile_balance">{{user.username}}</p>
+          <p class="mobile_balance">{{current_user.username}}</p>
         </div>
 
         <div class="mobile_balance_wrapper d-flex flex-row">
-          <p class="mobile_balance">Balance: {{user.credits_available}}</p>
+          <p class="mobile_balance">Balance: {{current_user.credits_available}}</p>
         </div>
 
         {% if current_user.is_authenticated %}
