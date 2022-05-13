@@ -48,7 +48,7 @@ def user_add():
             username=form.username.data,
             password=form.password.data,
             role=User.Role(form.role.data),
-            # credits_available=0,
+            credits_available=0,
         ).save()
 
         return redirect(url_for("users.users_page"))
