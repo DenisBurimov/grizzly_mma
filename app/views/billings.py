@@ -84,6 +84,7 @@ def billing_add():
                 "Cannot create billing. Please check your balance or contact your administrator.",
                 "danger",
             )
+            log(log.ERROR, "Cannot create a billing. Balance issue.")
             return redirect(url_for("billings.billings_page"))
 
     elif form.is_submitted():
