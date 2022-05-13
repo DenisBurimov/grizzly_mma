@@ -95,8 +95,8 @@ def user_finance(user_id: int):
     form = UserFinanceForm()
     user: User = User.query.get(user_id)
 
-    if not user.credits_available:
-        user.credits_available = 0
+    if user.credits_available is None:
+        user.credits_available = 100
         user.save()
 
     if form.validate_on_submit():

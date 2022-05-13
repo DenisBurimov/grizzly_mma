@@ -80,7 +80,7 @@ class UserUpdateForm(FlaskForm):
 
 class UserFinanceForm(FlaskForm):
     username = StringField("Username", [DataRequired()])
-    credits = IntegerField("Credits", [DataRequired()], default=0)
+    credits = IntegerField("Credits")
     transaction_type = SelectField(
         "Deposit/Withdraw", choices=[("Deposit", "Deposit"), ("Withdraw", "Withdraw")]
     )
