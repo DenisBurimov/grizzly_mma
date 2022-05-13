@@ -49,8 +49,6 @@ def billing_add():
         ]
 
     if form.validate_on_submit():
-        # If user.credit_allowed or user.credits_available > cost
-
         from app.controllers import get_paid_qrcode
 
         cost: int

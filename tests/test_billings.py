@@ -48,7 +48,7 @@ def test_create_billing(client, monkeypatch):
     TEST_ACCOUNT_ID = 1
     TEST_PUBLIC_KEY = "abrashwabracadabra=="
     TEST_CREDITS = 1000
-    login(client)
+    login(client, "user_2")
     TEST_QRCODE = b"test"
 
     def mock_get_paid_qrcode(users_public_key: str, credits: int) -> bytes:
