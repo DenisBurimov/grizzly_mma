@@ -10,14 +10,14 @@ class Transaction(db.Model, ModelMixin):
 
     __tablename__ = "transactions"
 
-    class Action(enum.IntEnum):
+    class Action(enum.Enum):
         """
         Utility class to detect transaction type
 
         """
 
-        deposit = 1
-        withdraw = 2
+        deposit = "deposit"
+        withdraw = "withdraw"
 
     id = db.Column(db.Integer, primary_key=True)
     action = db.Column(Enum(Action), default=Action.deposit)
@@ -31,4 +31,4 @@ class Transaction(db.Model, ModelMixin):
     reseller = relationship("User", foreign_keys=[reseller_id])
 
     def __repr__(self):
-        return f"<{self.id}, instance: {self.admin_username}, created_by: {self.transaction_amount}"
+        return f"<{self.id}, {self.admin_id}-{self.reseller_id} amount: {self.transaction_amount}>"

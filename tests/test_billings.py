@@ -52,7 +52,7 @@ def test_create_billing(client, monkeypatch):
     TEST_ACCOUNT_ID = 1
     TEST_PUBLIC_KEY = "abrashwabracadabra=="
     TEST_CREDITS = 1000
-    login(client, "user_2")
+    login(client, "user_2", "pass")
     TEST_QRCODE = b"test"
     TEST_PACKAGE_COST = 100
 

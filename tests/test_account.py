@@ -27,13 +27,13 @@ def client():
 def test_accounts_pages(client):
     response = client.get("/accounts")
     assert response.status_code == 302
-    login(client, "user_2")
+    login(client, "user_2", "pass")
     response = client.get("/accounts")
     assert response.status_code == 200
 
 
 def test_account_info(client):
-    login(client, "user_2")
+    login(client, "user_2", "pass")
     response = client.get("/account_info/3")
     assert response.status_code == 200
     response = client.get("/account_info/3")
@@ -65,7 +65,7 @@ def test_add_account(client):
     )
     assert res.status_code == 302
 
-    login(client, "user_2")
+    login(client, "user_2", "pass")
     res = client.post(
         "/account_add",
         data=dict(login=TEST_LOGIN, password=TEST_PASSWORD),

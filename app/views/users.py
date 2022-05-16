@@ -93,6 +93,10 @@ def user_search(query):
 @users_blueprint.route("/user_finance/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def user_finance(user_id: int):
+    curr_user: User = current_user
+    if curr_user.role != User.Role.admin:
+        flash("Access denied")
+        return redirect(url_for("main.index"))
     form = UserFinanceForm()
     user: User = User.query.get(user_id)
 
@@ -105,9 +109,31 @@ def user_finance(user_id: int):
         user.save()
 
     if form.validate_on_submit():
-        if form.transaction_type.data == "1":
+        # Transaction notation creating
+        Transaction(
+            action=form.transaction_type.data,
+            admin_id=current_user.id,
+            transaction_amount=form.transaction_amount.data,
+            reseller_id=user.id,
+        ).save()
+
+        if form.transaction_type.data == Transaction.Action.deposit:
+            log(
+                log.INFO,
+                "admin: [%d] user [%d] deposit: [%d]",
+                current_user.id,
+                user.id,
+                form.transaction_amount.data,
+            )
             user.credits_available += form.transaction_amount.data
         else:
+            log(
+                log.INFO,
+                "admin: [%d] user [%d] withdraw: [%d]",
+                current_user.id,
+                user.id,
+                form.transaction_amount.data,
+            )
             user.credits_available -= form.transaction_amount.data
         user.package_500_cost = form.package_500_cost.data
         user.package_1000_cost = form.package_1000_cost.data
@@ -116,26 +142,17 @@ def user_finance(user_id: int):
         user.credit_alowed = form.credit_alowed.data
         user.save()
 
-        # Transaction notation creating
-        Transaction(
-            action=Transaction.Action(int(form.transaction_type.data)),
-            admin_id=current_user.id,
-            transaction_amount=form.transaction_amount.data,
-            reseller_id=user.id,
-        ).save()
+        flash("Users finance updated", "info")
+    elif form.is_submitted():
+        log(log.WARNING, "user_finance: error post data %s", form.errors)
+        flash(f"Error data: {form.errors}", "danger")
 
-        flash("Users finance details have been successfully updated", "info")
-        log(log.INFO, "Cannot create a billing. Balance issue.")
-
-        return redirect(url_for("users.user_finance", user_id=user.id))
-
-    elif request.method == "GET":
-        form.username.data = user.username
-        form.credits.data = user.credits_available
-        form.package_500_cost.data = user.package_500_cost
-        form.package_1000_cost.data = user.package_1000_cost
-        form.package_1500_cost.data = user.package_1500_cost
-        form.package_2500_cost.data = user.package_2500_cost
-        form.credit_alowed.data = user.credit_alowed
+    form.username.data = user.username
+    form.credits.data = user.credits_available
+    form.package_500_cost.data = user.package_500_cost
+    form.package_1000_cost.data = user.package_1000_cost
+    form.package_1500_cost.data = user.package_1500_cost
+    form.package_2500_cost.data = user.package_2500_cost
+    form.credit_alowed.data = user.credit_alowed
 
     return render_template("user/finance.html", form=form, user=user)

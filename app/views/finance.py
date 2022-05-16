@@ -5,8 +5,9 @@ from flask import (
     current_app,
 )
 from flask_login import login_required, current_user
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 from app.models import User, Transaction
+from app import db
 
 
 finance_blueprint = Blueprint("finance", __name__)
@@ -20,4 +21,11 @@ def finance_page():
         page_data = page_data.filter(Transaction.reseller_id == current_user.id)
     page = request.args.get("page", 1, type=int)
     page_data = page_data.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
-    return render_template("finance.html", transactions=page_data)
+
+    (debt,) = (
+        db.session.query(func.sum(User.credits_available).label("dept"))
+        .filter(User.credits_available < 0)
+        .first()
+    )
+
+    return render_template("finance.html", transactions=page_data, debt=debt)
