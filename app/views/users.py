@@ -9,8 +9,9 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from sqlalchemy import desc
-from app.models import User
-from app.forms import UserForm, UserUpdateForm, UserFinanceForm
+from app.models import User, Transaction
+from app.forms import UserCreateForm, UserUpdateForm, UserFinanceForm
+from app.logger import log
 
 users_blueprint = Blueprint("users", __name__)
 
@@ -41,7 +42,7 @@ def user_delete(user_id: int):
 @users_blueprint.route("/user_add", methods=["GET", "POST"])
 @login_required
 def user_add():
-    form = UserForm()
+    form = UserCreateForm()
 
     if form.validate_on_submit():
         User(
@@ -104,7 +105,7 @@ def user_finance(user_id: int):
         user.save()
 
     if form.validate_on_submit():
-        if form.transaction_type.data == "Deposit":
+        if form.transaction_type.data == "1":
             user.credits_available += form.transaction_amount.data
         else:
             user.credits_available -= form.transaction_amount.data
@@ -114,7 +115,17 @@ def user_finance(user_id: int):
         user.package_2500_cost = form.package_2500_cost.data
         user.credit_alowed = form.credit_alowed.data
         user.save()
+
+        # Transaction notation creating
+        Transaction(
+            action=Transaction.Action(int(form.transaction_type.data)),
+            admin_id=current_user.id,
+            transaction_amount=form.transaction_amount.data,
+            reseller_id=user.id,
+        ).save()
+
         flash("Users finance details have been successfully updated", "info")
+        log(log.INFO, "Cannot create a billing. Balance issue.")
 
         return redirect(url_for("users.user_finance", user_id=user.id))
 

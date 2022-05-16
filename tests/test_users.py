@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
-from app.models import User
+from app.models import User, Transaction
 from .utils import login
 
 
@@ -97,7 +97,7 @@ def test_update_user(client):
 def test_user_finance(client):
     login(client)
     TEST_USER_ID = 5
-    DEPOSIT = "Deposit"
+    DEPOSIT = 1
     TRANSACTION_AMOUNT = 1000
     PACKAGE_500_COST = 50
     PACKAGE_1000_COST = 100
@@ -105,7 +105,7 @@ def test_user_finance(client):
     PACKAGE_2500_COST = 250
 
     res = client.post(
-        f"/user_update/{TEST_USER_ID}",
+        f"/user_finance/{TEST_USER_ID}",
         data=dict(
             transaction_type=DEPOSIT,
             transaction_amount=TRANSACTION_AMOUNT,
@@ -121,3 +121,7 @@ def test_user_finance(client):
     user: User = User.query.filter_by(id=TEST_USER_ID).first()
 
     assert user.credits_available == TRANSACTION_AMOUNT
+
+    # transaction: Transaction = Transaction.query.order_by(desc(Transaction.id)).first()
+
+    # assert transaction.transaction_amount == TRANSACTION_AMOUNT
