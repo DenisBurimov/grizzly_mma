@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
-from app.models import User, Transaction
+from app.models import User
 from .utils import login
 
 
