@@ -2,3 +2,4 @@
 from .user import User, AnonymousUser
 from .account import Account
 from .billing import Billing
+from .transaction import Transaction
