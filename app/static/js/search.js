@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
       baseSearchUrl = "/user_search/";
     } else if (page_title.innerHTML === "Accounts") {
       baseSearchUrl = "/account_search/";
-    } else if (page_title.innerHTML === "Billings") {
+    } else if (page_title.innerHTML === "Finance") {
+      baseSearchUrl = "/finance_search/";
+    }
+    else if (page_title.innerHTML === "Billings") {
       baseSearchUrl = "/billing_search/";
     }
 

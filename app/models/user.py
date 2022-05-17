@@ -50,6 +50,10 @@ class User(db.Model, UserMixin, ModelMixin):
 
     accounts = relationship("Account", viewonly=True)
     billings = relationship("Billing", viewonly=True)
+    # transactions = relationship(
+    #     "Transaction",
+    #     primaryjoin="and_(User.id==Transaction.admin_id)",
+    # )
 
     @hybrid_property
     def password(self):

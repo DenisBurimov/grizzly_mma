@@ -33,3 +33,36 @@ def finance_page():
     )
 
     return render_template("finance.html", transactions=page_data, debt=debt)
+
+
+@finance_blueprint.route("/finance_search/<query>")
+@login_required
+def finance_search(query):
+    finance_data = Transaction.query.order_by(desc(Transaction.id))
+    if current_user.role != User.Role.admin:
+        flash("Access denied", "danger")
+        return redirect(url_for("main.index"))
+    page = request.args.get("page", 1, type=int)
+
+    if query.isdigit():
+        finance_data = Transaction.query.filter(Transaction.transaction_amount == query)
+
+    if finance_data.count() == 0 or not query.isdigit():
+        users = User.query.filter(User.username.like(f"%{query}%")).all()
+        users_id_list = [user.id for user in users]
+        finance_data = Transaction.query.filter(
+            (Transaction.reseller_id.in_(users_id_list))
+            | (Transaction.admin_id.in_(users_id_list))
+        )
+
+    finance_data = finance_data.paginate(
+        page=page, per_page=current_app.config["PAGE_SIZE"]
+    )
+
+    (debt,) = (
+        db.session.query(func.sum(User.credits_available).label("dept"))
+        .filter(User.credits_available < 0)
+        .first()
+    )
+
+    return render_template("finance.html", transactions=finance_data, debt=debt)

@@ -27,4 +27,5 @@ class UserFinanceForm(FlaskForm):
         "Deposit/Withdraw", choices=TRANSACTION_TYPE, coerce=Transaction.Action
     )
     transaction_amount = IntegerField("Transaction", default=0)
+    comment = StringField("Comment")
     submit = SubmitField("Update")

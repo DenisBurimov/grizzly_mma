@@ -118,6 +118,7 @@ def user_finance(user_id: int):
             admin_id=current_user.id,
             transaction_amount=form.transaction_amount.data,
             reseller_id=user.id,
+            comment=form.comment.data,
         ).save()
 
         if form.transaction_type.data == Transaction.Action.deposit:
@@ -146,16 +147,18 @@ def user_finance(user_id: int):
         user.save()
 
         flash("Users finance updated", "info")
+        return redirect(url_for("users.user_finance", user_id=user.id))
     elif form.is_submitted():
         log(log.WARNING, "user_finance: error post data %s", form.errors)
         flash(f"Error data: {form.errors}", "danger")
 
-    form.username.data = user.username
-    form.credits.data = user.credits_available
-    form.package_500_cost.data = user.package_500_cost
-    form.package_1000_cost.data = user.package_1000_cost
-    form.package_1500_cost.data = user.package_1500_cost
-    form.package_2500_cost.data = user.package_2500_cost
-    form.credit_alowed.data = user.credit_alowed
+    if request.method == "GET":
+        form.username.data = user.username
+        form.credits.data = user.credits_available
+        form.package_500_cost.data = user.package_500_cost
+        form.package_1000_cost.data = user.package_1000_cost
+        form.package_1500_cost.data = user.package_1500_cost
+        form.package_2500_cost.data = user.package_2500_cost
+        form.credit_alowed.data = user.credit_alowed
 
     return render_template("user/finance.html", form=form, user=user)
