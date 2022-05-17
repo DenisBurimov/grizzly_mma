@@ -21,12 +21,14 @@
             Accounts
           </a>
         </li>
+        {% if current_user.role.name == "admin" %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('finance.finance_page') }}">
             <span data-feather="credit-card"></span>
             Finance
           </a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('billings.billings_page') }}">
             <span data-feather="credit-card"></span>

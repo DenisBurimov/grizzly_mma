@@ -3,6 +3,9 @@ from flask import (
     Blueprint,
     request,
     current_app,
+    flash,
+    redirect,
+    url_for,
 )
 from flask_login import login_required, current_user
 from sqlalchemy import desc, func
@@ -18,7 +21,8 @@ finance_blueprint = Blueprint("finance", __name__)
 def finance_page():
     page_data = Transaction.query.order_by(desc(Transaction.id))
     if current_user.role != User.Role.admin:
-        page_data = page_data.filter(Transaction.reseller_id == current_user.id)
+        flash("Access denied", "danger")
+        return redirect(url_for("main.index"))
     page = request.args.get("page", 1, type=int)
     page_data = page_data.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
 

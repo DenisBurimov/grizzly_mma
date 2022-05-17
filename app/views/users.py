@@ -59,6 +59,9 @@ def user_add():
 @users_blueprint.route("/user_update/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def user_update(user_id: int):
+    if user_id != current_user.id and current_user.role != User.Role.admin:
+        flash("Access denied", "danger")
+        return redirect(url_for("users.user_update", user_id=current_user.id))
     form = UserUpdateForm()
     user: User = User.query.get(user_id)
 
@@ -95,7 +98,7 @@ def user_search(query):
 def user_finance(user_id: int):
     curr_user: User = current_user
     if curr_user.role != User.Role.admin:
-        flash("Access denied")
+        flash("Access denied", "danger")
         return redirect(url_for("main.index"))
     form = UserFinanceForm()
     user: User = User.query.get(user_id)
