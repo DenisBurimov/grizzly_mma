@@ -50,6 +50,7 @@ def init_db(add_test_data: bool = False):
                 Billing(
                     user_id=user.id,
                     credits=1000,
+                    cost=100,
                 ).save(False)
 
     db.session.commit()

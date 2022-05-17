@@ -8,6 +8,7 @@ from flask import (
     url_for,
     request,
     current_app,
+    abort,
 )
 from flask_login import login_required, current_user
 from sqlalchemy import desc
@@ -102,6 +103,8 @@ def billing_add():
 @login_required
 def billings_details(billing_id):
     billing: Billing = Billing.query.get(billing_id)
+    if not billing:
+        raise abort(404)
     image_64 = base64.b64encode(billing.qrcode)
     image = image_64.decode()
 
@@ -145,3 +148,20 @@ def billing_search(query):
         )
 
     return render_template("billings.html", billings=billings, query=query)
+
+
+@billings_blueprint.route("/billing_cancel/<int:billing_id>")
+@login_required
+def billing_cancel(billing_id):
+    if current_user.role != User.Role.admin:
+        flash("Not enough permissions", "danger")
+        return redirect(url_for("billings.billings_page"))
+    billing: Billing = Billing.query.get(billing_id)
+    db.session.delete(billing)
+    db.session.commit()
+
+    user: User = User.query.get(billing.user_id)
+    user.credits_available += billing.cost
+    user.save()
+
+    return redirect(url_for("billings.billings_page"))

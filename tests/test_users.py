@@ -63,11 +63,12 @@ def test_add_user(client):
     assert user.credit_alowed is False
 
 
-# def test_user_delete(client):
-#     response = client.get("/user_delete/10")
-#     assert response.status_code == 302
-#     user: User = User.query.get(10)
-#     assert user.deleted is True
+def test_user_delete(client):
+    login(client)
+    response = client.get("/user_delete/10")
+    assert response.status_code == 302
+    user: User = User.query.get(10)
+    assert user.deleted is True
 
 
 def test_update_user(client):

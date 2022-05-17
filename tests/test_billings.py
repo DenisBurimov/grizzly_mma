@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
-from app.models import Billing
+from app.models import Billing, User
 from .utils import login
 
 
@@ -87,3 +87,17 @@ def test_billing_search(client):
     assert f"{today}" in response.data.decode()
     response = client.get("/billing_search/r_2")
     assert b"r_2" in response.data
+
+
+def test_billing_cancel(client):
+    TEST_BILLING_ID = 1
+    login(client)
+    billing: Billing = Billing.query.get(TEST_BILLING_ID)
+    cost = billing.cost
+    user: User = User.query.get(billing.user_id)
+    user_credits = user.credits_available
+    response = client.get(f"/billing_cancel/{TEST_BILLING_ID}")
+    assert response.status_code == 302
+    assert user.credits_available == user_credits + cost
+    response = client.get(f"/billings_details/{TEST_BILLING_ID}")
+    assert response.status_code == 404
