@@ -1,10 +1,7 @@
 import pytest
-from sqlalchemy import desc
-from flask.testing import FlaskClient
 from app import db, create_app
 from app.controllers import init_db
-from app.models import User, Transaction
-from .utils import login, logout
+from .utils import login
 
 
 @pytest.fixture
