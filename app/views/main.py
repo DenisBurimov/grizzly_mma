@@ -1,6 +1,5 @@
 from flask import Blueprint, redirect, url_for
-from flask_login import current_user, login_required
-from app.models import User
+from flask_login import login_required
 
 main_blueprint = Blueprint("main", __name__)
 
