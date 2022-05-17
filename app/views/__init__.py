@@ -5,3 +5,4 @@ from .accounts import accounts_blueprint
 from .auth import auth_blueprint
 from .users import users_blueprint
 from .billings import billings_blueprint
+from .finance import finance_blueprint

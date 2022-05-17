@@ -7,7 +7,6 @@
 
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-  <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
 
   <div class="d-flex justify-content-between pt-3">
     <h3 class="page_title mt-1">Billings</h3>
@@ -18,9 +17,10 @@
       <thead>
         <tr>
           <th scope="col">id</th>
-          <th scope="col">Credits</th>
-          <th scope="col">Created By</th>
-          <th scope="col">For Account</th>
+          <th scope="col">Reseller</th>
+          <th scope="col">Package</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Target</th>
           <th scope="col">Created At</th>
         </tr>
       </thead>
@@ -28,8 +28,9 @@
         {% for billing in billings.items %}
           <tr>
             <td>{{billing.id}}</td>
+            <td><a class="user_update" href="{{ url_for('users.user_finance', user_id=billing.reseller.id) }}">{{billing.reseller.username}}</a></td>
             <td><a class="user_update" href="{{ url_for('billings.billings_details', billing_id=billing.id) }}">{{billing.credits}}</a></td>
-            <td>{{billing.reseller.username}}</td>
+            <td>{{billing.cost}}</td>
             {% if billing.account %}
             <td><a class="user_update" href="{{ url_for('accounts.account_info', account_id=billing.account.id) }}">{{billing.account.login}}</a></td>
             {% else %}

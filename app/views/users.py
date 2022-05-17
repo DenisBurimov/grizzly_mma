@@ -1,8 +1,17 @@
-from flask import current_app, render_template, Blueprint, redirect, request, url_for
+from flask import (
+    current_app,
+    render_template,
+    Blueprint,
+    redirect,
+    request,
+    url_for,
+    flash,
+)
 from flask_login import login_required, current_user
 from sqlalchemy import desc
-from app.models import User
-from app.forms import UserForm, UserUpdateForm
+from app.models import User, Transaction
+from app.forms import UserCreateForm, UserUpdateForm, UserFinanceForm
+from app.logger import log
 
 users_blueprint = Blueprint("users", __name__)
 
@@ -33,13 +42,14 @@ def user_delete(user_id: int):
 @users_blueprint.route("/user_add", methods=["GET", "POST"])
 @login_required
 def user_add():
-    form = UserForm()
+    form = UserCreateForm()
 
     if form.validate_on_submit():
         User(
             username=form.username.data,
             password=form.password.data,
             role=User.Role(form.role.data),
+            credits_available=0,
         ).save()
 
         return redirect(url_for("users.users_page"))
@@ -49,6 +59,9 @@ def user_add():
 @users_blueprint.route("/user_update/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def user_update(user_id: int):
+    if user_id != current_user.id and current_user.role != User.Role.admin:
+        flash("Access denied", "danger")
+        return redirect(url_for("users.user_update", user_id=current_user.id))
     form = UserUpdateForm()
     user: User = User.query.get(user_id)
 
@@ -64,7 +77,7 @@ def user_update(user_id: int):
         form.username.data = user.username
         form.role.data = user.role.name
 
-    return render_template("user/update.html", form=form, user_id=user_id)
+    return render_template("user/update.html", form=form, user=user)
 
 
 @users_blueprint.route("/user_search/<query>")
@@ -77,8 +90,72 @@ def user_search(query):
         .paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
     )
 
-    return render_template(
-        "users.html",
-        users=users,
-        query=query,
-    )
+    return render_template("users.html", users=users, query=query)
+
+
+@users_blueprint.route("/user_finance/<int:user_id>", methods=["GET", "POST"])
+@login_required
+def user_finance(user_id: int):
+    curr_user: User = current_user
+    if curr_user.role != User.Role.admin:
+        flash("Access denied", "danger")
+        return redirect(url_for("main.index"))
+    form = UserFinanceForm()
+    user: User = User.query.get(user_id)
+
+    if user.credits_available is None:
+        user.credits_available = 0
+        user.save()
+
+    if user.credit_alowed is None:
+        user.credit_alowed = False
+        user.save()
+
+    if form.validate_on_submit():
+        # Transaction notation creating
+        Transaction(
+            action=form.transaction_type.data,
+            admin_id=current_user.id,
+            transaction_amount=form.transaction_amount.data,
+            reseller_id=user.id,
+        ).save()
+
+        if form.transaction_type.data == Transaction.Action.deposit:
+            log(
+                log.INFO,
+                "admin: [%d] user [%d] deposit: [%d]",
+                current_user.id,
+                user.id,
+                form.transaction_amount.data,
+            )
+            user.credits_available += form.transaction_amount.data
+        else:
+            log(
+                log.INFO,
+                "admin: [%d] user [%d] withdraw: [%d]",
+                current_user.id,
+                user.id,
+                form.transaction_amount.data,
+            )
+            user.credits_available -= form.transaction_amount.data
+        user.package_500_cost = form.package_500_cost.data
+        user.package_1000_cost = form.package_1000_cost.data
+        user.package_1500_cost = form.package_1500_cost.data
+        user.package_2500_cost = form.package_2500_cost.data
+        user.credit_alowed = form.credit_alowed.data
+        user.save()
+
+        flash("Users finance updated", "info")
+    elif form.is_submitted():
+        log(log.WARNING, "user_finance: error post data %s", form.errors)
+        flash(f"Error data: {form.errors}", "danger")
+
+    form.username.data = user.username
+    form.credits.data = user.credits_available
+    form.package_500_cost.data = user.package_500_cost
+    form.package_1000_cost.data = user.package_1000_cost
+    form.package_1500_cost.data = user.package_1500_cost
+    form.package_2500_cost.data = user.package_2500_cost
+    form.credit_alowed.data = user.credit_alowed
+
+    return render_template("user/finance.html", form=form, user=user)

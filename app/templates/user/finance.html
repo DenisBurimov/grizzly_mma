@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block links %}
+    <link href="{{ url_for('static', filename='css/custom_forms.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block content %}
+<main class="d-flex justify-content-center">
+
+  <form class="form-add d-flex flex-column justify-content-between" action="{{ url_for('users.user_finance', user_id=user.id) }}" method="post">
+
+    {{ form.hidden_tag() }}
+
+    <h1 class="h3 my-3">Reseller Details</h1>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+        <p class="me-3 pt-3">User: </p>
+        {{form.username(class='hit-input read_only_inputfield', readonly="true")}}
+      </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">Balance: </p>
+      {{form.credits(class='hit-input read_only_inputfield', readonly="true")}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="fme-3 pt-3">500 messages cost: </p>
+      {{form.package_500_cost(class='hit-input')}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">1000 messages cost: </p>
+      {{form.package_1000_cost(class='hit-input')}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">1500 messages cost: </p>
+      {{form.package_1500_cost(class='hit-input')}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">2500 messages cost: </p>
+      {{form.package_2500_cost(class='hit-input')}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-start pb-2 w-100">
+      <p class="me-3 pt-3">{{form.credit_alowed.label}}: </p>
+      <div class="d-flex ms-5 pt-3">
+        <div  id="checkbox_credit_allowed">{{form.credit_alowed}}</div>
+        <p id="checkbox_comment">Allowed/Forbidden</p>
+      </div>
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">{{form.transaction_type.label}}: </p>
+      {{form.transaction_type(class='hit-input')}}
+    </div>
+
+    <div class="hit-fieldset d-flex justify-content-between pb-2 w-100">
+      <p class="me-3 pt-3">{{form.transaction_amount.label}}: </p>
+      {{form.transaction_amount(class='hit-input')}}
+    </div>
+
+    <div class="mb-3">
+      {{form.submit(class="user_form_submit w-100 btn btn-lg btn-primary")}}
+    </div>
+
+    <div>
+      {% for field, errors in form.errors.items() %}
+        <div class="custom_alert alert alert-error">
+            {{ form[field].label }}: {{ ', '.join(errors) }}
+        </div>
+      {% endfor %}
+    </div>
+
+  </form>
+
+</main>
+{% endblock %}

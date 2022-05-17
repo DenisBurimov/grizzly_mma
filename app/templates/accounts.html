@@ -31,7 +31,7 @@
           <tr>
             <td>{{account.id}}</td>
             <td><a class="user_update" href="{{ url_for('accounts.account_info', account_id=account.id) }}">{{account.login}}</a></td>
-            <td>{{account.user.username}}</td>
+            <td><a class="user_update" href="{{ url_for('users.user_finance', user_id=account.user.id) }}">{{ account.user.username }}</a></td>
             <td>{{ account.created_at.strftime('%Y-%m-%d, %H:%M') }}</td>
             <td><a href="{{ url_for('accounts.account_enroll', account_id=account.id) }}"><img src="static/img/qrcode-icon-16px.jpg" alt="qrcode"></a></td>
           </tr>

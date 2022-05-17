@@ -85,7 +85,9 @@ def account_info(account_id: int):
     balance = sum((x.credits for x in billings))
 
     return render_template(
-        "account/info_account.html", account=account, balance=balance
+        "account/info_account.html",
+        account=account,
+        balance=balance,
     )
 
 

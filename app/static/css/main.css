@@ -93,6 +93,17 @@ body {
   border-radius: 0;
 }
 
+.user_navbar {
+  text-decoration: none;
+  color: black;
+}
+
+#balance {
+  padding: 0 1rem;
+}
+
+.mobile_balance {display: none;}
+
 .form-control-dark {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.1);
@@ -147,4 +158,26 @@ body {
 
 .close {
   padding: 5px 6px 7px 5px!important;
+}
+
+@media screen and (max-width: 768px) {
+  .mobile_nav_row {
+    width: 100%!important;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mobile_balance_wrapper {
+    width: 300px;
+  }
+
+  .mobile_balance {
+    display: block;
+    margin: 7px 15px;
+    color: grey;
+  }
+
+  #sign_out {
+    width: 100px;
+  }
 }

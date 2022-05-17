@@ -34,7 +34,7 @@ def test_login_and_logout(client):
     response = logout(client)
     assert b"Please log in to access this page." in response.data
     response = login(client)
-    assert b"Users" in response.data
+    assert b"Billings" in response.data
     # Should successfully logout the currently logged in user.
     response = logout(client)
     assert b"Please log in to access this page." in response.data

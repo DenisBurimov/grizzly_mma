@@ -7,7 +7,6 @@
 
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-  <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
 
   <div class="d-flex justify-content-between pt-3">
     <h3 class="page_title mt-1">Users</h3>
@@ -20,6 +19,9 @@
           <th scope="col">id</th>
           <th scope="col">Name</th>
           <th scope="col">Role</th>
+          <th scope="col">Spent</th>
+          <th scope="col">Balance</th>
+          <th scope="col">Credit</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
@@ -30,6 +32,9 @@
                   <td>{{ user.id }}</td>
                   <td><a class="user_update" href="{{ url_for('users.user_update', user_id=user.id) }}">{{ user.username }}</a></td>
                   <td>{{ user.role.name }}</td>
+                  <td>{{ user.billings | sum(attribute='credits') }}</td>
+                  <td><a class="user_update" href="{{ url_for('users.user_finance', user_id=user.id) }}">{{ user.credits_available }}</a></td>
+                  <td>{{ "Allowed" if user.credit_alowed else "Forbidden" }}</td>
                   <td><a class="delete_button" onclick="return confirm('Are you sure?');" href="{{ url_for('users.user_delete', user_id=user.id) }}">Delete</a></td>
               {% endif %}
             </tr>

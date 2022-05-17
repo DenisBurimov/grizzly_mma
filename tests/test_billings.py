@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import desc
 from app import db, create_app
 from app.controllers import init_db
-from app.models import Billing
+from app.models import Billing, User
 from .utils import login
 
 
@@ -30,6 +30,10 @@ def test_billings_page(client):
     login(client)
     response = client.get("/billings")
     assert response.status_code == 200
+    assert b"Package" in response.data
+    assert b"Cost" in response.data
+    assert b"Target" in response.data
+    assert b"user_10" in response.data
 
 
 def test_billings_add_page(client):
@@ -48,8 +52,9 @@ def test_create_billing(client, monkeypatch):
     TEST_ACCOUNT_ID = 1
     TEST_PUBLIC_KEY = "abrashwabracadabra=="
     TEST_CREDITS = 1000
-    login(client)
+    login(client, "user_2", "pass")
     TEST_QRCODE = b"test"
+    TEST_PACKAGE_COST = 100
 
     def mock_get_paid_qrcode(users_public_key: str, credits: int) -> bytes:
         return TEST_QRCODE
@@ -68,6 +73,8 @@ def test_create_billing(client, monkeypatch):
     billing: Billing = Billing.query.order_by(desc(Billing.id)).first()
     assert billing.credits == TEST_CREDITS
     assert billing.qrcode == TEST_QRCODE
+    assert billing.account_id == TEST_ACCOUNT_ID
+    assert billing.cost == TEST_PACKAGE_COST
 
 
 def test_billing_search(client):
@@ -80,3 +87,17 @@ def test_billing_search(client):
     assert f"{today}" in response.data.decode()
     response = client.get("/billing_search/r_2")
     assert b"r_2" in response.data
+
+
+def test_billing_cancel(client):
+    TEST_BILLING_ID = 1
+    login(client)
+    billing: Billing = Billing.query.get(TEST_BILLING_ID)
+    cost = billing.cost
+    user: User = User.query.get(billing.user_id)
+    user_credits = user.credits_available
+    response = client.get(f"/billing_cancel/{TEST_BILLING_ID}")
+    assert response.status_code == 302
+    assert user.credits_available == user_credits + cost
+    response = client.get(f"/billings_details/{TEST_BILLING_ID}")
+    assert response.status_code == 404

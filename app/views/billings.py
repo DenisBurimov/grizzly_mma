@@ -8,14 +8,14 @@ from flask import (
     url_for,
     request,
     current_app,
+    abort,
 )
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from app.logger import log
-from app.models import User, Billing
+from app.models import User, Account, Billing
 from app.forms import BillingForm
 from app import db
-from app.models.account import Account
 
 
 billings_blueprint = Blueprint("billings", __name__)
@@ -36,6 +36,7 @@ def billings_page():
 @login_required
 def billing_add():
     form = BillingForm()
+    user: User = User.query.filter_by(id=current_user.id).first()
     if current_user.role == User.Role.admin:
         form.account.choices = [
             (account.id, account.login)
@@ -51,15 +52,41 @@ def billing_add():
     if form.validate_on_submit():
         from app.controllers import get_paid_qrcode
 
-        billing = Billing(
-            user_id=current_user.id,
-            account_id=form.account.data,
-            credits=form.credits.data,
-            qrcode=get_paid_qrcode(form.users_public_key.data, form.credits.data),
-        )
-        billing.save()
+        cost: int
+        if form.credits.data == 500:
+            cost = user.package_500_cost
+        elif form.credits.data == 1000:
+            cost = user.package_1000_cost
+        elif form.credits.data == 1500:
+            cost = user.package_1500_cost
+        elif form.credits.data == 2500:
+            cost = user.package_2500_cost
 
-        return redirect(url_for("billings.billings_details", billing_id=billing.id))
+        if user.credits_available >= cost or user.credit_alowed:
+            billing = Billing(
+                user_id=current_user.id,
+                account_id=form.account.data,
+                credits=form.credits.data,
+                cost=cost,
+                qrcode=get_paid_qrcode(form.users_public_key.data, form.credits.data),
+            )
+            billing.save()
+
+            user.credits_available -= cost
+            user.save()
+            flash(
+                f"Billing successfully created. Your balance {user.credits_available}",
+                "info",
+            )
+
+            return redirect(url_for("billings.billings_details", billing_id=billing.id))
+        else:
+            flash(
+                "Cannot create billing. Please check your balance or contact your administrator.",
+                "danger",
+            )
+            log(log.ERROR, "Cannot create a billing. Balance issue.")
+            return redirect(url_for("billings.billings_page"))
 
     elif form.is_submitted():
         flash("Something went wrong. Cannot create a billing!", "danger")
@@ -76,10 +103,16 @@ def billing_add():
 @login_required
 def billings_details(billing_id):
     billing: Billing = Billing.query.get(billing_id)
+    if not billing:
+        raise abort(404)
     image_64 = base64.b64encode(billing.qrcode)
     image = image_64.decode()
 
-    return render_template("billing/billing_details.html", billing=billing, image=image)
+    return render_template(
+        "billing/billing_details.html",
+        billing=billing,
+        image=image,
+    )
 
 
 @billings_blueprint.route("/billing_search/<query>")
@@ -115,3 +148,20 @@ def billing_search(query):
         )
 
     return render_template("billings.html", billings=billings, query=query)
+
+
+@billings_blueprint.route("/billing_cancel/<int:billing_id>")
+@login_required
+def billing_cancel(billing_id):
+    if current_user.role != User.Role.admin:
+        flash("Not enough permissions", "danger")
+        return redirect(url_for("billings.billings_page"))
+    billing: Billing = Billing.query.get(billing_id)
+    db.session.delete(billing)
+    db.session.commit()
+
+    user: User = User.query.get(billing.user_id)
+    user.credits_available += billing.cost
+    user.save()
+
+    return redirect(url_for("billings.billings_page"))

@@ -12,6 +12,7 @@ class Billing(db.Model, ModelMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"))
     credits = db.Column(db.Integer)
+    cost = db.Column(db.Integer, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     qrcode = db.Column(db.LargeBinary)
 

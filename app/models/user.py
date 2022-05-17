@@ -41,6 +41,12 @@ class User(db.Model, UserMixin, ModelMixin):
     deleted = db.Column(db.Boolean, default=False)
     otp_secret = db.Column(db.String(32), default=gen_secret_key)
     otp_active = db.Column(db.Boolean, default=False)
+    credits_available = db.Column(db.Integer, nullable=True)
+    credit_alowed = db.Column(db.Boolean, default=False)
+    package_500_cost = db.Column(db.Integer, nullable=True)
+    package_1000_cost = db.Column(db.Integer, nullable=True)
+    package_1500_cost = db.Column(db.Integer, nullable=True)
+    package_2500_cost = db.Column(db.Integer, nullable=True)
 
     accounts = relationship("Account", viewonly=True)
     billings = relationship("Billing", viewonly=True)
