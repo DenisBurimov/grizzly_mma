@@ -1,3 +1,4 @@
+import datetime
 from flask import (
     render_template,
     Blueprint,
@@ -48,12 +49,21 @@ def finance_search(query):
         finance_data = Transaction.query.filter(Transaction.transaction_amount == query)
 
     if finance_data.count() == 0 or not query.isdigit():
-        users = User.query.filter(User.username.like(f"%{query}%")).all()
-        users_id_list = [user.id for user in users]
-        finance_data = Transaction.query.filter(
-            (Transaction.reseller_id.in_(users_id_list))
-            | (Transaction.admin_id.in_(users_id_list))
-        )
+        try:
+            # Dates
+            search_date = datetime.datetime.strptime(query, "%Y-%m-%d")
+            next_day = search_date + datetime.timedelta(1)
+            finance_data = finance_data.filter(
+                search_date <= Transaction.created_at,
+                Transaction.created_at <= next_day,
+            )
+        except Exception:
+            users = User.query.filter(User.username.like(f"%{query}%")).all()
+            users_id_list = [user.id for user in users]
+            finance_data = Transaction.query.filter(
+                (Transaction.reseller_id.in_(users_id_list))
+                | (Transaction.admin_id.in_(users_id_list))
+            )
 
     finance_data = finance_data.paginate(
         page=page, per_page=current_app.config["PAGE_SIZE"]
