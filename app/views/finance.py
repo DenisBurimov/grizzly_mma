@@ -63,6 +63,7 @@ def finance_search(query):
             finance_data = Transaction.query.filter(
                 (Transaction.reseller_id.in_(users_id_list))
                 | (Transaction.admin_id.in_(users_id_list))
+                | (Transaction.comment.like(f"%{query}%"))
             )
 
     finance_data = finance_data.paginate(
