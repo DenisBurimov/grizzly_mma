@@ -11,7 +11,7 @@
   <div class="d-flex justify-content-between pt-3">
     <h3 class="page_title mt-1">Finance</h3>
 
-    <p>Total resellers debt: {{ debt }}</p>
+    <p id="debt">Total resellers debt: {{ debt }}</p>
   </div>
   <div class="table-responsive">
     <table class="table table-striped table-sm">
@@ -43,6 +43,8 @@
       </tbody>
     </table>
   </div>
+
+  <p>{{query}}</p>
 
   <div class="pagination d-flex justify-content-center">
     {% if query %}

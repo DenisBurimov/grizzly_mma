@@ -1,6 +1,6 @@
 import os
 from flask import current_app as app
-from app.models import User, Account, Billing
+from app.models import User, Account, Billing, Transaction
 from app import db
 from app.logger import log
 from .account import gen_login, gen_password
@@ -8,6 +8,7 @@ from .account import gen_login, gen_password
 TEST_USERS_NUMBER = int(os.environ.get("TEST_USERS_NUMBER", "10"))
 TEST_ACCOUNTS_PER_USER = 2
 TEST_BILLINGS_PER_USER = 2
+TEST_TRANSACTIONS = 10
 TEST_PASS = "pass"
 USER_CREDITS_AVAILABLE = 1000
 USER_CREDIT_ALLOWED = True
@@ -51,6 +52,14 @@ def init_db(add_test_data: bool = False):
                     user_id=user.id,
                     credits=1000,
                     cost=100,
+                ).save(False)
+            for _ in range(TEST_TRANSACTIONS):
+                Transaction(
+                    action="deposit",
+                    admin_id=1,
+                    transaction_amount=100,
+                    reseller_id=2,
+                    comment="Standart transaction",
                 ).save(False)
 
     db.session.commit()

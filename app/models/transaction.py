@@ -27,8 +27,14 @@ class Transaction(db.Model, ModelMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     comment = db.Column(db.String(120), default="Standart transaction")
 
-    admin = relationship("User", foreign_keys=[admin_id])
-    reseller = relationship("User", foreign_keys=[reseller_id])
+    admin = relationship(
+        "User",
+        foreign_keys=[admin_id],
+    )
+    reseller = relationship(
+        "User",
+        foreign_keys=[reseller_id],
+    )
 
     def __repr__(self):
         return f"<{self.id}, {self.admin_id}-{self.reseller_id} amount: {self.transaction_amount}>"

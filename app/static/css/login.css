@@ -32,3 +32,12 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.navbar-toggler, .search_area, .mobile_balance_wrapper {display: none! important;}
+
+@media screen and (max-width: 768px) {
+  .navbar-brand {
+    width: 100%;
+    text-align: center;
+  }
+}
