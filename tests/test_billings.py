@@ -88,6 +88,11 @@ def test_billing_search(client):
     response = client.get("/billing_search/r_2")
     assert b"r_2" in response.data
 
+    response = client.get(f"/billing_search/1000, admin, {str(today)}")
+    assert b"1000" in response.data
+    assert b"admin" in response.data
+    assert f"{str(today)}" in response.data.decode()
+
 
 def test_billing_cancel(client):
     TEST_BILLING_ID = 1

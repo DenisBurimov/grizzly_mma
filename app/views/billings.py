@@ -119,28 +119,35 @@ def billings_details(billing_id):
 @login_required
 def billing_search(query):
     page = request.args.get("page", 1, type=int)
-    billings = Billing.query
+    splitted_queries = query.split(",")
+    search_result = Billing.query.filter_by(id=0)
+    for raw_single_query in splitted_queries:
+        single_query = raw_single_query.strip()
+        billings = Billing.query
 
-    if query.isdigit():
-        billings = billings.filter(Billing.credits == int(query))
-    else:
-        try:
-            # Dates
-            search_date = datetime.datetime.strptime(query, "%Y-%m-%d")
-            next_day = search_date + datetime.timedelta(1)
-            billings = billings.filter(
-                search_date <= Billing.created_at, Billing.created_at <= next_day
-            )
-        except Exception:
-            # Username
-            billings = (
-                db.session.query(
-                    Billing,
+        if single_query.isdigit():
+            billings = billings.filter(Billing.credits == int(single_query))
+        else:
+            try:
+                # Dates
+                search_date = datetime.datetime.strptime(single_query, "%Y-%m-%d")
+                next_day = search_date + datetime.timedelta(1)
+                billings = billings.filter(
+                    search_date <= Billing.created_at, Billing.created_at <= next_day
                 )
-                .join(User)
-                .filter(User.username.like(f"%{query}%"))
-            )
-    billings = billings.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
+            except Exception:
+                # Username
+                billings = (
+                    db.session.query(
+                        Billing,
+                    )
+                    .join(User)
+                    .filter(User.username.like(f"%{single_query}%"))
+                )
+        search_result = search_result.union(billings)
+    billings = search_result.paginate(
+        page=page, per_page=current_app.config["PAGE_SIZE"]
+    )
 
     if current_user.role != User.Role.admin:
         billings = billings.filter(Billing.user_id == current_user.id).paginate(
