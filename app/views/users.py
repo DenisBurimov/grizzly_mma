@@ -84,12 +84,13 @@ def user_update(user_id: int):
 @login_required
 def user_search(query):
     page = request.args.get("page", 1, type=int)
-    users = (
-        User.query.order_by(desc(User.id))
-        .filter(User.username.like(f"%{query}%"))
-        .paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
-    )
-
+    splitted_queries = query.split(",")
+    search_result = User.query.filter_by(id=0)
+    for raw_single_query in splitted_queries:
+        single_query = raw_single_query.strip()
+        users = User.query.filter(User.username.like(f"%{single_query}%"))
+        search_result = search_result.union(users)
+    users = search_result.paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
     return render_template("users.html", users=users, query=query)
 
 

@@ -148,3 +148,13 @@ def test_user_finance(client: FlaskClient):
     assert transaction.transaction_amount == TRANSACTION_AMOUNT
     assert transaction.admin.id == 1
     assert transaction.reseller.id == TEST_USER_ID
+
+
+def test_user_search(client):
+    login(client)
+    response = client.get("/user_search/r_2")
+    assert b"r_2" in response.data
+
+    response = client.get("/user_search/r_2, admin")
+    assert b"r_2" in response.data
+    assert b"admin" in response.data

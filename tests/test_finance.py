@@ -53,6 +53,7 @@ def test_finance_search(client):
     assert response.status_code == 200
 
     # import datetime
+
     # TODAY = datetime.datetime.today().strftime("%Y-%m-%d")
     # TEST_FINANCE_SEARCH_DATE = f"/finance_search/{TODAY}"
     # response = client.get(TEST_FINANCE_SEARCH_DATE)
