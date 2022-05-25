@@ -52,15 +52,13 @@ def billing_add():
     if form.validate_on_submit():
         from app.controllers import get_paid_qrcode
 
-        cost: int
-        if form.credits.data == 500:
-            cost = user.package_500_cost
-        elif form.credits.data == 1000:
-            cost = user.package_1000_cost
-        elif form.credits.data == 1500:
-            cost = user.package_1500_cost
-        elif form.credits.data == 2500:
-            cost = user.package_2500_cost
+        packages = {
+            500: user.package_500_cost,
+            1000: user.package_1000_cost,
+            1500: user.package_1500_cost,
+            2500: user.package_2500_cost,
+        }
+        cost = packages[form.credits.data]
 
         if user.credits_available >= cost or user.credit_alowed:
             billing = Billing(
