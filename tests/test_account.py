@@ -1,4 +1,5 @@
 import pytest
+import datetime
 
 from app import db, create_app
 from app.controllers import init_db
@@ -42,8 +43,14 @@ def test_account_info(client):
 
 def test_account_search(client):
     login(client)
-    response = client.get("/account_search/r_2")
+    TODAY = datetime.datetime.today().strftime("%Y-%m-%d")
+    TEST_ACCOUNT_SEARCH_DATE = f"/account_search/{TODAY}"
+    response = client.get(TEST_ACCOUNT_SEARCH_DATE)
+    assert f"{TODAY}" in response.data.decode()
+    response = client.get(f"/account_search/r_2, r_3, {TODAY}")
     assert "r_2" in response.data.decode()
+    assert "r_3" in response.data.decode()
+    assert f"{TODAY}" in response.data.decode()
 
 
 def test_account_pagination(client):

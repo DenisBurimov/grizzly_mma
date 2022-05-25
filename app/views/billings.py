@@ -135,7 +135,7 @@ def billing_search(query):
                 billings = billings.filter(
                     search_date <= Billing.created_at, Billing.created_at <= next_day
                 )
-            except Exception:
+            except ValueError:
                 # Username
                 billings = (
                     db.session.query(

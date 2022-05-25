@@ -62,7 +62,7 @@ def finance_search(query):
                     search_date <= Transaction.created_at,
                     Transaction.created_at <= next_day,
                 )
-            except Exception:
+            except ValueError:
                 users = User.query.filter(User.username.like(f"%{single_query}%")).all()
                 users_id_list = [user.id for user in users]
                 finance_data = Transaction.query.filter(
