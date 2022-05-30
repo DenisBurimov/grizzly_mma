@@ -1,3 +1,4 @@
+import datetime
 from flask import (
     current_app,
     render_template,
@@ -105,13 +106,35 @@ def account_billings(account_id: int):
 @login_required
 def account_search(query):
     page = request.args.get("page", 1, type=int)
-    accounts = (
-        db.session.query(
-            Account,
-        )
-        .join(User)
-        .filter(User.username.like(f"%{query}%") | Account.login.like(f"%{query}%"))
-    ).paginate(page=page, per_page=current_app.config["PAGE_SIZE"])
+    splitted_queries = query.split(",")
+    search_result = Account.query.filter_by(id=0)
+    for raw_single_query in splitted_queries:
+        single_query = raw_single_query.strip()
+        accounts = Account.query
+
+        try:
+            # Dates
+            search_date = datetime.datetime.strptime(single_query, "%Y-%m-%d")
+            next_day = search_date + datetime.timedelta(1)
+            accounts = accounts.filter(
+                search_date <= Account.created_at, Account.created_at <= next_day
+            )
+        except ValueError:
+            accounts = (
+                db.session.query(
+                    Account,
+                )
+                .join(User)
+                .filter(
+                    User.username.like(f"%{single_query}%")
+                    | Account.login.like(f"%{single_query}%")
+                )
+            )
+        search_result = search_result.union(accounts)
+
+    accounts = search_result.paginate(
+        page=page, per_page=current_app.config["PAGE_SIZE"]
+    )
 
     if current_user.role != User.Role.admin:
         accounts = accounts.filter(Account.user_id == current_user.id).paginate(

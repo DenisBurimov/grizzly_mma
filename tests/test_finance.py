@@ -1,5 +1,5 @@
-import pytest
 import datetime
+import pytest
 from app import db, create_app
 from app.controllers import init_db
 from .utils import login
@@ -38,7 +38,6 @@ def test_finance_search(client):
     TEST_FINANCE_SEARCH_INT = "/finance_search/100"
     TEST_FINANCE_SEARCH_STR = "/finance_search/user"
     TODAY = datetime.datetime.today().strftime("%Y-%m-%d")
-    TEST_FINANCE_SEARCH_DATE = f"/finance_search/{TODAY}"
     response = client.get(TEST_FINANCE_SEARCH_INT)
     assert response.status_code == 302
     login(client)
@@ -51,6 +50,9 @@ def test_finance_search(client):
     assert b"admin" in response.data
     assert b"user_2" in response.data
     assert b"Standart transaction" in response.data
-    response = client.get(TEST_FINANCE_SEARCH_DATE)
-    assert f"{TODAY}" in response.data.decode()
     assert b"100" in response.data
+    response = client.get(f"/finance_search/100, admin, {TODAY}")
+    assert response.status_code == 200
+    assert b"100" in response.data
+    assert b"admin" in response.data
+    assert f"{TODAY}" in response.data.decode()

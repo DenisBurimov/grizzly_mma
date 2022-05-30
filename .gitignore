@@ -133,3 +133,5 @@ dmypy.json
 *.sqlite
 
 .DS_Store
+
+todo.txt
