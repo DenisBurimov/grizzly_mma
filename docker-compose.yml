@@ -31,8 +31,10 @@ services:
       - ./:/app
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - PGPASSWORD=${DB_PASSWORD}
+      - PGUSER=${DB_USER-postgres}
     ports:
       - 127.0.0.1:${DB_LOCAL_PORT}:5432
 
