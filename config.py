@@ -85,7 +85,7 @@ class ProductionConfig(BaseConfig):
     )
     WTF_CSRF_ENABLED = True
 
-    URL_JAVA_SRV = os.environ.get("URL_JAVA_SRV", None)
+    URL_JAVA_SRV = os.environ.get("URL_JAVA_SRV", "http://java:8080")
 
 
 config = dict(

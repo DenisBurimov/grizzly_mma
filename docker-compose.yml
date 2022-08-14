@@ -15,9 +15,11 @@ services:
       - 127.0.0.1:${APP_LOCAL_PORT}:5000
     depends_on:
       - db
+      - java
 
   java:
     image: amazoncorretto:8
+    restart: always
     volumes:
       - ./:/app
     command: java -jar /app/java/kreditor-1.0.0.jar
