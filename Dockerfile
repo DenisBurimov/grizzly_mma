@@ -5,8 +5,7 @@ WORKDIR /app
 RUN pip install poetry
 COPY poetry.lock ./
 COPY pyproject.toml ./
-RUN poetry install --no-dev
+RUN python3 -m pip install cryptography
+RUN poetry install
 
 COPY . .
-
-EXPOSE 5000
