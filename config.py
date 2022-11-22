@@ -10,7 +10,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 class BaseConfig(object):
     """Base configuration."""
 
-    APP_NAME = "Wiper Portal"
+    APP_NAME = "Grizzly MMA"
     DEBUG_TB_ENABLED = False
     SECRET_KEY = os.environ.get(
         "SECRET_KEY", "Ensure you set a secret key, this is important!"
@@ -18,7 +18,7 @@ class BaseConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
     ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
-    ADMIN_PASS = os.environ.get("ADMIN_PASS", "pass")
+    ADMIN_PASS = os.environ.get("ADMIN_PASS", "password123")
 
     ALPHABET_FULL = os.environ.get(
         "ALPHABET_FULL", "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
@@ -34,7 +34,7 @@ class BaseConfig(object):
     LDAP_SERVER = os.environ.get("LDAP_SERVER", None)
     LDAP_USER = os.environ.get("LDAP_USER", None)
     LDAP_PASS = os.environ.get("LDAP_PASS", None)
-    AD_NAME = os.environ.get("AD_NAME", "DC=wiper,DC=tel")
+    AD_NAME = os.environ.get("AD_NAME", "DC=grizzly,DC=com")
 
     REMOTE_SHELL_SERVER: str = os.environ.get("REMOTE_SHELL_SERVER", None)
     REMOTE_SHELL_USER: str = os.environ.get("REMOTE_SHELL_USER", None)

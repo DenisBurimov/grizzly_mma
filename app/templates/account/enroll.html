@@ -1,10 +1,9 @@
-{% extends 'base.html' %}
-
-{% block links %}
-  <link href="{{ url_for('static', filename='css/enroll.css') }}" rel="stylesheet">
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block links %}
+<link
+  href="{{ url_for('static', filename='css/enroll.css') }}"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
 <main class="d-flex flex-column justify-content-center">
   <div class="instructions w-50">
     <h3 class="mt-3"><strong>Instructions for enrollment</strong></h3>
@@ -14,8 +13,8 @@
       <li>Connect to the Wi-Fi network and press "Next"</li>
       <li>Press "Don't copy" to skip the step "Copy apps & data"</li>
       <li>
-        In the "Email or Phone" field enter: <strong>afw#memdm</strong> to sign in
-        and press "Next"
+        In the "Email or Phone" field enter: <strong>afw#memdm</strong> to sign
+        in and press "Next"
       </li>
       <li>Press "Install" and install MDM</li>
       <li>Press "Set up" to set up a device</li>
@@ -26,12 +25,13 @@
       </li>
       <li>Scan the QR code (allow using camera if needed)</li>
 
-      <img class="qr-size my-3" src="{{ url_for('static', filename='img/credentials.jpg') }}" alt="qr_credentials"/>
+      <img
+        class="qr-size my-3"
+        src="{{ url_for('static', filename='img/credentials.jpg') }}"
+        alt="qr_credentials"
+      />
 
-      <li>
-        Enter MDM e-mail, MDM login, MDM password
-        press "Continue"
-      </li>
+      <li>Enter MDM e-mail, MDM login, MDM password press "Continue"</li>
       <li>
         Select checkbox "I agree with terms & conditions" and press "Continue"
       </li>
@@ -43,18 +43,16 @@
       <li>Repeat password and press "OK"</li>
     </ul>
 
-   <div class="credentials">
-    <h3 class="mt-5"><strong>MDM setup credentials:</strong></h3>
+    <div class="credentials">
+      <h3 class="mt-5"><strong>MDM setup credentials:</strong></h3>
 
-    <div class="credentials_inner">
-      <p class="mt-3"><b>Reseller:</b> {{account.user.username}}</p>
-    <p><b>MDM e-mail:</b> {{account.login}}@wiper.tel</p>
-    <p><b>MDM login:</b> {{account.login}}</p>
-    <p class="mb-5"><b>MDM password:</b> {{account.password}}</p>
+      <div class="credentials_inner">
+        <p class="mt-3"><b>Reseller:</b> {{account.user.username}}</p>
+        <p><b>MDM e-mail:</b> {{account.login}}@grizzly.com</p>
+        <p><b>MDM login:</b> {{account.login}}</p>
+        <p class="mb-5"><b>MDM password:</b> {{account.password}}</p>
+      </div>
     </div>
-   </div>
   </div>
-
-
 </main>
 {% endblock %}

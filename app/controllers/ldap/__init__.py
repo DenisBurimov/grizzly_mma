@@ -12,8 +12,8 @@ from .user import User
 
 
 class LDAP(object):
-    FORMAT_USER_DN = "CN=Account {user_name},CN=Users,DC=wiper,DC=tel"
-    FORMAT_GROUP_DN = "CN={group_name},DC=wiper,DC=tel"
+    FORMAT_USER_DN = "CN=Account {user_name},CN=Users,DC=grizzly,DC=com"
+    FORMAT_GROUP_DN = "CN={group_name},DC=grizzly,DC=com"
     USERS_SEARCH_FILTER = "(&(objectClass=*)(sAMAccountName=*)(sn=*))"
 
     def __init__(self):
@@ -42,7 +42,7 @@ class LDAP(object):
                     attributes = entry["attributes"]
                     yield User.parse_obj(attributes)
 
-    def add_user(self, user_name: str, group_name: str = "Wiper") -> User:
+    def add_user(self, user_name: str, group_name: str = "Grizzly") -> User:
         user_dn = self.get_user_dn(user_name)
         group_dn = self.get_group_dn(group_name)
         with ldap3.Connection(
@@ -55,9 +55,9 @@ class LDAP(object):
                 attributes={
                     "sn": user_name,
                     "givenName": "Account",
-                    "mail": f"{user_name}@wiper.tel",
+                    "mail": f"{user_name}@grizzly.com",
                     "name": f"Account {user_name}",
-                    "userPrincipalName": f"{user_name}@wiper.tel",
+                    "userPrincipalName": f"{user_name}@grizzly.com",
                     "sAMAccountName": user_name,
                     "accountExpires": datetime.datetime(2222, 2, 22),
                     "displayName": f"Account {user_name}",

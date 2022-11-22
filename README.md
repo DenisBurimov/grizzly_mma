@@ -1,6 +1,6 @@
 # grizzly_mma
 
-DEBUG: Before poetry install run pip install cryptography
+DEBUG: Before poetry install run pip install cryptography==<version>
 
 ## Functionality:
 
